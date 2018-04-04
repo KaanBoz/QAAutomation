@@ -1,0 +1,129 @@
+extends main.pug
+
+block content
+    div(class="row gap-20 masonry pos-r")
+        div(class="masonry-sizer col-md-12")
+        div(class="masonry-item col-md-12")
+            div(class="bgc-white p-20 bd")
+                if operation == "add" && !success 
+                    h6(class="c-grey-900") #{localization.newUser}
+                else
+                    h6(class="c-grey-900") #{localization.user}
+                div(class="mT-30")
+                    form(method="post" action=".." + originalUrl)
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="email") #{localization.email}
+                                if isDisabled
+                                    if formData && formData.email
+                                        input(type="text" class="form-control" id="email" name="email" disabled value=formData.email)
+                                    else
+                                        input(type="text" class="form-control" id="email" name="email" disabled)
+                                else
+                                    if formData && formData.email
+                                        input(type="text" class="form-control" id="email" name="email" value=formData.email)
+                                    else
+                                        input(type="text" class="form-control" id="email" name="email")
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="name") #{localization.name}
+                                if isDisabled
+                                    if formData && formData.name
+                                        input(type="text" class="form-control" id="name" name="name" disabled value=formData.name) 
+                                    else
+                                        input(type="text" class="form-control" id="name" name="name" disabled)
+                                else
+                                    if formData && formData.name
+                                        input(type="text" class="form-control" id="name" name="name" value=formData.name)
+                                    else
+                                        input(type="text" class="form-control" id="name" name="name")
+                            div(class="form-group col-md-6")
+                                label(for="surname") #{localization.surname}
+                                if isDisabled
+                                    if formData && formData.surname
+                                        input(type="text" class="form-control" id="surname" name="surname" disabled value=formData.surname)
+                                    else
+                                        input(type="text" class="form-control" id="surname" name="surname" disabled)
+                                else
+                                    if formData && formData.surname
+                                        input(type="text" class="form-control" id="surname" name="surname" value=formData.surname)
+                                    else
+                                        input(type="text" class="form-control" id="surname" name="surname")
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="password") #{localization.password}
+                                if isDisabled
+                                    if formData && formData.password
+                                        input(type="password" class="form-control" id="password" name="password" disabled value=formData.password)
+                                    else
+                                        input(type="password" class="form-control" id="password" name="password" disabled)
+                                else
+                                    if formData && formData.password
+                                        input(type="password" class="form-control" id="password" name="password" value=formData.password)
+                                    else
+                                        input(type="password" class="form-control" id="password" name="password")
+                            div(class="form-group col-md-6")
+                                label(for="passwordAgain") #{localization.passwordAgain}
+                                if isDisabled
+                                    if formData && formData.passwordAgain
+                                        input(type="password" class="form-control" id="passwordAgain" name="passwordAgain" disabled value=formData.passwordAgain)
+                                    else
+                                        input(type="password" class="form-control" id="passwordAgain" name="passwordAgain" disabled)
+                                else
+                                    if formData && formData.passwordAgain
+                                        input(type="password" class="form-control" id="passwordAgain" name="passwordAgain" value=formData.passwordAgain)
+                                    else
+                                        input(type="password" class="form-control" id="passwordAgain" name="passwordAgain")
+                        h6(style="padding-top:10px; padding-bottom:20px;") #{localization.userPermissions}
+                        div(class="checkbox checkbox-circle checkbox-info peers ai-c mB-15" style="margin-left:20px;")
+                            if isDisabled
+                                if formData && formData.isAdmin
+                                    input(type="checkbox" id="isAdmin" name="isAdmin" class="peer" disabled checked)
+                                else
+                                    input(type="checkbox" id="isAdmin" name="isAdmin" class="peer" disabled)
+                            else
+                                if formData && formData.isAdmin
+                                    input(type="checkbox" id="isAdmin" name="isAdmin" class="peer" checked)
+                                else
+                                    input(type="checkbox" id="isAdmin" name="isAdmin" class="peer")
+                            label(for="isAdmin" class="peers peer-greed js-sb ai-c")
+                                span(class="peer peer-greed") #{localization.isAdmin}
+                        div(class="checkbox checkbox-circle checkbox-info peers ai-c mB-15" style="margin-left:20px;")
+                            if isDisabled
+                                if formData && formData.isChef
+                                    input(type="checkbox" id="isChef" name="isChef" class="peer" disabled checked)
+                                else
+                                    input(type="checkbox" id="isChef" name="isChef" class="peer" disabled)
+                            else
+                                if formData && formData.isChef
+                                    input(type="checkbox" id="isChef" name="isChef" class="peer" checked)
+                                else
+                                    input(type="checkbox" id="isChef" name="isChef" class="peer")
+                            label(for="isChef" class="peers peer-greed js-sb ai-c")
+                                span(class="peer peer-greed") #{localization.isChef}
+                        div(class="checkbox checkbox-circle checkbox-info peers ai-c mB-15" style="margin-left:20px;")
+                            if isDisabled
+                                if formData && formData.isOperator
+                                    input(type="checkbox" id="isOperator" name="isOperator" class="peer" disabled checked)
+                                else
+                                    input(type="checkbox" id="isOperator" name="isOperator" class="peer" disabled)
+                            else
+                                if formData && formData.isOperator
+                                    input(type="checkbox" id="isOperator" name="isOperator" class="peer" checked)
+                                else
+                                    input(type="checkbox" id="isOperator" name="isOperator" class="peer")
+                            label(for="isOperator" class="peers peer-greed js-sb ai-c")
+                                span(class="peer peer-greed") #{localization.isOperator}
+                        if message && success == 1
+                            div(class = "form-group" style="color:green;margin-top:35px;")
+                                p !{message}
+                        if message && success == 0
+                            div(class = "form-group" style="color:red;margin-top:35px;")
+                                p !{message}
+                        if actionButton && (operation == "add" || operation == "edit")
+                            button(type="submit" class="btn btn-success" style="margin-top:35px;") #{localization.save}
+                        else if actionButton && operation == "delete"
+                            button(type="submit" class="btn btn-danger" style="margin-top:35px;") #{localization.delete}
+                        div
+                            a(href="../qaallusers" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
+                        

@@ -1,0 +1,71 @@
+html
+  head
+    meta(charset="utf-8" name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no")
+    title #{localization.title}
+    link(rel="shortcut icon" type="image/x-icon" href="../images/icon.png")
+    style.
+      #loader{transition:all .3s ease-in-out;opacity:1;visibility:visible;position:fixed;height:100vh;width:100%;background:#fff;z-index:90000;}
+      #loader.fadeOut{opacity:0;visibility:hidden}
+      .spinner{width:40px;height:40px;position:absolute;top:calc(50% - 20px);left:calc(50% - 20px);
+      background-color:#333;border-radius:100%;-webkit-animation:sk-scaleout 1s infinite ease-in-out;animation:sk-scaleout 1s infinite ease-in-out}
+      @-webkit-keyframes sk-scaleout{0%{-webkit-transform:scale(0)}100%{-webkit-transform:scale(1);opacity:0}}
+      @keyframes sk-scaleout{0%{-webkit-transform:scale(0);transform:scale(0)}100%{-webkit-transform:scale(1);transform:scale(1);opacity:0}}
+    link(rel="stylesheet" href="../css/style.css")
+    link(rel="stylesheet" href="../css/index.css")
+    link(rel="stylesheet" href="../bootstrap/css/bootstrap.min.css")
+    link(rel="stylesheet" href="../css/bootstrap-select.min.css")
+    link(rel="stylesheet" href="../flag-icon-css/css/flag-icon.min.css")
+    script(src='../jquery/dist/jquery.min.js')
+    script(src='../js/index.js')
+    script(src='../popper.js/dist/umd/popper.min.js')
+    script(src='../popper.js/dist/umd/popper-utils.min.js')
+    script(src='../bootstrap/js/bootstrap.min.js')
+    script(src='../bootstrap-select/dist/js/bootstrap-select.min.js')
+  body(class="app")
+    div(id="loader")
+        div(class="spinner")
+    script.
+      window.addEventListener('load',() => {
+        const loader = document.getElementById('loader');
+        setTimeout(() => {
+            loader.classList.add('fadeOut');
+        });
+      });
+    div(class="peers ai-s fxw-nw h-100vh")
+      div(class="d-n@sm- peer peer-greed h-100 pos-r bgr-n bgpX-c bgpY-c bgsz-cv" style="background-image:url(../images/bg2.jpg)")
+        div(class="pos-a centerXY")
+          div(class="bgc-white bdrs-50p pos-r" style="width:360px;height:360px;visibility:hidden;")
+            img(class="pos-a centerXY" src="../images/logo.png" alt="" style="width:300px;height:50px;")
+      div(class="col-12 col-md-4 peer pX-40 pY-80 h-100 bgc-white scrollable pos-r" style="min-width:320px")
+        h1(class="fw-300 c-grey-900 mB-40" style="text-align: center;font-size:24px;") #{localization.title}
+        form(method="post")
+          div(class="form-group" style="text-align: center;padding-bottom: 40px;")
+            img(src="../images/logo.png" style="width:240px;height:40px;")
+          div(class="form-group")
+            select(class="form-control selectpicker btd-login-border" id="lang" name="lang" data-style="btn-default")
+              if(data && data.lang && data.lang == 'en')
+                option(data-content='<span class="flag-icon flag-icon-tr"></span> Türkçe') tr
+                option(data-content='<span class="flag-icon flag-icon-us"></span> English' selected) en 
+              else
+                option(data-content='<span class="flag-icon flag-icon-tr"></span> Türkçe' selected) tr
+                option(data-content='<span class="flag-icon flag-icon-us"></span> English') en 
+            input(type = "text" class = "form-control" id = "isLangChange" name="isLangChange" value= "" style="display:none;")
+          div(class="form-group")
+            label(class="text-normal text-dark") #{localization.email}
+            if mail
+              input(type="text" class="form-control" id="mail" name="mail" value= mail)
+            else
+              input(type="text" class="form-control" id="mail" name="mail")
+          div(class="form-group")
+            label(class="text-normal text-dark") #{localization.password}
+            if password
+              input(type="password" class="form-control" id="password" name="password" value= password)
+            else
+              input(type="password" class="form-control" id="password" name="password")
+          div(class="form-group" style="padding:30px;")
+            button(type="submit" class="form-control btn btn-primary btd-padding-percent3" style="height:45px;") #{localization.login}
+          if message
+            div(class = "form-group" style="text-align:center; color:red;")
+              label #{message}
+    script(type="text/javascript" src="../js/vendor.js")
+    script(type="text/javascript" src="../js/bundle.js")

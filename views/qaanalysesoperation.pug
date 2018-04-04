@@ -1,0 +1,14 @@
+extends main.pug
+
+block append head
+    script(src='../js/qaanalysesoperation.js')
+
+block content
+    div(class="row gap-20 masonry pos-r" ng-controller="qaAnalysesOperationCtrl")
+        div(class="masonry-sizer col-md-12")
+        div(class="masonry-item col-md-12")
+            div(class="bgc-white p-20 bd")
+                if operation == "add" && !success 
+                    h6(class="c-grey-900") #{localization.newAnalysis}
+                else
+                    h6(class="c-grey-900") #{localization.analysis}

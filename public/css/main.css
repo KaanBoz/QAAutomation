@@ -1,0 +1,118 @@
+.btd-vertical-center {
+    margin-left : auto; 
+    margin-right : auto ;
+}
+
+.btd-horizantal-center {    
+    display:  flex;
+    align-items: center;
+    min-height: 100%;
+}
+
+.btd-background-white{
+    background: white;
+}
+
+.btd-radius-30{
+    border-radius: 30px;
+}
+
+.btd-padding-percent10{
+    padding: 10%;
+}
+
+.btd-padding-percent3{
+    padding: 3%;
+}
+
+.btd-padding-percent2{
+    padding: 2%;
+}
+
+.btd-padding-top-percent3{
+    padding-top: 3%;
+}
+
+.btd-padding-0{
+    padding: 0px;
+}
+
+.btd-gray-border{
+    border: 2px solid gray;
+    height: 40px !important;
+}
+
+.btd-login-title{
+    text-align: center;
+    padding-bottom: 5%;
+    font-size: 20px;
+}
+#loader{
+    transition:all .3s ease-in-out;
+    opacity:1;
+    visibility:visible;
+    position:fixed;
+    height:100vh;
+    width:100%;
+    background:#fff;
+    z-index:90000
+}
+#loader.fadeOut{
+    opacity:0;
+    visibility:hidden
+}
+.spinner{
+    width:40px;
+    height:40px;
+    position:absolute;
+    top:calc(50% - 20px);
+    left:calc(50% - 20px);
+    background-color:#333;
+    border-radius:100%;
+    -webkit-animation:sk-scaleout 1s infinite ease-in-out;
+    animation:sk-scaleout 1s infinite ease-in-out
+}
+@-webkit-keyframes sk-scaleout{
+    0%{
+        -webkit-transform:scale(0)
+    }100%{
+        -webkit-transform:scale(1);
+        opacity:0
+    }
+}
+@keyframes sk-scaleout{
+    0%{
+        -webkit-transform:scale(0);
+        transform:scale(0)
+    }100%{
+        -webkit-transform:scale(1);
+        transform:scale(1);
+        opacity:0
+    }
+}
+
+.bootstrap-select.btn-group .dropdown-toggle .caret {
+    display:none;
+}
+
+.bootstrap-select.form-control{
+    border: 1px solid #ced4da;
+}
+
+/* .btn {
+    font-size:18px !important;
+} */
+
+/* .form-control {
+    font-size:18px !important;
+    height:40px !important;
+} */
+
+label{
+    font-family: Roboto,-apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Oxygen,Ubuntu,Cantarell,Droid Sans,Helvetica Neue,Arial,sans-serif;
+    line-height: 1.5;
+}
+
+.dataTables_wrapper .dataTables_processing{
+    visibility: hidden;
+}
