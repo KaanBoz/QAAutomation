@@ -171,6 +171,27 @@ module.exports = function (app, Localize) {
         },
         "Definitions" : {
             "tr" : "Tanımlamalar"
+        },
+        "Add New Analysis Type" : {
+            "tr" : "Yeni Analiz Tipi Ekle"
+        },
+        "New Analysis Type" : {
+            "tr" : "Yeni Analiz Tipi"
+        },
+        "An analysis type exists with the given name" : {
+            "tr" : "Bu isime sahip bir analiz tipi zaten var"
+        },
+        "Analysis type created" : {
+            "tr" : "Analiz tipi oluşturuldu"
+        },
+        "Analysis Type with the given id was not found" : {
+            "tr" : "Belirtilen id ile bir analiz tipi bulunamadı"
+        },
+        "Analysis Type updated successfully" : {
+            "tr" : "Analiz tipi başarı ile güncellendi"
+        },
+        "Analysis Type deleted successfully" : {
+            "tr" : "Analiz tipi başarı ile silindi"
         }
     });
 
@@ -233,6 +254,13 @@ module.exports = function (app, Localize) {
         module.localization.analysisType = module.myLocalize.translate("Analysis Type");
         module.localization.unitType = module.myLocalize.translate("Unit Type");
         module.localization.definitions = module.myLocalize.translate("Definitions")
+        module.localization.addNewAnalysisType = module.myLocalize.translate("Add New Analysis Type");
+        module.localization.newAnalysisType = module.myLocalize.translate("New Analysis Type");
+        module.localization.analysisTypeExists = module.myLocalize.translate("An analysis type exists with the given name");
+        module.localization.analysisTypeCreated = module.myLocalize.translate("Analysis type created");
+        module.localization.analysisTypeWasNotFound = module.myLocalize.translate("Analysis Type with the given id was not found");
+        module.localization.analysisTypeUpdated = module.myLocalize.translate("Analysis Type updated successfully");
+        module.localization.analysisTypeDeleted = module.myLocalize.translate("Analysis Type deleted successfully");
     }
 
     return module;

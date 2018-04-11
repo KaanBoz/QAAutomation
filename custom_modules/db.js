@@ -128,16 +128,86 @@ module.exports = function(app, mysql, functions, callback){
                                             console.log(err.message);
                                         }else{
                                             console.log("dbversion is updated to 2");
-                                            callback();
+                                            module.dbVersion = 2;
+                                            createAnalysisType();
                                         }
                                     });
                                 });
                             }else{
                                 console.log("an user in the database already exists")
-                                callback();
+                                createAnalysisType();
                             }
                         }
                         
+                    });
+                }
+            });
+        }else{
+            createAnalysisType();
+        }
+    }
+
+    function createAnalysisType(){
+        if(module.dbVersion == 2){
+            module.con.query("CREATE TABLE IF NOT EXISTS analysistype (" +
+            "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+            "name VARCHAR(128) NOT NULL UNIQUE," +
+            "added_by INT NOT NULL," + 
+            "added_at DATETIME NOT NULL," +
+            "edited_by INT, " + 
+            "edited_at DATETIME, " + 
+            "deleted_by INT," + 
+            "deleted_at DATETIME, " + 
+            "is_deleted BIT NOT NULL, " +
+            "is_validated BIT NOT NULL" +
+            ");", function (err, result){
+                if (err){
+                    console.log(err.message);
+                }else{
+                    console.log("analysistype table created or exists");
+                    module.con.query("update dbvariables set dbversion = 3 where id = 1", function(err, result, fields){
+                        if(err){
+                            console.log(err.message);
+                        }else{
+                            console.log("dbversion is updated to 3");
+                            module.dbVersion = 3;
+                            createUnitType();
+                        }
+                    });
+                }
+            });
+        }else{
+            createUnitType();
+        }
+    }
+
+    function createUnitType(){
+        if(module.dbVersion == 3){
+            module.con.query("CREATE TABLE IF NOT EXISTS unittype (" +
+            "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+            "name VARCHAR(128) NOT NULL, UNIQUE"+
+            "short VARCHAR(128) NOT NULL, UNIQUE" +
+            "added_by INT NOT NULL," + 
+            "added_at DATETIME NOT NULL," +
+            "edited_by INT, " + 
+            "edited_at DATETIME, " + 
+            "deleted_by INT," + 
+            "deleted_at DATETIME, " + 
+            "is_deleted BIT NOT NULL, " +
+            "is_validated BIT NOT NULL" +
+            ");", function (err, result){
+                if (err){
+                    console.log(err.message);
+                }else{
+                    console.log("unittype table created or exists");
+                    module.con.query("update dbvariables set dbversion = 4 where id = 1", function(err, result, fields){
+                        if(err){
+                            console.log(err.message);
+                        }else{
+                            console.log("dbversion is updated to 4");
+                            module.dbVersion = 4;
+                            callback();
+                        }
                     });
                 }
             });

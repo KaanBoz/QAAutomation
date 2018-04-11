@@ -12,7 +12,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 isAdmin : sess.user.isadmin,
                 isChef : sess.user.ischef,
                 isOperator : sess.user.isoperator,
-                localization : localization
+                localization : localization,
+                localizationVal : req.body.lang
             });
         }else{
             res.redirect('/');
