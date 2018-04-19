@@ -39,9 +39,14 @@ function dbCallback(){
     var qaanalysistype = require('./pages/qaanalysistype.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaunittype = require('./pages/qaunittype.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaanalysistypeoperation = require('./pages/qaanalysistypeoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaunittypeoperation = require('./pages/qaunittypeoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaanalysisstandart = require('./pages/qaanalysisstandart.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaanalysisstandartoperation = require('./pages/qaanalysisstandartoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     /*Apis*/
     var usersTable = require('./api/qaalluserstable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var analysisTypeTable = require('./api/qaanalysistypetable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var unitTypeTable = require('./api/qaunittypetable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var analysisStandartTable = require('./api/qaanalysisstandarttable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     /*Base Router*/
     app.get('/', function (req, res) {
         res.redirect('/login');

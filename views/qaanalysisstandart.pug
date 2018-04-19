@@ -2,24 +2,23 @@ extends main.pug
 
 block content
     div(class="bgc-white bd bdrs-3 p-20 mB-20")
-        h4 #{localization.unitType}
+        h4 #{localization.standart}
         hr(class="divider")
-        a(href="../qaunittypeoperation?operation=add")
+        a(href="../qaanalysisstandartoperation?operation=add")
             button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important; margin-bottom:15px;")
                 span(class="icon-holder")
                     i(class="c-white-500 ti-plus")
-                    span(class="title" style="margin:14px") #{localization.addNewUnitType}
-        table(id="qaunittypetable" class="table table-hover table-bordered" cellspacing="0" width="100%")
+                    span(class="title" style="margin:14px") #{localization.addNewStandart}
+        table(id="qaanalysisstandarttable" class="table table-hover table-bordered" cellspacing="0" width="100%")
             thead
                 tr
                     th #{localization.name}
-                    th #{localization.short}
                     th(style="max-width: 225px !important")
     script.
         var localization = '#{localizationVal}';
         if(localization == 'tr'){
             $(document).ready(function() {
-                $('#qaunittypetable').DataTable( {
+                $('#qaanalysisstandarttable').DataTable( {
                     "language": {
                         "sDecimal":        ",",
                         "sEmptyTable":     "Tabloda herhangi bir veri mevcut değil",
@@ -46,13 +45,13 @@ block content
                     },
                     "processing": true,
                     "serverSide": true,
-                    "ajax": "../qaunittypetable"
+                    "ajax": "../qaanalysisstandarttable"
                 });
             });
         }else{
-            $('#qaunittypetable').DataTable({
+            $('#qaanalysistypetable').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": "../qaunittypetable"
+                "ajax": "../qaanalysisstandarttable"
             });
         }

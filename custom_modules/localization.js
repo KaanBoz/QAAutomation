@@ -192,7 +192,58 @@ module.exports = function (app, Localize) {
         },
         "Analysis Type deleted successfully" : {
             "tr" : "Analiz tipi başarı ile silindi"
-        }
+        },
+        "Add New Unit Type" : {
+            "tr" : "Yeni birim ekle"
+        },
+        "Short" : {
+            "tr" : "Kısa"
+        },
+        "Add New Unit Type" : {
+            "tr" : "Birim Tipi Ekle"
+        },
+        "New Unit Type" : {
+            "tr" : "Yeni Birim Tipi"
+        },
+        "An unit type exists with the given name or short" : {
+            "tr" : "Bu isime veya kısaya sahip bir birim tipi zaten var"
+        },
+        "Unit type created" : {
+            "tr" : "birim tipi oluşturuldu"
+        },
+        "Unit Type with the given id was not found" : {
+            "tr" : "Belirtilen id ile bir birim tipi bulunamadı"
+        },
+        "Unit Type updated successfully" : {
+            "tr" : "Birim tipi başarı ile güncellendi"
+        },
+        "Unit Type deleted successfully" : {
+            "tr" : "Birim tipi başarı ile silindi"
+        },
+        "Standart" : {
+            "tr" : "Standart"
+        },
+        "Add New Standart" : {
+            "tr" : "Yeni Standart Ekle"
+        },
+        "New Standart" : {
+            "tr" : "Yeni Standart"
+        },
+        "A standart exists with the given name" : {
+            "tr" : "Bu isime sahip bir standart zaten var"
+        },
+        "Standart created" : {
+            "tr" : "standart oluşturuldu"
+        },
+        "Standart with the given id was not found" : {
+            "tr" : "Belirtilen id ile bir standart bulunamadı"
+        },
+        "Standart updated successfully" : {
+            "tr" : "Standart başarı ile güncellendi"
+        },
+        "Standart deleted successfully" : {
+            "tr" : "Standart başarı ile silindi"
+        },
     });
 
     module.localization = {};
@@ -254,6 +305,7 @@ module.exports = function (app, Localize) {
         module.localization.analysisType = module.myLocalize.translate("Analysis Type");
         module.localization.unitType = module.myLocalize.translate("Unit Type");
         module.localization.definitions = module.myLocalize.translate("Definitions")
+
         module.localization.addNewAnalysisType = module.myLocalize.translate("Add New Analysis Type");
         module.localization.newAnalysisType = module.myLocalize.translate("New Analysis Type");
         module.localization.analysisTypeExists = module.myLocalize.translate("An analysis type exists with the given name");
@@ -261,6 +313,23 @@ module.exports = function (app, Localize) {
         module.localization.analysisTypeWasNotFound = module.myLocalize.translate("Analysis Type with the given id was not found");
         module.localization.analysisTypeUpdated = module.myLocalize.translate("Analysis Type updated successfully");
         module.localization.analysisTypeDeleted = module.myLocalize.translate("Analysis Type deleted successfully");
+        
+        module.localization.addNewUnitType = module.myLocalize.translate("Add New Unit Type");
+        module.localization.newUnitType = module.myLocalize.translate("New Unit Type");
+        module.localization.unitTypeExists = module.myLocalize.translate("An unit type exists with the given name or short");
+        module.localization.unitTypeCreated = module.myLocalize.translate("Unit type created");
+        module.localization.unitTypeWasNotFound = module.myLocalize.translate("Unit Type with the given id was not found");
+        module.localization.unitTypeUpdated = module.myLocalize.translate("Unit Type updated successfully");
+        module.localization.unitTypeDeleted = module.myLocalize.translate("Unit Type deleted successfully");
+        module.localization.short = module.myLocalize.translate("Short");
+        module.localization.standart = module.myLocalize.translate("Standart")
+        module.localization.addNewStandart = module.myLocalize.translate("Add New Standart");
+        module.localization.newStandart = module.myLocalize.translate("New Standart");
+        module.localization.standartExists = module.myLocalize.translate("A standart exists with the given name");
+        module.localization.standartCreated = module.myLocalize.translate("Standart created");
+        module.localization.standartWasNotFound = module.myLocalize.translate("Standart with the given id was not found");
+        module.localization.standartUpdated = module.myLocalize.translate("Standart updated successfully");
+        module.localization.standartDeleted = module.myLocalize.translate("Standart deleted successfully");
     }
 
     return module;

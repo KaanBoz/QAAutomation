@@ -185,8 +185,8 @@ module.exports = function(app, mysql, functions, callback){
         if(module.dbVersion == 3){
             module.con.query("CREATE TABLE IF NOT EXISTS unittype (" +
             "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
-            "name VARCHAR(128) NOT NULL, UNIQUE"+
-            "short VARCHAR(128) NOT NULL, UNIQUE" +
+            "name VARCHAR(128) NOT NULL UNIQUE,"+
+            "short VARCHAR(128) NOT NULL UNIQUE," +
             "added_by INT NOT NULL," + 
             "added_at DATETIME NOT NULL," +
             "edited_by INT, " + 
@@ -206,6 +206,40 @@ module.exports = function(app, mysql, functions, callback){
                         }else{
                             console.log("dbversion is updated to 4");
                             module.dbVersion = 4;
+                            createAnalysisType();
+                        }
+                    });
+                }
+            });
+        }else{
+            createAnalysisType();
+        }
+    }
+
+    function createAnalysisType(){
+        if(module.dbVersion == 4){
+            module.con.query("CREATE TABLE IF NOT EXISTS analysisstandart (" +
+            "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+            "name VARCHAR(128) NOT NULL UNIQUE," +
+            "added_by INT NOT NULL," + 
+            "added_at DATETIME NOT NULL," +
+            "edited_by INT, " + 
+            "edited_at DATETIME, " + 
+            "deleted_by INT," + 
+            "deleted_at DATETIME, " + 
+            "is_deleted BIT NOT NULL, " +
+            "is_validated BIT NOT NULL" +
+            ");", function (err, result){
+                if (err){
+                    console.log(err.message);
+                }else{
+                    console.log("analysisstandart table created or exists");
+                    module.con.query("update dbvariables set dbversion = 5 where id = 1", function(err, result, fields){
+                        if(err){
+                            console.log(err.message);
+                        }else{
+                            console.log("dbversion is updated to 5");
+                            module.dbVersion = 5;
                             callback();
                         }
                     });

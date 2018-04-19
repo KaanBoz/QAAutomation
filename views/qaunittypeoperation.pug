@@ -1,0 +1,54 @@
+extends main.pug
+
+block append head
+    script(src='../js/qaunittypeoperation.js')
+
+block content
+    div(class="row gap-20 masonry pos-r" ng-controller="qaUnitTypeOperation")
+        div(class="masonry-sizer col-md-12")
+        div(class="masonry-item col-md-12")
+            div(class="bgc-white p-20 bd")
+                if operation == "add" && !success 
+                    h6(class="c-grey-900") #{localization.newAnalysisType}
+                else
+                    h6(class="c-grey-900") #{localization.analysisType}
+                div(class="mT-30")
+                    form(method="post" action=".." + originalUrl)
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="name") #{localization.name}
+                                if isDisabled
+                                    if formData && formData.name
+                                        input(type="text" class="form-control" id="name" name="name" disabled value=formData.name) 
+                                    else
+                                        input(type="text" class="form-control" id="name" name="name" disabled)
+                                else
+                                    if formData && formData.name
+                                        input(type="text" class="form-control" id="name" name="name" value=formData.name)
+                                    else
+                                        input(type="text" class="form-control" id="name" name="name")
+                                        iv(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="short") #{localization.short}
+                                if isDisabled
+                                    if formData && formData.short
+                                        input(type="text" class="form-control" id="short" name="short" disabled value=formData.short) 
+                                    else
+                                        input(type="text" class="form-control" id="short" name="short" disabled)
+                                else
+                                    if formData && formData.short
+                                        input(type="text" class="form-control" id="short" name="short" value=formData.short)
+                                    else
+                                        input(type="text" class="form-control" id="short" name="short")
+                        if message && success == 1
+                            div(class = "form-group" style="color:green;margin-top:35px;")
+                                p !{message}
+                        if message && success == 0
+                            div(class = "form-group" style="color:red;margin-top:35px;")
+                                p !{message}
+                        if actionButton && (operation == "add" || operation == "edit")
+                            button(type="submit" class="btn btn-success" style="margin-top:35px;") #{localization.save}
+                        else if actionButton && operation == "delete"
+                            button(type="submit" class="btn btn-danger" style="margin-top:35px;") #{localization.delete}
+                        div
+                            a(href="../qaunittype" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
