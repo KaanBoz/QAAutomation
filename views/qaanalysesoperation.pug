@@ -12,3 +12,42 @@ block content
                     h6(class="c-grey-900") #{localization.newAnalysis}
                 else
                     h6(class="c-grey-900") #{localization.analysis}
+                div(class="mT-30")
+                    form(method="post" action=".." + originalUrl)
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="name") #{localization.name}
+                                if isDisabled
+                                    if formData && formData.name
+                                        input(type="text" class="form-control" id="name" name="name" disabled value=formData.name) 
+                                    else
+                                        input(type="text" class="form-control" id="name" name="name" disabled)
+                                else
+                                    if formData && formData.name
+                                        input(type="text" class="form-control" id="name" name="name" value=formData.name)
+                                    else
+                                        input(type="text" class="form-control" id="name" name="name")
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="type") #{localization.analysisType} 
+                                select(id="type" name="type" class="form-control")
+                                    each val in types
+                                        option(value="#{val.id}") #{val.name}
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="standart") #{localization.standart} 
+                                select(id="standart" name="standart" class="form-control")
+                                    each val in standarts
+                                        option(value="#{val.id}") #{val.name}
+                        if message && success == 1
+                            div(class = "form-group" style="color:green;margin-top:35px;")
+                                p !{message}
+                        if message && success == 0
+                            div(class = "form-group" style="color:red;margin-top:35px;")
+                                p !{message}
+                        if actionButton && (operation == "add" || operation == "edit")
+                            button(type="button" id="save" class="btn btn-success" style="margin-top:35px;") #{localization.save}
+                        else if actionButton && operation == "delete"
+                            button(type="button" id="delete" class="btn btn-danger" style="margin-top:35px;") #{localization.delete}
+                        div
+                            a(href="../qaallanalyses" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}

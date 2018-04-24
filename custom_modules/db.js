@@ -240,13 +240,52 @@ module.exports = function(app, mysql, functions, callback){
                         }else{
                             console.log("dbversion is updated to 5");
                             module.dbVersion = 5;
-                            callback();
+                            createAnalysisHeader();
                         }
                     });
                 }
             });
         }else{
-            callback();
+            createAnalysisHeader();
+        }
+
+        function createAnalysisHeader(){
+            if(module.dbVersion == 5){
+                module.con.query("CREATE TABLE IF NOT EXISTS analysisheader ("  + 
+                "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                "name VARCHAR(256) NOT NULL UNIQUE," +
+                //"trname VARCHAR(256) NOT NULL, " +
+                //"engname VARCHAR(256) NOT NULL, " +
+                "type INT NOT NULL," +
+                "standart INT NOT NULL," +
+                "added_by INT NOT NULL," + 
+                "added_at DATETIME NOT NULL," +
+                "edited_by INT, " + 
+                "edited_at DATETIME, " + 
+                "deleted_by INT," + 
+                "deleted_at DATETIME, " + 
+                "is_deleted BIT NOT NULL, " +
+                "is_validated BIT NOT NULL" +
+                ")"
+                    , function (err, result){
+                        if (err){
+                            console.log(err.message);
+                        }else{
+                            console.log("analysisstandart table created or exists");
+                            module.con.query("update dbvariables set dbversion = 6 where id = 1", function(err, result, fields){
+                                if(err){
+                                    console.log(err.message);
+                                }else{
+                                    console.log("dbversion is updated to 6");
+                                    module.dbVersion = 5;
+                                    callback();
+                                }
+                            });
+                        }
+                });
+            }else{
+                callback();
+            }
         }
     }
 
