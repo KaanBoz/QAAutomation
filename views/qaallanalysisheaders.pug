@@ -2,17 +2,17 @@ extends main.pug
 
 block content
     div(class="bgc-white bd bdrs-3 p-20 mB-20")
-        h4 #{localization.analyses}
+        h4 #{localization.analysisHeader}
         hr(class="divider")
-        a(href="../qaanalysesoperation?operation=add")
+        a(href="../qaanalysisheaderoperation?operation=add")
             button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important; margin-bottom:15px;")
                 span(class="icon-holder")
                     i(class="c-white-500 ti-plus")
-                    span(class="title" style="margin:14px") #{localization.addNewAnalysis}
-        table(id="qaanalysestable" class="table table-hover table-bordered" cellspacing="0" width="100%")
+                    span(class="title" style="margin:14px") #{localization.addNewAnalysisHeader}
+        table(id="qaallanalysisheadertable" class="table table-hover table-bordered" cellspacing="0" width="100%")
             thead
                 tr
-                    th #{localization.name}
+                    th #{localization.productId}
                     th #{localization.analysisType}
                     th #{localization.standart}
                     th(style="max-width: 225px !important")
@@ -20,7 +20,7 @@ block content
         var localization = '#{localizationVal}';
         if(localization == 'tr'){
             $(document).ready(function() {
-                $('#qaanalysestable').DataTable( {
+                $('#qaallanalysisheadertable').DataTable( {
                     "language": {
                         "sDecimal":        ",",
                         "sEmptyTable":     "Tabloda herhangi bir veri mevcut değil",
@@ -47,13 +47,13 @@ block content
                     },
                     "processing": true,
                     "serverSide": true,
-                    "ajax": "../qaallanalysestable"
+                    "ajax": "../qaallanalysisheadertable"
                 });
             });
         }else{
             $('#qaanalysestable').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": "../qaallanalysestable"
+                "ajax": "../qaallanalysisheadertable"
             });
         }

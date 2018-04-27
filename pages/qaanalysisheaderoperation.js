@@ -53,7 +53,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 if(err){
                     message = err.message;
                     if(message.indexOf("Duplicate entry") > -1) {
-                        message = localization.analysisExists;
+                        message = localization.analysisHeaderExists;
                     }
                     success = 0;
                     renderPage(req, res, sess, success, message, 0, operation, null, standarts, types);
@@ -78,7 +78,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 if(err){
                     message = err.message;
                     if(message.indexOf("Duplicate entry") > -1) {
-                        message = localization.analysisExists;
+                        message = localization.analysisHeaderExists;
                     }
                     success = 0;
                     renderPage(req, res, sess, success, message, 0, operation, null, standarts, types);
@@ -103,7 +103,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 if(err){
                     message = err.message;
                     if(message.indexOf("Duplicate entry") > -1) {
-                        message = localization.analysisExists;
+                        message = localization.analysisHeaderExists;
                     }
                     success = 0;
                     renderPage(req, res, sess, success, message, 0, operation, null, standarts, types);
@@ -157,7 +157,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
 
     // APP METHODS
 
-    app.get('/qaanalysesoperation', function (req, res) {
+    app.get('/qaanalysisheaderoperation', function (req, res) {
         functions.setLocale(req, res, null);
         localization.refresh();
         var sess = req.session;    
@@ -170,7 +170,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         }    
     });
 
-    app.post('/qaanalysesoperation', function (req, res){
+    app.post('/qaanalysisheaderoperation', function (req, res){
         functions.setLocale(req, res, null);
         localization.refresh();
         var sess = req.session;
@@ -213,7 +213,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                             return
                         }
                         success = 1;
-                        message = localization.analysisCreated;
+                        message = localization.analysisHeaderCreated;
                         actionButton = 0;
                         renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
                         return;
@@ -226,14 +226,14 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     if (err){
                         message = err.message;
                         if(message.indexOf("Duplicate entry") > -1) {
-                            message = localization.analysisExists;
+                            message = localization.analysisHeaderExists;
                         }
                         success = 0;
                         renderPage(req, res, sess, success, message, actionButton, operation, formData,standarts, types);
                         return;    
                     }
                     success = 1;
-                    message = localization.analysisCreated;
+                    message = localization.analysisHeaderCreated;
                     actionButton = 0;
                     renderPage(req, res, sess, success, message, actionButton, operation, formData,standarts,types);
                     return;
@@ -255,7 +255,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 return
             }
             if(result.length == 0){
-                message = localization.analysisWasNotFound;
+                message = localization.analysisHeaderWasNotFound;
                 renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
                 return
             }
@@ -276,7 +276,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         return
                     }
                     success = 1;
-                    message = localization.analysisUpdated;
+                    message = localization.analysisHeaderUpdated;
                     actionButton = 0;
                     renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
                     return;
@@ -297,7 +297,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 return
             }
             if(result.length == 0){
-                message = localization.analysisWasNotFound;
+                message = localization.analysisHeaderWasNotFound;
                 renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
                 return
             }
@@ -311,7 +311,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         return
                     }
                     success = 1;
-                    message = localization.analysisDeleted;
+                    message = localization.analysisHeaderDeleted;
                     actionButton = 0;
                     renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
                     return;
@@ -360,7 +360,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
 
     function renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types){
         var a = ((operation == "add" || operation == "edit") && success == 1) || operation == "delete" ? 1 : 0;
-        res.render('qaanalysesoperation', 
+        res.render('qaanalysisheaderoperation', 
                 { 
                     data: req.body,
                     success : success,

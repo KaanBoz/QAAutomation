@@ -3,6 +3,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         functions.setLocale(req, res, null);
         localization.refresh();
         var sess = req.session;
+        var test = localization.analysisHeader;
         if(sess && sess.user){
             res.render('welcome', 
             { 

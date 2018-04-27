@@ -1,11 +1,11 @@
 module.exports = function (app, myLocalize, functions, con, router, localization) {
-    app.get('/qaallanalyses', function (req, res) {
+    app.get('/qaallanalysisheaders', function (req, res) {
         functions.setLocale(req, res, null);
         localization.refresh();
         var sess = req.session;        
         if(sess && sess.user){
             if(sess.user.ischef){
-                res.render('qaallanalyses', 
+                res.render('qaallanalysisheaders', 
                 { 
                     data: req.body,
                     localization : localization,

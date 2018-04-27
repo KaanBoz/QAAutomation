@@ -1,5 +1,5 @@
 module.exports = function (app, myLocalize, functions, con, router) {
-    app.get('/qaallanalysestable', function (req, res) {
+    app.get('/qaallanalysisheadertable', function (req, res) {
         functions.setLocale(req, res, null);
         sess = req.session;        
         var orderColumn = req.query.order[0].column;
@@ -35,21 +35,21 @@ module.exports = function (app, myLocalize, functions, con, router) {
                         var data = [];
                         for (i = 0; i < usersDb.length; i++) { 
                             var buttonView = 
-                            "<a href=\"../qaanalysesoperation?operation=view&id=" + usersDb[i].analysisid + "\">" +
+                            "<a href=\"../qaanalysisheaderoperation?operation=view&id=" + usersDb[i].analysisid + "\">" +
                                 "<button type=\"button\" class=\"btn btn-success btn-xs\">" +
                                     "<span class=\"icon-holder\">" +
                                         "<i class=\"c-white-500 ti-search\"></i>" +
                                     "</span>" +
                                 "</button>" +
                             "</a>" +
-                            "<a href=\"../qaanalysesoperation?operation=edit&id=" + usersDb[i].analysisid + "\">" +
+                            "<a href=\"../qaanalysisheaderoperation?operation=edit&id=" + usersDb[i].analysisid + "\">" +
                                 "<button type=\"button\" class=\"btn btn-primary btn-xs\" style=\"margin-left:10px;\">" +
                                     "<span class=\"icon-holder\">" +
                                         "<i class=\"c-white-500 ti-pencil\"></i>" +
                                     "</span>" +
                                 "</button>" +
                             "</a>" +
-                            "<a href=\"../qaanalysesoperation?operation=delete&id=" + usersDb[i].analysisid + "\">" +
+                            "<a href=\"../qaanalysisheaderoperation?operation=delete&id=" + usersDb[i].analysisid + "\">" +
                                 "<button type=\"button\" class=\"btn btn-danger btn-xs\" style=\"margin-left:10px;\">" +
                                     "<span class=\"icon-holder\">" +
                                         "<i class=\"c-white-500 ti-trash\"></i>" +

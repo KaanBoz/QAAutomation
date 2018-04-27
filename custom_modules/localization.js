@@ -261,6 +261,33 @@ module.exports = function (app, Localize) {
         }, 
         "Choose..." : {
             "tr" : "Şeçiniz..."
+        },
+        "Product ID" : {
+            "tr" : "Ürün Kodu"
+        },
+        "Analysis Header" : {
+            "tr" : "Analiz Başlık"
+        },
+        "Add New Analysis Header" : {
+            "tr" : "Yeni Analiz Başlık Ekle"
+        },
+        "New Analysis Header" : {
+            "tr" : "Yeni Analiz Başlık"
+        },
+        "An analysis header exists with the given product ID" : {
+            "tr" : "Bu ürün koduna sahip bir analiz başlık zaten var"
+        },
+        "Analysis Header created" : {
+            "tr" : "Analiz Başlık oluşturuldu"
+        },
+        "Analysis Header with the given id was not found" : {
+            "tr" : "Belirtilen id ile bir Analiz Başlık bulunamadı"
+        },
+        "Analysis Header updated successfully" : {
+            "tr" : "Analiz Başlık başarı ile güncellendi"
+        },
+        "Analysis Header deleted successfully" : {
+            "tr" : "Analiz Başlık başarı ile silindi"
         }
     });
 
@@ -320,7 +347,7 @@ module.exports = function (app, Localize) {
         module.localization.definitions = module.myLocalize.translate("Definitions");
         module.localization.short = module.myLocalize.translate("Short");
         module.localization.choose = module.myLocalize.translate("Choose...");
-
+        module.localization.productId = module.myLocalize.translate("Product ID");
         module.localization.analysisType = module.myLocalize.translate("Analysis Type");
         module.localization.addNewAnalysisType = module.myLocalize.translate("Add New Analysis Type");
         module.localization.newAnalysisType = module.myLocalize.translate("New Analysis Type");
@@ -329,7 +356,6 @@ module.exports = function (app, Localize) {
         module.localization.analysisTypeWasNotFound = module.myLocalize.translate("Analysis Type with the given id was not found");
         module.localization.analysisTypeUpdated = module.myLocalize.translate("Analysis Type updated successfully");
         module.localization.analysisTypeDeleted = module.myLocalize.translate("Analysis Type deleted successfully");
-        
         module.localization.unitType = module.myLocalize.translate("Unit Type");
         module.localization.addNewUnitType = module.myLocalize.translate("Add New Unit Type");
         module.localization.newUnitType = module.myLocalize.translate("New Unit Type");
@@ -338,8 +364,6 @@ module.exports = function (app, Localize) {
         module.localization.unitTypeWasNotFound = module.myLocalize.translate("Unit Type with the given id was not found");
         module.localization.unitTypeUpdated = module.myLocalize.translate("Unit Type updated successfully");
         module.localization.unitTypeDeleted = module.myLocalize.translate("Unit Type deleted successfully");
-        
-
         module.localization.standart = module.myLocalize.translate("Standart")
         module.localization.addNewStandart = module.myLocalize.translate("Add New Standart");
         module.localization.newStandart = module.myLocalize.translate("New Standart");
@@ -348,7 +372,6 @@ module.exports = function (app, Localize) {
         module.localization.standartWasNotFound = module.myLocalize.translate("Standart with the given id was not found");
         module.localization.standartUpdated = module.myLocalize.translate("Standart updated successfully");
         module.localization.standartDeleted = module.myLocalize.translate("Standart deleted successfully");
-
         module.localization.analysis = module.myLocalize.translate("Analysis");
         module.localization.addNewAnalysis = module.myLocalize.translate("Add New Analysis");
         module.localization.newAnalysis = module.myLocalize.translate("New Analysis");
@@ -357,6 +380,15 @@ module.exports = function (app, Localize) {
         module.localization.analysisWasNotFound = module.myLocalize.translate("Analysis with the given id was not found");
         module.localization.analysisUpdated = module.myLocalize.translate("Analysis updated successfully");
         module.localization.analysisDeleted = module.myLocalize.translate("Analysis deleted successfully");
+        module.localization.analysisHeader = module.myLocalize.translate("Analysis Header");
+        module.localization.addNewAnalysisHeader = module.myLocalize.translate("Add New Analysis Header");
+        module.localization.newAnalysisHeader = module.myLocalize.translate("New Analysis Header");
+        module.localization.analysisExistsHeader = module.myLocalize.translate("An analysis header exists with the given product ID");
+        module.localization.analysisHeaderCreated = module.myLocalize.translate("Analysis Header created");
+        module.localization.analysisHeaderWasNotFound = module.myLocalize.translate("Analysis Header with the given id was not found");
+        module.localization.analysisHeaderUpdated = module.myLocalize.translate("Analysis Header updated successfully");
+        module.localization.analysisHeaderDeleted = module.myLocalize.translate("Analysis Header deleted successfully");
+        //module.localization.analysisDetail = module.myLocalize.translate("Analysis Detail");
 
     }
 

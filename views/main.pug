@@ -104,8 +104,15 @@ html
                                             li
                                                 a(href="../qaanalysisstandart") #{localization.standart}
                                 ul(class="dropdown-menu")
-                                    li
-                                        a(class="sidebar-link" href="../qaallanalyses") #{localization.analyses}
+                                    li(class="nav-item dropdown")
+                                        a(href="javascript:void(0);")
+                                            span #{localization.analyses}
+                                            span(class="arrow" style="padding-top:7px;")
+                                                i(class="ti-angle-right")
+                                        ul(class="dropdown-menu")
+                                            li
+                                                a(href="../qaallanalysisheaders") #{localization.analysisHeader}
+                                    
                         if isOperator
                             li(class="nav-item dropdown")
                                 a(class="dropdown-toggle" href="javascript:void(0);")

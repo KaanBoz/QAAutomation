@@ -1,4 +1,4 @@
-app.controller("qaAnalysesOperationCtrl", function($scope) {
+app.controller("qaAnalysisHeaderOperationCtrl", function($scope) {
 });
 
 $(document).ready(function(){
