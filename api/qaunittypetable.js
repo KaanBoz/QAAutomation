@@ -28,7 +28,7 @@ module.exports = function (app, myLocalize, functions, con, router) {
                             "<a href=\"../qaunittypeoperation?operation=view&id=" + usersDb[i].id + "\">" +
                                 "<button type=\"button\" class=\"btn btn-success btn-xs\">" +
                                     "<span class=\"icon-holder\">" +
-                                        "<i class=\"c-white-500 ti-user\"></i>" +
+                                        "<i class=\"c-white-500 ti-search\"></i>" +
                                     "</span>" +
                                 "</button>" +
                             "</a>" +

@@ -4,7 +4,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         localization.refresh();
         var sess = req.session;        
         if(sess && sess.user){
-            if(sess.user.isadmin){
+            if(sess.user.ischef){
                 res.render('qaallanalyses', 
                 { 
                     data: req.body,
