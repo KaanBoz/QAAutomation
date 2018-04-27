@@ -288,6 +288,54 @@ module.exports = function (app, Localize) {
         },
         "Analysis Header deleted successfully" : {
             "tr" : "Analiz Başlık başarı ile silindi"
+        },
+        "Analysis Detail" : {
+            "tr" : "Analiz Detay"
+        },
+        "Add New Analysis Detail" : {
+            "tr" : "Yeni Analiz Detay Ekle"
+        },
+        "New Analysis Detail" : {
+            "tr" : "Yeni Analiz Detay"
+        },
+        "An analysis detail exists with the given product ID" : {
+            "tr" : "Bu ürün koduna sahip bir analiz detay zaten var"
+        },
+        "Analysis Detail created" : {
+            "tr" : "Analiz Detay oluşturuldu"
+        },
+        "Analysis Detail with the given id was not found" : {
+            "tr" : "Belirtilen id ile bir Analiz Detay bulunamadı"
+        },
+        "Analysis Detail updated successfully" : {
+            "tr" : "Analiz Detay başarı ile güncellendi"
+        },
+        "Analysis Detail deleted successfully" : {
+            "tr" : "Analiz Detay başarı ile silindi"
+        },
+        "Raw Material" : {
+            "tr" : "Hammadde"
+        },
+        "Add New Raw Material" : {
+            "tr" : "Yeni Hammadde Ekle"
+        },
+        "New Raw Material" : {
+            "tr" : "Yeni Hammadde"
+        },
+        "A raw material exists with the given name" : {
+            "tr" : "Bu isisme sahip bir hammadde zaten var"
+        },
+        "Raw Material created" : {
+            "tr" : "Hammadde oluşturuldu"
+        },
+        "Raw Material with the given id was not found" : {
+            "tr" : "Belirtilen id ile bir Hammadde bulunamadı"
+        },
+        "Raw Material updated successfully" : {
+            "tr" : "Hammadde başarı ile güncellendi"
+        },
+        "Raw Material deleted successfully" : {
+            "tr" : "Hammadde başarı ile silindi"
         }
     });
 
@@ -388,8 +436,22 @@ module.exports = function (app, Localize) {
         module.localization.analysisHeaderWasNotFound = module.myLocalize.translate("Analysis Header with the given id was not found");
         module.localization.analysisHeaderUpdated = module.myLocalize.translate("Analysis Header updated successfully");
         module.localization.analysisHeaderDeleted = module.myLocalize.translate("Analysis Header deleted successfully");
-        //module.localization.analysisDetail = module.myLocalize.translate("Analysis Detail");
-
+        module.localization.analysisDetail = module.myLocalize.translate("Analysis Detail");
+        module.localization.addNewAnalysisDetail = module.myLocalize.translate("Add New Analysis Detail");
+        module.localization.newAnalysisDetail = module.myLocalize.translate("New Analysis Detail");
+        module.localization.analysisDetailExists = module.myLocalize.translate("An analysis detail exists with the given product ID");
+        module.localization.analysisDetailCreated = module.myLocalize.translate("Analysis Detail created");
+        module.localization.analysisDetailWasNotFound = module.myLocalize.translate("Analysis Detail with the given id was not found");
+        module.localization.analysisDetailUpdated = module.myLocalize.translate("Analysis Detail updated successfully");
+        module.localization.analysisDetailDeleted = module.myLocalize.translate("Analysis Detail deleted successfully");
+        module.localization.material = module.myLocalize.translate("Raw Material");
+        module.localization.addNewMaterial = module.myLocalize.translate("Add New Raw Material");
+        module.localization.newMaterial = module.myLocalize.translate("New Raw Material");
+        module.localization.materialExists = module.myLocalize.translate("A raw material exists with the given name");
+        module.localization.materialCreated = module.myLocalize.translate("Raw Material created");
+        module.localization.materialWasNotFound = module.myLocalize.translate("Raw Material with the given id was not found");
+        module.localization.materialUpdated = module.myLocalize.translate("Raw Material updated successfully");
+        module.localization.materialDeleted = module.myLocalize.translate("Raw Material deleted successfully");
     }
 
     return module;

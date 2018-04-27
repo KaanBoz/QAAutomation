@@ -1,5 +1,26 @@
 module.exports = function (app, myLocalize, functions, con, router, localization) {
-    app.get('/qaunittypeoperation', function (req, res) {
+
+
+    function getUnitTypes(operation, req, res, unittypes){
+        con.query("select id, name, short from unittype where is_deleted = 0 and is_validated = 1", 
+            function(err, result, fields){
+                if(err){
+                    unittypes = [];
+                }else{
+                    //set standarts
+                    for(var i = 0; i < result.length; i++){
+                        var type = {};
+                        type.id = result[i].id;
+                        type.name = result[i].name;
+                        unittypes.push(type);
+                    }
+                }
+                operation(req, res, unittypes);
+            }
+        );
+    }
+
+    function operationGet(req, res, unittypes){
         functions.setLocale(req, res, null);
         localization.refresh();
         var sess = req.session;        
@@ -12,18 +33,18 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     return;
                 }
                 if(operation == "add"){
-                    renderQaUnitTypeOperation(req, res, sess, null, null, 1, operation, null);
+                    renderPage(req, res, sess, null, null, 1, operation, null, unittypes);
                     return;
                 }else if(operation == "edit"){
-                    con.query("select name, short from unittype where is_deleted = 0 and is_validated = 1 and id=" + id, 
+                    con.query("select name, unit from material where is_deleted = 0 and is_validated = 1 and id=" + id, 
                     function(err, result, fields){
                         if(err){
                             message = err.message;
                             if(message.indexOf("Duplicate entry") > -1) {
-                                message = localization.unitTypeExists;
+                                message = localization.materialExists;
                             }
                             success = 0;
-                            renderQaUnitTypeOperation(req, res, sess, success, message, 0, operation, null);
+                            renderPage(req, res, sess, success, message, 0, operation, null, unittypes);
                             return;
                         }
                         if(result.length == 0){
@@ -33,21 +54,21 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         //set form data
                         var formData = [];
                         formData.name = result[0].name;
-                        formData.short = result[0].short;
-                        renderQaUnitTypeOperation(req, res, sess, null, null, 1, operation, formData);
+                        formData.unittype = result[0].unit;
+                        renderPage(req, res, sess, null, null, 1, operation, formData, unittypes);
                     });
                     return;
 
                 }else if (operation == "delete"){
-                    con.query("select name, short from unittype where is_deleted = 0 and is_validated = 1 and id=" + id, 
+                    con.query("select name, unit from material where is_deleted = 0 and is_validated = 1 and id=" + id, 
                     function(err, result, fields){
                         if(err){
                             message = err.message;
                             if(message.indexOf("Duplicate entry") > -1) {
-                                message = localization.unitTypeExists;
+                                message = localization.materialExists;
                             }
                             success = 0;
-                            renderQaUnitTypeOperation(req, res, sess, success, message, 0, operation, null);
+                            renderPage(req, res, sess, success, message, 0, operation, null, unittypes);
                             return;
                         }
                         if(result.length == 0){
@@ -57,22 +78,22 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         //set form data
                         var formData = [];
                         formData.name = result[0].name;
-                        formData.short = result[0].short;
-                        renderQaUnitTypeOperation(req, res, sess, null, null, 1, operation, formData);
+                        formData.unittype = result[0].unit;
+                        renderPage(req, res, sess, null, null, 1, operation, formData, unittypes);
 
                     });
                     return;
                 }else if(operation =="view"){
 
-                    con.query("select name, short from unittype where is_deleted = 0 and is_validated = 1 and id=" + id, 
+                    con.query("select name, unit from material where is_deleted = 0 and is_validated = 1 and id=" + id, 
                     function(err, result, fields){
                         if(err){
                             message = err.message;
                             if(message.indexOf("Duplicate entry") > -1) {
-                                message = localization.unitTypeExists;
+                                message = localization.materialExists;
                             }
                             success = 0;
-                            renderQaUnitTypeOperation(req, res, sess, success, message, 0, operation, null);
+                            renderPage(req, res, sess, success, message, 0, operation, null, unittypes);
                             return;
                         }
                         if(result.length == 0){
@@ -82,8 +103,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         //set form data
                         var formData = [];
                         formData.name = result[0].name;
-                        formData.short = result[0].short;
-                        renderQaUnitTypeOperation(req, res, sess, null, null, 0, operation, formData);
+                        formData.unittype = result[0].unit;
+                        renderPage(req, res, sess, null, null, 0, operation, formData, unittypes);
                     });
                     return;
                 }
@@ -101,9 +122,9 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         }else{
             res.redirect('/');
         }
-    });
+    }
 
-    app.post('/qaunittypeoperation', function (req, res){
+    function operationPost(req, res, unittypes){
         functions.setLocale(req, res, null);
         localization.refresh();
         var sess = req.session;
@@ -113,62 +134,62 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 if(operation == 'add' || operation == 'edit' || operation == 'delete'){
                     //get the variables from the request
                     var name = req.body.name;
-                    var short = req.body.short;
+                    var unittype = req.body.unittype;
                     //set form data
                     var formData = [];
                     formData.name = name;
-                    formData.short = short;
+                    formData.unittype = unittype;
                     //set the message and success
                     var message = "";
                     var success = 0;
                     var actionButton = 1;
                     if(operation == "add"){
-                        if(validations(req, res, sess, name, short, message, success, operation, actionButton, formData)){
+                        if(validations(req, res, sess, name, unittype, message, success, operation, actionButton, formData, unittypes)){
                             return;
                         }
-                        con.query("select id from unittype where name like '" + name + "' and short like '" + short + "' and is_deleted = 1", function(err, result, fields){
+                        con.query("select id from material where name like '" + name + "' and unit like " + unittype + " and is_deleted = 1", function(err, result, fields){
                             if(err){
                                 message = err.message;
-                                renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+                                renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
                                 return
                             }
                             if(result.length > 0){
                                 var id = result[0].id;
                                 con.query(
-                                    "update unittype " + " set name='" + name + "', short='" + short + "'," + 
+                                    "update material " + " set name='" + name + "', unit=" + unittype + "," + 
                                     "edited_by=" + sess.user.id + "," +
                                     "edited_at=" + con.escape(new Date()) + ", is_deleted = 0, deleted_by = null, deleted_at = null " +
                                     "where id=" + id  ,
                                     function(err, result, fields){
                                         if(err){
                                             message = err.message;
-                                            renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+                                            renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
                                             return
                                         }
                                         success = 1;
-                                        message = localization.unitTypeCreated;
+                                        message = localization.materialCreated;
                                         actionButton = 0;
-                                        renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+                                        renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
                                         return;
                                 });
                             }else{
-                                con.query("INSERT INTO unittype (name, short, added_by, added_at, is_deleted" + 
+                                con.query("INSERT INTO material (name, unit, added_by, added_at, is_deleted" + 
                                 ", is_validated) VALUES" + 
-                                "('" + name + "', '" + short + "'," + sess.user.id + ", " 
+                                "('" + name + "', '" + unittype + "'," + sess.user.id + ", " 
                                 + con.escape(new Date()) + ", 0, 1)", function(err, result, fields){
                                     if (err){
                                         message = err.message;
                                         if(message.indexOf("Duplicate entry") > -1) {
-                                            message = localization.unitTypeExists;
+                                            message = localization.materialExists;
                                         }
                                         success = 0;
-                                        renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+                                        renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
                                         return;    
                                     }
                                     success = 1;
-                                    message = localization.unitTypeCreated;
+                                    message = localization.materialCreated;
                                     actionButton = 0;
-                                    renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+                                    renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
                                     return;
                                 });
                             }
@@ -179,34 +200,34 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                             res.redirect('/notfound');
                             return;
                         }
-                        con.query("select id from unittype where id =" + id, function(err,result,fields){
+                        con.query("select id from material where id =" + id, function(err,result,fields){
                             if(err){
                                 message = err.message;
-                                renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+                                renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
                                 return
                             }
                             if(result.length == 0){
-                                message = localization.unitTypeWasNotFound;
-                                renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+                                message = localization.materialWasNotFound;
+                                renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
                                 return
                             }
-                            if(validations(req, res, sess, name, short, message, success, operation, actionButton, formData)){
+                            if(validations(req, res, sess, name, unittype, message, success, operation, actionButton, formData)){
                                 return;
                             }
                             con.query(
-                                "update unittype " + " set name='" + name + "', short='" + short + "', edited_by=" + sess.user.id + "," +
+                                "update material " + " set name='" + name + "', unit=" + unittype + ", edited_by=" + sess.user.id + "," +
                                 "edited_at=" + con.escape(new Date()) + " " +
                                 "where id=" + id  ,
                                 function(err, result, fields){
                                     if(err){
                                         message = err.message;
-                                        renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+                                        renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
                                         return
                                     }
                                     success = 1;
-                                    message = localization.unitTypeUpdated;
+                                    message = localization.materialUpdated;
                                     actionButton = 0;
-                                    renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+                                    renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
                                     return;
                             });
                         });
@@ -216,30 +237,30 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                             res.redirect('/notfound');
                             return;
                         }
-                        con.query("select id from unittype where id =" + id, function(err,result,fields){
+                        con.query("select id from material where id =" + id, function(err,result,fields){
                             if(err){
                                 message = err.message;
-                                renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+                                renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
                                 return
                             }
                             if(result.length == 0){
-                                message = localization.unitTypeWasNotFound;
-                                renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+                                message = localization.materialWasNotFound;
+                                renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
                                 return
                             }
                             con.query(
-                                "delete from unittype " +
+                                "update material " + " set is_deleted = 1, deleted_by=" + sess.user.id + ", deleted_at=" + con.escape(new Date()) + " " +
                                 "where id=" + id  ,
                                 function(err, result, fields){
                                     if(err){
                                         message = err.message;
-                                        renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+                                        renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
                                         return
                                     }
                                     success = 1;
-                                    message = localization.unitTypeDeleted;
+                                    message = localization.materialDeleted;
                                     actionButton = 0;
-                                    renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+                                    renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
                                     return;
                             });
                         });
@@ -260,11 +281,21 @@ module.exports = function (app, myLocalize, functions, con, router, localization
             res.redirect('/');
             return;
         }
+    }
+
+    app.get('/qamaterialoperation', function (req, res) {
+        var unittypes = [];
+        getUnitTypes(operationGet, req, res, unittypes);
     });
 
-    function renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData){
+    app.post('/qamaterialoperation', function (req, res){
+        var unittypes = [];
+        getUnitTypes(operationPost, req, res, unittypes);
+    });
+
+    function renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes){
         var a = ((operation == "add" || operation == "edit") && success == 1) || operation == "delete" ? 1 : 0;
-        res.render('qaunittypeoperation', 
+        res.render('qamaterialoperation', 
                 { 
                     data: req.body,
                     success : success,
@@ -280,7 +311,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     operation : operation,
                     isDisabled : ((operation == "add" || operation == "edit") && success == 1) || operation == "delete" || operation == "view" ? 1 : 0,
                     formData : formData,
-                    originalUrl : req.originalUrl
+                    originalUrl : req.originalUrl,
+                    unitTypes : unittypes
                 });
     }
     
@@ -288,13 +320,13 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         return message + "<p>" + toAdd + "</p>";
     }
     
-    function validations(req, res, sess, name, short, message, success, operation, actionButton, formData){
+    function validations(req, res, sess, name, unittype, message, success, operation, actionButton, formData, unittypes){
         //validations
-        if(!name || !short){
+        if(!name || !unittype){
             message = addMessage(message, localization.fillForm)
         }
         if(message){
-            renderQaUnitTypeOperation(req, res, sess, success, message, actionButton, operation, formData);
+            renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes);
             return true;
         }
         return false;

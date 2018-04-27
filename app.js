@@ -30,7 +30,10 @@ var db = require('./custom_modules/db.js')(app, mysql, functions, dbCallback);
 function dbCallback(){
     /*Pages*/
     var users = require('./pages/qaallusers.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
-    var analyses = require('./pages/qaallanalysisheaders.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaallmaterials = require('./pages/qaallmaterials.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qamaterialoperation = require('./pages/qamaterialoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var analysesheaders = require('./pages/qaallanalysisheaders.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var analysesdetails = require('./pages/qaallanalysisdetails.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var main = require('./pages/welcome.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var logout = require('./pages/logout.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var login = require('./pages/login.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
@@ -38,7 +41,7 @@ function dbCallback(){
     var qaanalysisheaderoperation = require('./pages/qaanalysisheaderoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaanalysistype = require('./pages/qaanalysistype.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaunittype = require('./pages/qaunittype.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
-    var qaanalysistypeoperation = require('./pages/qaanalysisheaderoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaanalysistypeoperation = require('./pages/qaanalysistypeoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaunittypeoperation = require('./pages/qaunittypeoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaanalysisstandart = require('./pages/qaanalysisstandart.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaanalysisstandartoperation = require('./pages/qaanalysisstandartoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
@@ -48,6 +51,7 @@ function dbCallback(){
     var unitTypeTable = require('./api/qaunittypetable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var analysisStandartTable = require('./api/qaanalysisstandarttable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaallanalysisheadertable = require('./api/qaallanalysisheadertable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaallmaterialstable = require('./api/qaallmaterialstable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     /*Base Router*/
     app.get('/', function (req, res) {
         res.redirect('/login');
