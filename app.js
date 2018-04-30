@@ -53,6 +53,7 @@ function dbCallback(){
     var analysisStandartTable = require('./api/qaanalysisstandarttable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaallanalysisheadertable = require('./api/qaallanalysisheadertable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaallmaterialstable = require('./api/qaallmaterialstable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaallanalysisdetailtable = require('./api/qaallanalysisdetailtable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     /*Base Router*/
     app.get('/', function (req, res) {
         res.redirect('/login');

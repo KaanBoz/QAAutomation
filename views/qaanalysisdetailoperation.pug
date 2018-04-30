@@ -35,19 +35,6 @@ block content
                                                 option(value=val.id) #{val.name} (#{val.unitname}-#{val.unitshort})
                         div(class="form-row")
                             div(class="form-group col-md-6")
-                                label(for="max") #{localization.max}
-                                if isDisabled
-                                    if formData && formData.max
-                                        input(type="number" class="form-control" id="max" name="max" disabled value=formData.max step="0.001") 
-                                    else
-                                        input(type="number" class="form-control" id="max" name="max" disabled step="0.001")
-                                else
-                                    if formData && formData.max
-                                        input(type="number" class="form-control" id="max" name="max" value=formData.max step="0.001")
-                                    else
-                                        input(type="number" class="form-control" id="max" name="max" step="0.001")
-                        div(class="form-row")
-                            div(class="form-group col-md-6")
                                 label(for="max") #{localization.min}
                                 if isDisabled
                                     if formData && formData.min
@@ -59,6 +46,19 @@ block content
                                         input(type="number" class="form-control" id="min" name="min" value=formData.min step="0.001")
                                     else
                                         input(type="number" class="form-control" id="min" name="min" step="0.001")
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="max") #{localization.max}
+                                if isDisabled
+                                    if formData && formData.max
+                                        input(type="number" class="form-control" id="max" name="max" disabled value=formData.max step="0.001") 
+                                    else
+                                        input(type="number" class="form-control" id="max" name="max" disabled step="0.001")
+                                else
+                                    if formData && formData.max
+                                        input(type="number" class="form-control" id="max" name="max" value=formData.max step="0.001")
+                                    else
+                                        input(type="number" class="form-control" id="max" name="max" step="0.001")
                         if message && success == 1
                             div(class = "form-group" style="color:green;margin-top:35px;")
                                 p !{message}
