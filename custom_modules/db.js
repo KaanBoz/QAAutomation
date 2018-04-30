@@ -300,7 +300,8 @@ module.exports = function(app, mysql, functions, callback){
                 "deleted_by INT," + 
                 "deleted_at DATETIME, " + 
                 "is_deleted BIT NOT NULL, " +
-                "is_validated BIT NOT NULL" +
+                "is_validated BIT NOT NULL," +
+                "UNIQUE KEY unique_analysisdetail (material, max, min)" +
                 ")"
                     , function (err, result){
                         if (err){

@@ -298,8 +298,8 @@ module.exports = function (app, Localize) {
         "New Analysis Detail" : {
             "tr" : "Yeni Analiz Detay"
         },
-        "An analysis detail exists with the given product ID" : {
-            "tr" : "Bu ürün koduna sahip bir analiz detay zaten var"
+        "An analysis detail exists" : {
+            "tr" : "Bu analiz detay zaten var"
         },
         "Analysis Detail created" : {
             "tr" : "Analiz Detay oluşturuldu"
@@ -336,6 +336,12 @@ module.exports = function (app, Localize) {
         },
         "Raw Material deleted successfully" : {
             "tr" : "Hammadde başarı ile silindi"
+        },
+        "Minimum" : {
+            "tr" : "Minimum"
+        },
+        "Maximum" : {
+            "tr" : "Maksimum"
         }
     });
 
@@ -431,7 +437,7 @@ module.exports = function (app, Localize) {
         module.localization.analysisHeader = module.myLocalize.translate("Analysis Header");
         module.localization.addNewAnalysisHeader = module.myLocalize.translate("Add New Analysis Header");
         module.localization.newAnalysisHeader = module.myLocalize.translate("New Analysis Header");
-        module.localization.analysisExistsHeader = module.myLocalize.translate("An analysis header exists with the given product ID");
+        module.localization.analysisHeaderExists = module.myLocalize.translate("An analysis header exists with the given product ID");
         module.localization.analysisHeaderCreated = module.myLocalize.translate("Analysis Header created");
         module.localization.analysisHeaderWasNotFound = module.myLocalize.translate("Analysis Header with the given id was not found");
         module.localization.analysisHeaderUpdated = module.myLocalize.translate("Analysis Header updated successfully");
@@ -439,7 +445,7 @@ module.exports = function (app, Localize) {
         module.localization.analysisDetail = module.myLocalize.translate("Analysis Detail");
         module.localization.addNewAnalysisDetail = module.myLocalize.translate("Add New Analysis Detail");
         module.localization.newAnalysisDetail = module.myLocalize.translate("New Analysis Detail");
-        module.localization.analysisDetailExists = module.myLocalize.translate("An analysis detail exists with the given product ID");
+        module.localization.analysisDetailExists = module.myLocalize.translate("An analysis detail exists");
         module.localization.analysisDetailCreated = module.myLocalize.translate("Analysis Detail created");
         module.localization.analysisDetailWasNotFound = module.myLocalize.translate("Analysis Detail with the given id was not found");
         module.localization.analysisDetailUpdated = module.myLocalize.translate("Analysis Detail updated successfully");
@@ -452,6 +458,8 @@ module.exports = function (app, Localize) {
         module.localization.materialWasNotFound = module.myLocalize.translate("Raw Material with the given id was not found");
         module.localization.materialUpdated = module.myLocalize.translate("Raw Material updated successfully");
         module.localization.materialDeleted = module.myLocalize.translate("Raw Material deleted successfully");
+        module.localization.min = module.myLocalize.translate("Minimum");
+        module.localization.max = module.myLocalize.translate("Maximum");
     }
 
     return module;

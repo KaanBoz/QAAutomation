@@ -1,0 +1,73 @@
+extends main.pug
+
+block append head
+    script(src='../js/qaanalysisdetailoperation.js')
+
+block content
+    div(id = "mainForm" class="row gap-20 masonry pos-r" ng-controller="qaAnalysisDetailOperationCtrl")
+        div(class="masonry-sizer col-md-12")
+        div(class="masonry-item col-md-12")
+            div(class="bgc-white p-20 bd")
+                if operation == "add" && !success 
+                    h6(class="c-grey-900") #{localization.newAnalysisDetail}
+                else
+                    h6(class="c-grey-900") #{localization.analysisDetail}
+                div(class="mT-30")
+                    form(method="post" action=".." + originalUrl)
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="standart") #{localization.material} 
+                                if isDisabled
+                                    select(id="material" name="material" class="form-control" disabled)
+                                        option(value="") #{localization.choose}
+                                        each val in materials
+                                            if formData && formData.material && formData.material == val.id
+                                                option(value=val.id selected) #{val.name} (#{val.unitname}-#{val.unitshort})
+                                            else
+                                                option(value=val.id) #{val.name} (#{val.unitname}-#{val.unitshort})
+                                else
+                                    select(id="material" name="material" class="form-control")
+                                        option(value="") #{localization.choose}
+                                        each val in materials
+                                            if formData && formData.material && formData.material == val.id
+                                                option(value=val.id selected) #{val.name} (#{val.unitname}-#{val.unitshort})
+                                            else
+                                                option(value=val.id) #{val.name} (#{val.unitname}-#{val.unitshort})
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="max") #{localization.max}
+                                if isDisabled
+                                    if formData && formData.max
+                                        input(type="number" class="form-control" id="max" name="max" disabled value=formData.max step="0.001") 
+                                    else
+                                        input(type="number" class="form-control" id="max" name="max" disabled step="0.001")
+                                else
+                                    if formData && formData.max
+                                        input(type="number" class="form-control" id="max" name="max" value=formData.max step="0.001")
+                                    else
+                                        input(type="number" class="form-control" id="max" name="max" step="0.001")
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="max") #{localization.min}
+                                if isDisabled
+                                    if formData && formData.min
+                                        input(type="number" class="form-control" id="min" name="min" disabled value=formData.min step="0.001") 
+                                    else
+                                        input(type="number" class="form-control" id="min" name="min" disabled step="0.001")
+                                else
+                                    if formData && formData.min
+                                        input(type="number" class="form-control" id="min" name="min" value=formData.min step="0.001")
+                                    else
+                                        input(type="number" class="form-control" id="min" name="min" step="0.001")
+                        if message && success == 1
+                            div(class = "form-group" style="color:green;margin-top:35px;")
+                                p !{message}
+                        if message && success == 0
+                            div(class = "form-group" style="color:red;margin-top:35px;")
+                                p !{message}
+                        if actionButton && (operation == "add" || operation == "edit")
+                            button(type="button" id="save" class="btn btn-success" style="margin-top:35px;") #{localization.save}
+                        else if actionButton && operation == "delete"
+                            button(type="button" id="delete" class="btn btn-danger" style="margin-top:35px;") #{localization.delete}
+                        div
+                            a(href="../qaallanalysisdetails" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}

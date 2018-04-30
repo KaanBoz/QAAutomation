@@ -39,6 +39,7 @@ function dbCallback(){
     var login = require('./pages/login.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qauseroperation = require('./pages/qauseroperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaanalysisheaderoperation = require('./pages/qaanalysisheaderoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaanalysisdetailoperation = require('./pages/qaanalysisdetailoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaanalysistype = require('./pages/qaanalysistype.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaunittype = require('./pages/qaunittype.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaanalysistypeoperation = require('./pages/qaanalysistypeoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
