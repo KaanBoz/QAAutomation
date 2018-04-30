@@ -228,8 +228,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                 return
                             }
                             con.query(
-                                "delete from unittype " +
-                                "where id=" + id  ,
+                                "update unittype " + " set is_deleted = 1, deleted_by=" + sess.user.id + ", deleted_at=" + con.escape(new Date()) + " " +
+                                "where id=" + id ,
                                 function(err, result, fields){
                                     if(err){
                                         message = err.message;

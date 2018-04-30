@@ -186,7 +186,7 @@ module.exports = function(app, mysql, functions, callback){
             module.con.query("CREATE TABLE IF NOT EXISTS unittype (" +
             "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
             "name VARCHAR(128) NOT NULL UNIQUE,"+
-            "short VARCHAR(128) NOT NULL UNIQUE," +
+            "short VARCHAR(128) NOT NULL," +
             "added_by INT NOT NULL," + 
             "added_at DATETIME NOT NULL," +
             "edited_by INT, " + 
@@ -206,17 +206,17 @@ module.exports = function(app, mysql, functions, callback){
                         }else{
                             console.log("dbversion is updated to 4");
                             module.dbVersion = 4;
-                            createAnalysisType();
+                            createAnalysisStandart();
                         }
                     });
                 }
             });
         }else{
-            createAnalysisType();
+            createAnalysisStandart();
         }
     }
 
-    function createAnalysisType(){
+    function createAnalysisStandart(){
         if(module.dbVersion == 4){
             module.con.query("CREATE TABLE IF NOT EXISTS analysisstandart (" +
             "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
@@ -275,7 +275,7 @@ module.exports = function(app, mysql, functions, callback){
                                     console.log(err.message);
                                 }else{
                                     console.log("dbversion is updated to 6");
-                                    module.dbVersion = 5;
+                                    module.dbVersion = 6;
                                     createAnalysisDetails();
                                 }
                             });

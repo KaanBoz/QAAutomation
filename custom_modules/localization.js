@@ -205,8 +205,8 @@ module.exports = function (app, Localize) {
         "New Unit Type" : {
             "tr" : "Yeni Birim Tipi"
         },
-        "An unit type exists with the given name or short" : {
-            "tr" : "Bu isime veya kısaya sahip bir birim tipi zaten var"
+        "An unit type exists with the given name" : {
+            "tr" : "Bu isime sahip bir birim tipi zaten var"
         },
         "Unit type created" : {
             "tr" : "Birim tipi oluşturuldu"
@@ -407,7 +407,7 @@ module.exports = function (app, Localize) {
         module.localization.unitType = module.myLocalize.translate("Unit Type");
         module.localization.addNewUnitType = module.myLocalize.translate("Add New Unit Type");
         module.localization.newUnitType = module.myLocalize.translate("New Unit Type");
-        module.localization.unitTypeExists = module.myLocalize.translate("An unit type exists with the given name or short");
+        module.localization.unitTypeExists = module.myLocalize.translate("An unit type exists with the given name");
         module.localization.unitTypeCreated = module.myLocalize.translate("Unit type created");
         module.localization.unitTypeWasNotFound = module.myLocalize.translate("Unit Type with the given id was not found");
         module.localization.unitTypeUpdated = module.myLocalize.translate("Unit Type updated successfully");
