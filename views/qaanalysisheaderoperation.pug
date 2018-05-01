@@ -2,8 +2,9 @@ extends main.pug
 
 block append head
     script(src='../js/qaanalysisheaderoperation.js')
-
 block content
+    script.
+        var details = !{detail};
     div(id = "mainForm" class="row gap-20 masonry pos-r" ng-controller="qaAnalysisHeaderOperationCtrl")
         div(class="masonry-sizer col-md-12")
         div(class="masonry-item col-md-12")
@@ -62,6 +63,23 @@ block content
                                         option(value="") #{localization.choose}
                                         each val in standarts
                                             if formData && formData.standart && formData.standart == val.id
+                                                option(value=val.id selected) #{val.name}
+                                            else
+                                                option(value=val.id) #{val.name}
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="type") #{localization.analysisDetail} 
+                                if isDisabled
+                                    select(id="details" name="details" class="form-control" disabled multiple)
+                                        each val in details
+                                            if formData && formData.detail && formData.detail.indexOf(val.id) > -1
+                                                option(value=val.id selected) #{val.name}
+                                            else
+                                                option(value=val.id) #{val.name}
+                                else
+                                    select(id="details" name="details" class="form-control" multiple)
+                                        each val in details
+                                            if formData && formData.detail && formData.detail.indexOf(val.id) > -1
                                                 option(value=val.id selected) #{val.name}
                                             else
                                                 option(value=val.id) #{val.name}

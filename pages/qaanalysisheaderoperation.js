@@ -2,7 +2,32 @@ module.exports = function (app, myLocalize, functions, con, router, localization
 
     //DYNAMIC VALUES METHODS
 
-    function getAnalysisTypes(getStandarts, operation, req, res, sess, standarts, types){
+    function getDetails(operation, req, res, sess, standarts, types, details){
+        con.query(
+        " select " +
+            " analysisdetail.id as id, " +
+            " CONCAT(material.name, ' (',unittype.name, '-', unittype.short, ')', ' (', analysisdetail.min, '-', analysisdetail.max , ')') as name " +
+        " from analysisdetail " +
+        " inner join material on  material.id=analysisdetail.material " +
+        " inner join unittype on unittype.id=material.unit " , 
+            function(err, result, fields){
+                if(err){
+                    types = [];
+                }else{
+                    //set standarts
+                    for(var i = 0; i < result.length; i++){
+                        var detail = {};
+                        detail.id = result[i].id;
+                        detail.name = result[i].name;
+                        details.push(detail);
+                    }
+                }
+                getAnalysisTypes(operation, req, res, sess, standarts, types, details);
+            }
+        );
+    }
+
+    function getAnalysisTypes(operation, req, res, sess, standarts, types, details){
         con.query("select id,name from analysistype where is_deleted = 0 and is_validated = 1", 
             function(err, result, fields){
                 if(err){
@@ -16,12 +41,12 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         types.push(type);
                     }
                 }
-                getStandarts(operation, req, res, sess, standarts, types);
+                getStandarts(operation, req, res, sess, standarts, types, details);
             }
         );
     }
 
-    function getStandarts(operation, req, res, sess, standarts, types){
+    function getStandarts(operation, req, res, sess, standarts, types, details){
         con.query("select id, name from analysisstandart where is_deleted = 0 and is_validated = 1", 
             function(err, result, fields){
                 if(err){
@@ -36,19 +61,19 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         standarts.push(standart);
                     }
                 }
-                operation(req, res, sess, standarts, types);        
+                operation(req, res, sess, standarts, types, details);        
             }
         );
     }
 
     //GET OPERATION METHODS
 
-    function getAdd(req, res, sess, operation, standarts, types, id){
-        renderPage(req, res, sess, null, null, 1, operation, null, standarts, types);
+    function getAdd(req, res, sess, operation, standarts, types, id, details){
+        renderPage(req, res, sess, null, null, 1, operation, null, standarts, types, details);
     }
 
-    function getEdit(req, res, sess, operation, standarts, types, id){
-        con.query("select name, type, standart from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
+    function getEdit(req, res, sess, operation, standarts, types, id, details){
+        con.query("select name, type, standart, details from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -56,7 +81,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         message = localization.analysisHeaderExists;
                     }
                     success = 0;
-                    renderPage(req, res, sess, success, message, 0, operation, null, standarts, types);
+                    renderPage(req, res, sess, success, message, 0, operation, null, standarts, types, details);
                     return;
                 }
                 if(result.length == 0){
@@ -68,12 +93,13 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.name = result[0].name;
                 formData.type = result[0].type;
                 formData.standart = result[0].standart;
-                renderPage(req, res, sess, null, null, 1, operation, formData, standarts, types);
+                formData.detail = result[0].details;
+                renderPage(req, res, sess, null, null, 1, operation, formData, standarts, types, details);
         });
     }
 
-    function getDelete(req, res, sess, operation, standarts, types, id){
-        con.query("select name, type, standart from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
+    function getDelete(req, res, sess, operation, standarts, types, id, details){
+        con.query("select name, type, standart, details from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -81,7 +107,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         message = localization.analysisHeaderExists;
                     }
                     success = 0;
-                    renderPage(req, res, sess, success, message, 0, operation, null, standarts, types);
+                    renderPage(req, res, sess, success, message, 0, operation, null, standarts, types, details);
                     return;
                 }
                 if(result.length == 0){
@@ -93,12 +119,13 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.name = result[0].name;
                 formData.type = result[0].type;
                 formData.standart = result[0].standart;
-                renderPage(req, res, sess, null, null, 1, operation, formData, standarts, types);
+                formData.detail = result[0].details;
+                renderPage(req, res, sess, null, null, 1, operation, formData, standarts, types, details);
             });
     }
 
-    function getView(req, res, sess, operation, standarts, types, id){
-        con.query("select name, type, standart from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
+    function getView(req, res, sess, operation, standarts, types, id, details){
+        con.query("select name, type, standart, details from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -106,7 +133,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         message = localization.analysisHeaderExists;
                     }
                     success = 0;
-                    renderPage(req, res, sess, success, message, 0, operation, null, standarts, types);
+                    renderPage(req, res, sess, success, message, 0, operation, null, standarts, types, details);
                     return;
                 }
                 if(result.length == 0){
@@ -118,11 +145,12 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.name = result[0].name;
                 formData.type = result[0].type;
                 formData.standart = result[0].standart;
-                renderPage(req, res, sess, null, null, 0, operation, formData, standarts, types);
+                formData.detail = result[0].details;
+                renderPage(req, res, sess, null, null, 0, operation, formData, standarts, types, details);
             });
     }
 
-    function getOperation(req, res, sess, standarts, types){
+    function getOperation(req, res, sess, standarts, types, details){
         var operation = req.query.operation;
             if(sess.user.ischef){
                 var id = req.query.id;
@@ -131,16 +159,16 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     return;
                 }
                 if(operation == "add"){
-                    getAdd(req, res, sess, operation, standarts, types, id);
+                    getAdd(req, res, sess, operation, standarts, types, id, details);
                     return;
                 }else if(operation == "edit"){
-                    getEdit(req, res, sess, operation, standarts, types, id);
+                    getEdit(req, res, sess, operation, standarts, types, id, details);
                     return;
                 }else if (operation == "delete"){
-                    getDelete(req, res, sess, operation, standarts, types, id);
+                    getDelete(req, res, sess, operation, standarts, types, id, details);
                     return;
                 }else if(operation =="view"){
-                    getView(req, res, sess, operation, standarts, types, id);
+                    getView(req, res, sess, operation, standarts, types, id, details);
                     return;
                 }else{
                     res.redirect('/notfound');
@@ -164,7 +192,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         if(sess && sess.user){
             var standarts = [];
             var types = [];
-            getAnalysisTypes(getStandarts, getOperation, req, res, sess, standarts, types);
+            var details = [];
+            getDetails(getOperation, req, res, sess, standarts, types, details);
         }else{
             res.redirect('/');
         }    
@@ -177,7 +206,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         if(sess && sess.user){
             var standarts = [];
             var types = [];
-            getAnalysisTypes(getStandarts, postOperation, req, res, sess, standarts, types);
+            var details = [];
+            getDetails(postOperation, req, res, sess, standarts, types, details);
         }else{
             res.redirect('/');
             return;
@@ -187,14 +217,14 @@ module.exports = function (app, myLocalize, functions, con, router, localization
 
     //POST OPERATION METHODS
 
-    function postAdd(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton){
-        if(validations(req, res, sess, name, message, success, operation, actionButton, formData, standarts, types)){
+    function postAdd(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details){
+        if(validations(req, res, sess, name, message, success, operation, actionButton, formData, standarts, types, details)){
             return;
         }
         con.query("select id from analysisheader where name like '" + name + "' and is_deleted = 1", function(err, result, fields){
             if(err){
                 message = err.message;
-                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
+                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
                 return
             }
             if(result.length > 0){
@@ -202,6 +232,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 con.query(
                     "update analysisheader " + " set name='" + name + "'," + 
                     "type =" + type + "," +
+                    "details='" + formData.detail + "'," +
                     "standart =" + standart + "," +
                     "edited_by=" + sess.user.id + "," +
                     "edited_at=" + con.escape(new Date()) + ", is_deleted = 0, deleted_by = null, deleted_at = null " +
@@ -209,19 +240,19 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     function(err, result, fields){
                         if(err){
                             message = err.message;
-                            renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
+                            renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
                             return
                         }
                         success = 1;
                         message = localization.analysisHeaderCreated;
                         actionButton = 0;
-                        renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
+                        renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
                         return;
                 });
             }else{
-                con.query("INSERT INTO analysisheader (name, type, standart, added_by, added_at, is_deleted" + 
+                con.query("INSERT INTO analysisheader (name, type, standart, details, added_by, added_at, is_deleted" + 
                 ", is_validated) VALUES" + 
-                "('" + name + "', " + type + ", " + standart + ", " + sess.user.id + ", " 
+                "('" + name + "', " + type + ", " + standart + ", '" + formData.detail + "'," + sess.user.id + ", " 
                 + con.escape(new Date()) + ", 0, 1)", function(err, result, fields){
                     if (err){
                         message = err.message;
@@ -229,20 +260,20 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                             message = localization.analysisHeaderExists;
                         }
                         success = 0;
-                        renderPage(req, res, sess, success, message, actionButton, operation, formData,standarts, types);
+                        renderPage(req, res, sess, success, message, actionButton, operation, formData,standarts, types, details);
                         return;    
                     }
                     success = 1;
                     message = localization.analysisHeaderCreated;
                     actionButton = 0;
-                    renderPage(req, res, sess, success, message, actionButton, operation, formData,standarts,types);
+                    renderPage(req, res, sess, success, message, actionButton, operation, formData,standarts,types, details);
                     return;
                 });
             }
         });
     }
 
-    function postEdit(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton){
+    function postEdit(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details){
         var id = req.query.id;
         if(!id){
             res.redirect('/notfound');
@@ -251,40 +282,41 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         con.query("select id from analysisheader where id =" + id, function(err,result,fields){
             if(err){
                 message = err.message;
-                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
+                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
                 return
             }
             if(result.length == 0){
                 message = localization.analysisHeaderWasNotFound;
-                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
+                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
                 return
             }
-            if(validations(req, res, sess, name, message, success, operation, actionButton, formData, standarts, types)){
+            if(validations(req, res, sess, name, message, success, operation, actionButton, formData, standarts, types, details)){
                 return;
             }
             con.query(
                 "update analysisheader " + " set name='" + name + "'," + 
                 "type =" + type + "," +
                 "standart =" + standart + "," +
+                "details='" + formData.detail + "'," +
                 "edited_by=" + sess.user.id + "," +
                 "edited_at=" + con.escape(new Date()) + " " +
                 "where id=" + id  ,
                 function(err, result, fields){
                     if(err){
                         message = err.message;
-                        renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
+                        renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
                         return
                     }
                     success = 1;
                     message = localization.analysisHeaderUpdated;
                     actionButton = 0;
-                    renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
+                    renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
                     return;
             });
         });
     }
 
-    function postDelete(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton){
+    function postDelete(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details){
         var id = req.query.id;
         if(!id){
             res.redirect('/notfound');
@@ -293,12 +325,12 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         con.query("select id from analysisheader where id =" + id, function(err,result,fields){
             if(err){
                 message = err.message;
-                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
+                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
                 return
             }
             if(result.length == 0){
                 message = localization.analysisHeaderWasNotFound;
-                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
+                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
                 return
             }
             con.query(
@@ -307,19 +339,19 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 function(err, result, fields){
                     if(err){
                         message = err.message;
-                        renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
+                        renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
                         return
                     }
                     success = 1;
                     message = localization.analysisHeaderDeleted;
                     actionButton = 0;
-                    renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
+                    renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
                     return;
             });
         });
     }
 
-    function postOperation(req, res, sess, standarts, types){
+    function postOperation(req, res, sess, standarts, types, details){
         if(sess.user.ischef){
             var operation = req.query.operation;
             if(operation == 'add' || operation == 'edit' || operation == 'delete'){
@@ -327,21 +359,23 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 var name = req.body.name;
                 var type = req.body.type;
                 var standart = req.body.standart;
+                var detail = req.body.details;
                 //set form data
                 var formData = [];
                 formData.name = name;
                 formData.type = type;
                 formData.standart = standart;
+                formData.detail = detail;
                 //set the message and success
                 var message = "";
                 var success = 0;
                 var actionButton = 1;
                 if(operation == "add"){
-                    postAdd(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton);
+                    postAdd(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details);
                 }else if(operation == "edit"){
-                    postEdit(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton);
+                    postEdit(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details);
                 }else if(operation == "delete"){
-                    postDelete(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton);
+                    postDelete(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details);
                 }
             }else{
                 res.redirect('/notfound');
@@ -358,8 +392,16 @@ module.exports = function (app, myLocalize, functions, con, router, localization
 
     //METHODS
 
-    function renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types){
+    function renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details){
         var a = ((operation == "add" || operation == "edit") && success == 1) || operation == "delete" ? 1 : 0;
+        var detail = [];
+        if(formData != null && formData.detail != null){
+            if(typeof formData.detail == "string" ){
+                detail = formData.detail.split(",");
+            }else{
+                detail = formData.detail;
+            }
+        }
         res.render('qaanalysisheaderoperation', 
                 { 
                     data: req.body,
@@ -378,7 +420,9 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     formData : formData,
                     originalUrl : req.originalUrl,
                     standarts : standarts,
-                    types : types
+                    types : types,
+                    details : details,
+                    detail : JSON.stringify(detail)
                 });
     }
     
@@ -386,13 +430,13 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         return message + "<p>" + toAdd + "</p>";
     }
     
-    function validations(req, res, sess,name, message, success, operation, actionButton, formData, standarts, types){
+    function validations(req, res, sess,name, message, success, operation, actionButton, formData, standarts, types, details){
         //validations
-        if(!name || !formData.type || !formData.standart){
+        if(!name || !formData.type || !formData.standart || !formData.detail){
             message = addMessage(message, localization.fillForm)
         }
         if(message){
-            renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types);
+            renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
             return true;
         }
         return false;

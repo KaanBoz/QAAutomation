@@ -256,6 +256,7 @@ module.exports = function(app, mysql, functions, callback){
                 "name VARCHAR(256) NOT NULL UNIQUE," +
                 "type INT NOT NULL," +
                 "standart INT NOT NULL," +
+                "details VARCHAR(256) NOT NULL," +
                 "added_by INT NOT NULL," + 
                 "added_at DATETIME NOT NULL," +
                 "edited_by INT, " + 
