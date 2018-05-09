@@ -116,7 +116,15 @@ html
                                                 a(href="../qaallanalysisheaders") #{localization.analysisHeader}
                                             li
                                                 a(href="../qaallanalysisdetails") #{localization.analysisDetail}
-                                    
+                                ul(class="dropdown-menu")
+                                    li(class="nav-item dropdown")
+                                        a(href="javascript:void(0);")
+                                            span #{localization.production}
+                                            span(class="arrow" style="padding-top:7px;")
+                                                i(class="ti-angle-right")
+                                        ul(class="dropdown-menu")
+                                            li
+                                                a(href="../qaallqualityfollowup") #{localization.followup}
                         if isOperator
                             li(class="nav-item dropdown")
                                 a(class="dropdown-toggle" href="javascript:void(0);")

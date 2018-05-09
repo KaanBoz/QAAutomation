@@ -1,0 +1,125 @@
+extends main.pug
+
+block append head
+    script(src='../js/qaqualityfollowupoperation.js')
+
+block content
+    div(id = "mainForm" class="row gap-20 masonry pos-r" ng-controller="qaQualityFollowupOperationCtrl")
+        div(class="masonry-sizer col-md-12")
+        div(class="masonry-item col-md-12")
+            div(class="bgc-white p-20 bd")
+                if operation == "add" && !success 
+                    h6(class="c-grey-900") #{localization.newFollowup}
+                else
+                    h6(class="c-grey-900") #{localization.followup}
+                div(class="mT-30")
+                    form(method="post" action=".." + originalUrl)
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="type") #{localization.analysis} *
+                                if isDisabled
+                                    select(id="analysis" name="analysis" class="form-control" disabled)
+                                        option(value="") #{localization.choose}
+                                        each val in analyses
+                                            if formData && formData.analysis && formData.analysis == val.id
+                                                option(value=val.id selected) #{val.name}
+                                            else
+                                                option(value=val.id) #{val.name}
+                                else
+                                    select(id="analysis" name="analysis" class="form-control")
+                                        option(value="") #{localization.choose}
+                                        each val in analyses
+                                            if formData && formData.analysis && formData.analysis == val.id
+                                                option(value=val.id selected) #{val.name}
+                                            else
+                                                option(value=val.id) #{val.name}
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="standart") #{localization.partyno} *
+                                if isDisabled
+                                    if formData && formData.partyno
+                                        input(type="text" class="form-control" id="partyno" name="partyno" disabled value=formData.partyno) 
+                                    else
+                                        input(type="text" class="form-control" id="partyno" name="partyno" disabled)
+                                else
+                                    if formData && formData.partyno
+                                        input(type="text" class="form-control" id="partyno" name="partyno" value=formData.partyno)
+                                    else
+                                        input(type="text" class="form-control" id="partyno" name="partyno")
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="type") #{localization.assignedTo} *
+                                if isDisabled
+                                    select(id="assignedto" name="assignedto" class="form-control" disabled)
+                                        option(value="") #{localization.choose}
+                                        each val in operators
+                                            if formData && formData.assignedto && formData.assignedto == val.id
+                                                option(value=val.id selected) #{val.name}
+                                            else
+                                                option(value=val.id) #{val.name}
+                                else
+                                    select(id="assignedto" name="assignedto" class="form-control")
+                                        option(value="") #{localization.choose}
+                                        each val in operators
+                                            if formData && formData.assignedto && formData.assignedto == val.id
+                                                option(value=val.id selected) #{val.name}
+                                            else
+                                                option(value=val.id) #{val.name}
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(class="fw-500") #{localization.productionDate} *
+                                div(class="timepicker-input input-icon form-group" style="margin-bottom: 0px; border: 1px solid #ced4da; border-radius: .25rem;")
+                                    div(class="input-group")
+                                        div(class="input-group-addon bgc-white bd bdwR-0" style="padding: 10px;")
+                                            i(class="ti-calendar")
+                                        if isDisabled
+                                            if formData && formData.partydate
+                                                input(type="text" class="form-control bdc-grey-200 start-date" id="date" name="date" placeholder=localization.choose data-provide="datepicker" data-date-format="dd.mm.yyyy" disabled value=formData.partydate)
+                                            else
+                                                input(type="text" class="form-control bdc-grey-200 start-date" id="date" name="date" placeholder=localization.choose data-provide="datepicker" data-date-format="dd.mm.yyyy" disabled)
+                                        else
+                                            if formData && formData.partydate
+                                                input(type="text" class="form-control bdc-grey-200 start-date" id="date" name="date" placeholder=localization.choose data-provide="datepicker" data-date-format="dd.mm.yyyy" value=formData.partydate)
+                                            else
+                                                input(type="text" class="form-control bdc-grey-200 start-date" id="date" name="date" placeholder=localization.choose data-provide="datepicker" data-date-format="dd.mm.yyyy")
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="standart") #{localization.sender} 
+                                if isDisabled
+                                    if formData && formData.sender
+                                        input(type="text" class="form-control" id="sender" name="sender" disabled value=formData.sender) 
+                                    else
+                                        input(type="text" class="form-control" id="sender" name="sender" disabled)
+                                else
+                                    if formData && formData.sender
+                                        input(type="text" class="form-control" id="sender" name="sender" value=formData.sender)
+                                    else
+                                        input(type="text" class="form-control" id="sender" name="sender")
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="standart") #{localization.explanation} 
+                                if isDisabled
+                                    if formData && formData.explanation
+                                        input(type="text" class="form-control" id="explanation" name="explanation" disabled value=formData.explanation) 
+                                    else
+                                        input(type="text" class="form-control" id="explanation" name="explanation" disabled)
+                                else
+                                    if formData && formData.explanation
+                                        input(type="text" class="form-control" id="explanation" name="explanation" value=formData.explanation)
+                                    else
+                                        input(type="text" class="form-control" id="explanation" name="explanation")
+                        if message && success == 1
+                            div(class = "form-group" style="color:green;margin-top:35px;")
+                                p !{message}
+                        if message && success == 0
+                            div(class = "form-group" style="color:red;margin-top:35px;")
+                                p !{message}
+                        if actionButton && (operation == "add" || operation == "edit")
+                            button(type="button" id="save" class="btn btn-success" style="margin-top:35px;") #{localization.save}
+                        else if actionButton && operation == "delete"
+                            button(type="button" id="delete" class="btn btn-danger" style="margin-top:35px;") #{localization.delete}
+                        div
+                            a(href="../qaallqualityfollowup" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
+                        div
+                            p(style="margin-top:35px;")
+                                i * #{localization.requiredFields}

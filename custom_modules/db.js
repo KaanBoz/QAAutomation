@@ -350,6 +350,48 @@ module.exports = function(app, mysql, functions, callback){
                             }else{
                                 console.log("dbversion is updated to 8");
                                 module.dbVersion = 8;
+                                createQualityFollowup();
+                            }
+                        });
+                    }
+                });
+            }else{
+                createQualityFollowup();
+            }
+        }
+
+        function createQualityFollowup(){
+            if(module.dbVersion == 8){
+                module.con.query("CREATE TABLE IF NOT EXISTS qualityfollowup (" +
+                "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                "partyno VARCHAR(128) NOT NULL,"+
+                "partydate DATETIME NOT NULL," +
+                "assignedto INT NOT NULL," +
+                "analysis INT NOT NULL," +
+                "sender VARCHAR(256),"+
+                "explanation VARCHAR(256),"+
+                "isdone BIT NOT NULL, " +
+                "isreported BIT NOT NULL, " +
+                "added_by INT NOT NULL," + 
+                "added_at DATETIME NOT NULL," +
+                "edited_by INT, " + 
+                "edited_at DATETIME, " + 
+                "deleted_by INT," + 
+                "deleted_at DATETIME, " + 
+                "is_deleted BIT NOT NULL, " +
+                "is_validated BIT NOT NULL," +
+                "UNIQUE KEY unique_analysisdetail (partyno, analysis)" +
+                ");", function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        console.log("qualityfollowup table created or exists");
+                        module.con.query("update dbvariables set dbversion = 9 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 9");
+                                module.dbVersion = 9;
                                 callback();
                             }
                         });

@@ -323,7 +323,7 @@ module.exports = function (app, Localize) {
             "tr" : "Yeni Hammadde"
         },
         "A raw material exists with the given name" : {
-            "tr" : "Bu isisme sahip bir hammadde zaten var"
+            "tr" : "Bu isme sahip bir hammadde zaten var"
         },
         "Raw Material created" : {
             "tr" : "Hammadde oluşturuldu"
@@ -342,6 +342,54 @@ module.exports = function (app, Localize) {
         },
         "Maximum" : {
             "tr" : "Maksimum"
+        },
+        "Production" : {
+            "tr" : "Üretim"
+        },
+        "Production Watch" : {
+            "tr" : "Üretim Takip"
+        },
+        "Add New Production Watch" : {
+            "tr" : "Yeni Üretim Takip Ekle"
+        },
+        "New Production Watch" : {
+            "tr" : "Yeni Üretim Takip"
+        },
+        "A production watch exists with the given analysis and party no" : {
+            "tr" : "Bu analiz ve parti numarasina sahip bir üretim takip zaten var"
+        },
+        "Production Watch created" : {
+            "tr" : "Üretim Takip oluşturuldu"
+        },
+        "Production Watch with the given id was not found" : {
+            "tr" : "Belirtilen id ile bir Üretim Takip bulunamadı"
+        },
+        "Production Watch updated successfully" : {
+            "tr" : "Üretim Takip başarı ile güncellendi"
+        },
+        "Production Watch deleted successfully" : {
+            "tr" : "Üretim Takip başarı ile silindi"
+        },
+        "Party No" : {
+            "tr" : "Parti Numarası"
+        },
+        "Required Fields" : {
+            "tr" : "Zorunlu Alanlar"
+        },
+        "Please fill in all the required fields in the form" : {
+            "tr" : "Lütfen formdaki bütün zorunlu alanları doludurunuz"
+        },
+        "Production Date" : {
+            "tr" : "Üretim Tarihi"
+        },
+        "Assigned To" : {
+            "tr" : "Atanan Kişi"
+        },
+        "Sender" : {
+            "tr" : "Gönderen"
+        },
+        "Explanation" : {
+            "tr" : "Açıklama"
         }
     });
 
@@ -402,6 +450,17 @@ module.exports = function (app, Localize) {
         module.localization.short = module.myLocalize.translate("Short");
         module.localization.choose = module.myLocalize.translate("Choose...");
         module.localization.productId = module.myLocalize.translate("Product ID");
+        module.localization.min = module.myLocalize.translate("Minimum");
+        module.localization.max = module.myLocalize.translate("Maximum");
+        module.localization.production = module.myLocalize.translate("Production");
+        module.localization.partyno = module.myLocalize.translate("Party No")
+        module.localization.requiredFields = module.myLocalize.translate("Required Fields")
+        module.localization.fillFormRequired = module.myLocalize.translate("Please fill in all the required fields in the form");
+        module.localization.productionDate = module.myLocalize.translate("Production Date");
+        module.localization.assignedTo = module.myLocalize.translate("Assigned To");
+        module.localization.sender = module.myLocalize.translate("Sender");
+        module.localization.explanation = module.myLocalize.translate("Explanation");
+ 
         module.localization.analysisType = module.myLocalize.translate("Analysis Type");
         module.localization.addNewAnalysisType = module.myLocalize.translate("Add New Analysis Type");
         module.localization.newAnalysisType = module.myLocalize.translate("New Analysis Type");
@@ -410,6 +469,7 @@ module.exports = function (app, Localize) {
         module.localization.analysisTypeWasNotFound = module.myLocalize.translate("Analysis Type with the given id was not found");
         module.localization.analysisTypeUpdated = module.myLocalize.translate("Analysis Type updated successfully");
         module.localization.analysisTypeDeleted = module.myLocalize.translate("Analysis Type deleted successfully");
+
         module.localization.unitType = module.myLocalize.translate("Unit Type");
         module.localization.addNewUnitType = module.myLocalize.translate("Add New Unit Type");
         module.localization.newUnitType = module.myLocalize.translate("New Unit Type");
@@ -418,6 +478,7 @@ module.exports = function (app, Localize) {
         module.localization.unitTypeWasNotFound = module.myLocalize.translate("Unit Type with the given id was not found");
         module.localization.unitTypeUpdated = module.myLocalize.translate("Unit Type updated successfully");
         module.localization.unitTypeDeleted = module.myLocalize.translate("Unit Type deleted successfully");
+
         module.localization.standart = module.myLocalize.translate("Standart")
         module.localization.addNewStandart = module.myLocalize.translate("Add New Standart");
         module.localization.newStandart = module.myLocalize.translate("New Standart");
@@ -426,6 +487,7 @@ module.exports = function (app, Localize) {
         module.localization.standartWasNotFound = module.myLocalize.translate("Standart with the given id was not found");
         module.localization.standartUpdated = module.myLocalize.translate("Standart updated successfully");
         module.localization.standartDeleted = module.myLocalize.translate("Standart deleted successfully");
+
         module.localization.analysis = module.myLocalize.translate("Analysis");
         module.localization.addNewAnalysis = module.myLocalize.translate("Add New Analysis");
         module.localization.newAnalysis = module.myLocalize.translate("New Analysis");
@@ -434,6 +496,7 @@ module.exports = function (app, Localize) {
         module.localization.analysisWasNotFound = module.myLocalize.translate("Analysis with the given id was not found");
         module.localization.analysisUpdated = module.myLocalize.translate("Analysis updated successfully");
         module.localization.analysisDeleted = module.myLocalize.translate("Analysis deleted successfully");
+
         module.localization.analysisHeader = module.myLocalize.translate("Analysis Header");
         module.localization.addNewAnalysisHeader = module.myLocalize.translate("Add New Analysis Header");
         module.localization.newAnalysisHeader = module.myLocalize.translate("New Analysis Header");
@@ -442,6 +505,7 @@ module.exports = function (app, Localize) {
         module.localization.analysisHeaderWasNotFound = module.myLocalize.translate("Analysis Header with the given id was not found");
         module.localization.analysisHeaderUpdated = module.myLocalize.translate("Analysis Header updated successfully");
         module.localization.analysisHeaderDeleted = module.myLocalize.translate("Analysis Header deleted successfully");
+
         module.localization.analysisDetail = module.myLocalize.translate("Analysis Detail");
         module.localization.addNewAnalysisDetail = module.myLocalize.translate("Add New Analysis Detail");
         module.localization.newAnalysisDetail = module.myLocalize.translate("New Analysis Detail");
@@ -450,6 +514,7 @@ module.exports = function (app, Localize) {
         module.localization.analysisDetailWasNotFound = module.myLocalize.translate("Analysis Detail with the given id was not found");
         module.localization.analysisDetailUpdated = module.myLocalize.translate("Analysis Detail updated successfully");
         module.localization.analysisDetailDeleted = module.myLocalize.translate("Analysis Detail deleted successfully");
+
         module.localization.material = module.myLocalize.translate("Raw Material");
         module.localization.addNewMaterial = module.myLocalize.translate("Add New Raw Material");
         module.localization.newMaterial = module.myLocalize.translate("New Raw Material");
@@ -458,8 +523,15 @@ module.exports = function (app, Localize) {
         module.localization.materialWasNotFound = module.myLocalize.translate("Raw Material with the given id was not found");
         module.localization.materialUpdated = module.myLocalize.translate("Raw Material updated successfully");
         module.localization.materialDeleted = module.myLocalize.translate("Raw Material deleted successfully");
-        module.localization.min = module.myLocalize.translate("Minimum");
-        module.localization.max = module.myLocalize.translate("Maximum");
+
+        module.localization.followup = module.myLocalize.translate("Production Watch");
+        module.localization.addNewFollowup = module.myLocalize.translate("Add New Production Watch");
+        module.localization.newFollowup = module.myLocalize.translate("New Production Watch");
+        module.localization.followupExists = module.myLocalize.translate("A production watch exists with the given analysis and party no");
+        module.localization.followupCreated = module.myLocalize.translate("Production Watch created");
+        module.localization.followupWasNotFound = module.myLocalize.translate("Production Watch with the given id was not found");
+        module.localization.followupUpdated = module.myLocalize.translate("Production Watch updated successfully");
+        module.localization.followupDeleted = module.myLocalize.translate("Production Watch deleted successfully");
     }
 
     return module;
