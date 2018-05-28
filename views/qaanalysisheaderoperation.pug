@@ -5,6 +5,7 @@ block append head
 block content
     script.
         var details = !{detail};
+        var masterAlloys = !{masterAlloys};
     div(id = "mainForm" class="row gap-20 masonry pos-r" ng-controller="qaAnalysisHeaderOperationCtrl")
         div(class="masonry-sizer col-md-12")
         div(class="masonry-item col-md-12")
@@ -66,7 +67,7 @@ block content
                                                 option(value=val.id selected) #{val.name}
                                             else
                                                 option(value=val.id) #{val.name}
-                        div(class="form-row")
+                        div(class="form-row" style="display:none;")
                             div(class="form-group col-md-6")
                                 label(for="type") #{localization.analysisDetail} 
                                 if isDisabled
@@ -83,6 +84,27 @@ block content
                                                 option(value=val.id selected) #{val.name}
                                             else
                                                 option(value=val.id) #{val.name}
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="type") #{localization.analysisDetail} 
+                                table(id="table" class="table table-hover table-bordered" cellspacing="0" width="100%")
+                                    thead
+                                        tr
+                                            th ID
+                                            th #{localization.name}
+                                            th #{localization.masterAlloy}
+                                    tbody
+                                       each val in details
+                                            if isDisabled
+                                                tr
+                                                    td #{val.id}
+                                                    td #{val.name} 
+                                                    td(id=val.id + "editable")
+                                            else
+                                                tr
+                                                    td #{val.id}
+                                                    td #{val.name} 
+                                                    td(id=val.id + "editable")  
                         if message && success == 1
                             div(class = "form-group" style="color:green;margin-top:35px;")
                                 p !{message}
@@ -95,3 +117,7 @@ block content
                             button(type="button" id="delete" class="btn btn-danger" style="margin-top:35px;") #{localization.delete}
                         div
                             a(href="../qaallanalysisheaders" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
+                        script.
+                            var localization = '#{localizationVal}';
+                            var isDisabled = !{isDisabled}
+                                                    

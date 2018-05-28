@@ -116,3 +116,10 @@ label{
 .dataTables_wrapper .dataTables_processing{
     visibility: hidden;
 }
+
+table.dataTable thead th, table.dataTable thead td {
+    border-bottom: 2px solid #dee2e6 !important;
+}
+.select-item {
+    display: none;
+}

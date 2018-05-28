@@ -257,6 +257,7 @@ module.exports = function(app, mysql, functions, callback){
                 "type INT NOT NULL," +
                 "standart INT NOT NULL," +
                 "details VARCHAR(256) NOT NULL," +
+                "master_alloy VARCHAR(256) NOT NULL," +
                 "added_by INT NOT NULL," + 
                 "added_at DATETIME NOT NULL," +
                 "edited_by INT, " + 
@@ -372,6 +373,7 @@ module.exports = function(app, mysql, functions, callback){
                 "explanation VARCHAR(256),"+
                 "isdone BIT NOT NULL, " +
                 "isreported BIT NOT NULL, " +
+                "amount FLOAT(10,3) NOT NULL," +
                 "added_by INT NOT NULL," + 
                 "added_at DATETIME NOT NULL," +
                 "edited_by INT, " + 

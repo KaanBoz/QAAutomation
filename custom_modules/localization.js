@@ -390,6 +390,15 @@ module.exports = function (app, Localize) {
         },
         "Explanation" : {
             "tr" : "Açıklama"
+        },
+        "Production Amount" : {
+            "tr" : "Üretim Miktarı"
+        },
+        "Master Alloy" : {
+            "tr" : "Master Alaşım"
+        },
+        "Please enter master alloy value for all selected details" : {
+            "tr" : "Lutfen sectiginiz butun detaylar icin master alasim degeri giriniz."
         }
     });
 
@@ -460,6 +469,8 @@ module.exports = function (app, Localize) {
         module.localization.assignedTo = module.myLocalize.translate("Assigned To");
         module.localization.sender = module.myLocalize.translate("Sender");
         module.localization.explanation = module.myLocalize.translate("Explanation");
+        module.localization.productionAmount = module.myLocalize.translate("Production Amount");
+        module.localization.masterAlloy = module.myLocalize.translate("Master Alloy");
  
         module.localization.analysisType = module.myLocalize.translate("Analysis Type");
         module.localization.addNewAnalysisType = module.myLocalize.translate("Add New Analysis Type");
@@ -532,6 +543,7 @@ module.exports = function (app, Localize) {
         module.localization.followupWasNotFound = module.myLocalize.translate("Production Watch with the given id was not found");
         module.localization.followupUpdated = module.myLocalize.translate("Production Watch updated successfully");
         module.localization.followupDeleted = module.myLocalize.translate("Production Watch deleted successfully");
+        module.localization.enterMasterAlloy = module.myLocalize.translate("Please enter master alloy value for all selected details");
     }
 
     return module;

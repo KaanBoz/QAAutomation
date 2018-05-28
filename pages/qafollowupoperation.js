@@ -47,7 +47,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
     }
 
     function getEdit(req, res, sess, operation, id, operators, analyses){
-        con.query("select partyno, partydate, assignedto, analysis, explanation, sender from qualityfollowup where is_deleted = 0 and is_validated = 1 and id=" + id, 
+        con.query("select partyno, partydate, assignedto, analysis, explanation, sender, amount from qualityfollowup where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -70,12 +70,13 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.assignedto = result[0].assignedto;
                 formData.sender = result[0].sender;
                 formData.explanation = result[0].explanation;
+                formData.productionAmount = result[0].amount;
                 renderPage(req, res, sess, null, null, 1, operation, formData, operators, analyses);
         });
     }
 
     function getDelete(req, res, sess, operation, id, operators, analyses){
-        con.query("select partyno, partydate, assignedto, analysis, explanation, sender from qualityfollowup where is_deleted = 0 and is_validated = 1 and id=" + id, 
+        con.query("select partyno, partydate, assignedto, analysis, explanation, sender, amount from qualityfollowup where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -98,12 +99,13 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.assignedto = result[0].assignedto;
                 formData.sender = result[0].sender;
                 formData.explanation = result[0].explanation;
+                formData.productionAmount = result[0].amount;
                 renderPage(req, res, sess, null, null, 1, operation, formData, operators, analyses);
             });
     }
 
     function getView(req, res, sess, operation, id, operators, analyses){
-        con.query("select partyno, partydate, assignedto, analysis, explanation, sender from qualityfollowup where is_deleted = 0 and is_validated = 1 and id=" + id, 
+        con.query("select partyno, partydate, assignedto, analysis, explanation, sender, amount from qualityfollowup where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -126,6 +128,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.assignedto = result[0].assignedto;
                 formData.sender = result[0].sender;
                 formData.explanation = result[0].explanation;
+                formData.productionAmount = result[0].amount;
                 renderPage(req, res, sess, null, null, 0, operation, formData, operators, analyses);
             });
     }
@@ -215,6 +218,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     "partydate =" + con.escape(formData.partydate) + "," +
                     "assignedto =" + formData.assignedto + "," +
                     "analysis =" + formData.analysis + "," +
+                    "amount =" + formData.productionAmount + "," +
                     "explanation ='" + formData.explanation + "'," +
                     "sender ='" + formData.sender+ "'," +
                     "edited_by=" + sess.user.id + "," +
@@ -238,9 +242,9 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         return;
                 });
             }else{
-                con.query("INSERT INTO qualityfollowup (partyno, partydate, assignedto, analysis, explanation, sender, isdone, isreported, added_by, added_at, is_deleted" + 
+                con.query("INSERT INTO qualityfollowup (partyno, partydate, assignedto, analysis, explanation, sender, amount, isdone, isreported, added_by, added_at, is_deleted" + 
                 ", is_validated) VALUES" + 
-                "(" + formData.partyno + ", " + con.escape(formData.partydate) + ", " + formData.assignedto + ", " + formData.analysis + ", '" + formData.explanation + "', '" + formData.sender + "',0,0, " 
+                "(" + formData.partyno + ", " + con.escape(formData.partydate) + ", " + formData.assignedto + ", " + formData.analysis + ", '" + formData.explanation + "', '" + formData.sender + "'," + formData.productionAmount +  ",0,0, " 
                 + sess.user.id + ", " 
                 + con.escape(new Date()) + ", 0, 1)", function(err, result, fields){
                         if (err){
@@ -292,6 +296,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     "partydate =" + con.escape(formData.partydate) + "," +
                     "assignedto =" + formData.assignedto + "," +
                     "analysis =" + formData.analysis + "," +
+                    "amount =" + formData.productionAmount + "," +
                     "explanation ='" + formData.explanation + "'," +
                     "sender ='" + formData.sender + "'," +
                     "edited_by=" + sess.user.id + "," +
@@ -374,6 +379,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.assignedto = req.body.assignedto;
                 formData.sender = req.body.sender;
                 formData.explanation = req.body.explanation;
+                formData.productionAmount = req.body.productionAmount;
                 //set the message and success
                 var message = "";
                 var success = 0;
@@ -431,7 +437,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
     
     function validations(req, res, sess, message, success, operation, actionButton, formData, operators, analyses){
         //validations
-        if(!formData.analysis || !formData.partyno || !formData.partydate || !formData.assignedto){
+        if(!formData.analysis || !formData.partyno || !formData.partydate || !formData.assignedto || !formData.productionAmount){
             message = addMessage(message, localization.fillFormRequired)
         }
         if(message){

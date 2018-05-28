@@ -8,6 +8,7 @@ $(document).ready(function(){
 function setOnClicks(){
     saveOnClick();
     deleteOnClick();
+    amountOnChange();
 }
 
 function saveOnClick(){
@@ -19,6 +20,7 @@ function saveOnClick(){
         data.assignedto = $("#assignedto").val();
         data.sender = $("#sender").val();
         data.explanation = $("#explanation").val();
+        data.productionAmount = $("#productionAmount").val();
         $.ajax({
             type: "POST",
             url: window.location.href ,
@@ -42,6 +44,7 @@ function deleteOnClick(){
         data.assignedto = $("#assignedto").val();
         data.sender = $("#sender").val();
         data.explanation = $("#explanation").val();
+        data.prodcutionAmount = $("#prodcutionAmount").val();
         $.ajax({
             type: "POST",
             url: window.location.href ,
@@ -54,4 +57,20 @@ function deleteOnClick(){
             }
           });
     });
+}
+
+
+function amountOnChange(){
+    $('#prodcutionAmount').change(function(){
+        $('#prodcutionAmount').val(checkGetValue($('#prodcutionAmount').val()));   
+    });
+}
+
+function checkGetValue(value){
+    if(value.includes('.')){
+        if(value.split('.')[1].length > 3){
+            value = value.split('.')[0] + "." + value.split('.')[1].substring(0,3);
+        }
+    }
+    return value;
 }

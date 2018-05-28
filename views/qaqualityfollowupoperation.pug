@@ -67,6 +67,19 @@ block content
                                                 option(value=val.id) #{val.name}
                         div(class="form-row")
                             div(class="form-group col-md-6")
+                                label(for="productionAmount") #{localization.productionAmount} *
+                                if isDisabled
+                                    if formData && formData.productionAmount
+                                        input(type="number" class="form-control" id="productionAmount" name="productionAmount" disabled value=formData.productionAmount step="0.001") 
+                                    else
+                                        input(type="number" class="form-control" id="productionAmount" name="productionAmount" disabled step="0.001")
+                                else
+                                    if formData && formData.productionAmount
+                                        input(type="number" class="form-control" id="productionAmount" name="productionAmount" value=formData.productionAmount step="0.001")
+                                    else
+                                        input(type="number" class="form-control" id="productionAmount" name="productionAmount" step="0.001")
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
                                 label(class="fw-500") #{localization.productionDate} *
                                 div(class="timepicker-input input-icon form-group" style="margin-bottom: 0px; border: 1px solid #ced4da; border-radius: .25rem;")
                                     div(class="input-group")

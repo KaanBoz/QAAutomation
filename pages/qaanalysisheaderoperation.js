@@ -73,7 +73,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
     }
 
     function getEdit(req, res, sess, operation, standarts, types, id, details){
-        con.query("select name, type, standart, details from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
+        con.query("select name, type, standart, details, master_alloy from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -94,12 +94,13 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.type = result[0].type;
                 formData.standart = result[0].standart;
                 formData.detail = result[0].details;
+                formData.masterAlloys = result[0].master_alloy;
                 renderPage(req, res, sess, null, null, 1, operation, formData, standarts, types, details);
         });
     }
 
     function getDelete(req, res, sess, operation, standarts, types, id, details){
-        con.query("select name, type, standart, details from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
+        con.query("select name, type, standart, details, master_alloy from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -120,12 +121,13 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.type = result[0].type;
                 formData.standart = result[0].standart;
                 formData.detail = result[0].details;
+                formData.masterAlloys = result[0].master_alloy;
                 renderPage(req, res, sess, null, null, 1, operation, formData, standarts, types, details);
             });
     }
 
     function getView(req, res, sess, operation, standarts, types, id, details){
-        con.query("select name, type, standart, details from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
+        con.query("select name, type, standart, details, master_alloy from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -146,6 +148,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.type = result[0].type;
                 formData.standart = result[0].standart;
                 formData.detail = result[0].details;
+                formData.masterAlloys = result[0].master_alloy;
                 renderPage(req, res, sess, null, null, 0, operation, formData, standarts, types, details);
             });
     }
@@ -233,6 +236,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     "update analysisheader " + " set name='" + name + "'," + 
                     "type =" + type + "," +
                     "details='" + formData.detail + "'," +
+                    "master_alloy='" + formData.masterAlloys + "'," +
                     "standart =" + standart + "," +
                     "edited_by=" + sess.user.id + "," +
                     "edited_at=" + con.escape(new Date()) + ", is_deleted = 0, deleted_by = null, deleted_at = null " +
@@ -250,9 +254,9 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         return;
                 });
             }else{
-                con.query("INSERT INTO analysisheader (name, type, standart, details, added_by, added_at, is_deleted" + 
+                con.query("INSERT INTO analysisheader (name, type, standart, details, master_alloy, added_by, added_at, is_deleted" + 
                 ", is_validated) VALUES" + 
-                "('" + name + "', " + type + ", " + standart + ", '" + formData.detail + "'," + sess.user.id + ", " 
+                "('" + name + "', " + type + ", " + standart + ", '" + formData.detail + "', '" + formData.masterAlloys + "'," + sess.user.id + ", " 
                 + con.escape(new Date()) + ", 0, 1)", function(err, result, fields){
                     if (err){
                         message = err.message;
@@ -298,6 +302,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 "type =" + type + "," +
                 "standart =" + standart + "," +
                 "details='" + formData.detail + "'," +
+                "master_alloy='" + formData.masterAlloys + "'," +
                 "edited_by=" + sess.user.id + "," +
                 "edited_at=" + con.escape(new Date()) + " " +
                 "where id=" + id  ,
@@ -360,12 +365,14 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 var type = req.body.type;
                 var standart = req.body.standart;
                 var detail = req.body.details;
+                var masterAlloys = req.body.masterAlloys;
                 //set form data
                 var formData = [];
                 formData.name = name;
                 formData.type = type;
                 formData.standart = standart;
                 formData.detail = detail;
+                formData.masterAlloys = masterAlloys;
                 //set the message and success
                 var message = "";
                 var success = 0;
@@ -402,6 +409,14 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 detail = formData.detail;
             }
         }
+        var masterAlloys = [];
+        if(formData != null && formData.masterAlloys != null){
+            if(typeof formData.masterAlloys == "string" ){
+                masterAlloys = formData.masterAlloys.split(",");
+            }else{
+                masterAlloys = formData.masterAlloys;
+            }
+        }
         res.render('qaanalysisheaderoperation', 
                 { 
                     data: req.body,
@@ -422,7 +437,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     standarts : standarts,
                     types : types,
                     details : details,
-                    detail : JSON.stringify(detail)
+                    detail : JSON.stringify(detail),
+                    masterAlloys : JSON.stringify(masterAlloys)
                 });
     }
     
@@ -434,6 +450,16 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         //validations
         if(!name || !formData.type || !formData.standart || !formData.detail){
             message = addMessage(message, localization.fillForm)
+        }
+        var isError = false;
+        for(var i = 0; i < formData.masterAlloys.length; i++){
+            if(!formData.masterAlloys[i]){
+                isError = true;
+                break;
+            }
+        }
+        if(isError){
+            message = addMessage(message, localization.enterMasterAlloy)
         }
         if(message){
             renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
