@@ -1,0 +1,24 @@
+extends main.pug
+
+block content
+    div(class="bgc-white bd bdrs-3 p-20 mB-20")
+        h4 #{localization.analysisResult}
+        hr(class="divider")
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label #{localization.productId} : #{qfu.name}
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label #{localization.partyno} : #{qfu.partyno}
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label #{localization.productionDate} : #{qfu.partydate}
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label #{localization.productionAmount} : #{qfu.amount}
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label #{localization.sender} : #{qfu.sender}
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label #{localization.explanation} : #{qfu.explanation}

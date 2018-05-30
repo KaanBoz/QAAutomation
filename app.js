@@ -42,6 +42,7 @@ function dbCallback(){
     var qaallmaterials = require('./pages/qaallmaterials.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaallqualityfollowup = require('./pages/qaallqualityfollowup.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaassignedtome = require('./pages/qaassignedtome.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaeditassigned = require('./pages/qaeditassigned.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     /*Operation Pages*/
     var qauseroperation = require('./pages/qauseroperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaanalysisheaderoperation = require('./pages/qaanalysisheaderoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
@@ -51,6 +52,8 @@ function dbCallback(){
     var qaanalysisstandartoperation = require('./pages/qaanalysisstandartoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qamaterialoperation = require('./pages/qamaterialoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qafollowupoperation = require('./pages/qafollowupoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaeditmasteralloyresult = require('./pages/qaeditmasteralloyresult.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaeditresult = require('./pages/qaeditresult.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     /*Table Apis*/
     var usersTable = require('./api/qaalluserstable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var analysisTypeTable = require('./api/qaanalysistypetable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);

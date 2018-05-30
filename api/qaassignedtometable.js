@@ -31,7 +31,7 @@ module.exports = function (app, myLocalize, functions, con, router) {
                         var data = [];
                         for (i = 0; i < usersDb.length; i++) { 
                             var buttonView = 
-                            "<a href=\"../qauseroperation?operation=view&id=" + usersDb[i].id + "\">" +
+                            "<a href=\"../qaeditassigned?id=" + usersDb[i].id + "\">" +
                                 "<button type=\"button\" class=\"btn btn-primary btn-xs\">" +
                                     "<span class=\"icon-holder\">" +
                                         "<i class=\"c-white-500 ti-pencil\"></i>" +

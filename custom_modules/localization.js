@@ -402,7 +402,23 @@ module.exports = function (app, Localize) {
         },
         "Assigned to me" : {
             "tr" : "Bana atananlar"
+        },
+        "Entered Results" : {
+            "tr": "Girilen Sonuclar"
+        },
+        "Add New Master Alloy Result" : {
+            "tr" : "Yeni Master Kulcesi Sonucu Ekle"                
+        },
+        "Add New Analysis Result" : {
+            "tr" : "Yeni Analiz Sonucu Ekle"
+        },
+        "Master Alloy Result" : {
+            "tr" : "Master Kulce Sonucu"
+        },
+        "Analysis Result" : {
+            "tr" : "Analiz Sonucu"
         }
+        
     });
 
     module.localization = {};
@@ -548,6 +564,13 @@ module.exports = function (app, Localize) {
         module.localization.followupDeleted = module.myLocalize.translate("Production Watch deleted successfully");
         module.localization.enterMasterAlloy = module.myLocalize.translate("Please enter master alloy value for all selected details");
         module.localization.assignedToMe = module.myLocalize.translate("Assigned to me");
+        module.localization.enteredResults = module.myLocalize.translate("Entered Results");
+
+        module.localization.addNewMasterAlloyResult = module.myLocalize.translate("Add New Master Alloy Result");
+        module.localization.addNewAnalysisResult = module.myLocalize.translate("Add New Analysis Result");
+        module.localization.masterAlloyResult = module.myLocalize.translate("Master Alloy Result");
+        module.localization.analysisResult = module.myLocalize.translate("Analysis Result");
+        
     }
 
     return module;

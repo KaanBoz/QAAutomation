@@ -1,0 +1,133 @@
+extends main.pug
+
+block content
+    div(class="bgc-white bd bdrs-3 p-20 mB-20")
+        h4 #{localization.enteredResults}
+        hr(class="divider")
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label #{localization.productId} : #{qfu.name}
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label #{localization.partyno} : #{qfu.partyno}
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label #{localization.productionDate} : #{qfu.partydate}
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label #{localization.productionAmount} : #{qfu.amount}
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label #{localization.sender} : #{qfu.sender}
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label #{localization.explanation} : #{qfu.explanation}
+        a(href="../qaeditmasteralloyresult?id=" + id + "&operation=add")
+            button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important; margin-bottom:15px;")
+                span(class="icon-holder")
+                    i(class="c-white-500 ti-plus")
+                    span(class="title" style="margin:14px") #{localization.addNewMasterAlloyResult}
+        table(id="tableMaster" class="table table-hover table-bordered" cellspacing="0" width="100%")
+            thead
+                tr
+                    th #{localization.productId}
+                    th #{localization.productionDate}
+                    th #{localization.partyno}
+                    th(style="max-width: 225px !important")
+
+        a(href="../qaeditresult?id=" + id + "&operation=add")
+            button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important; margin-bottom:15px;")
+                span(class="icon-holder")
+                    i(class="c-white-500 ti-plus")
+                    span(class="title" style="margin:14px") #{localization.addNewAnalysisResult}
+        table(id="tableEdit" class="table table-hover table-bordered" cellspacing="0" width="100%")
+            thead
+                tr
+                    th #{localization.productId}
+                    th #{localization.productionDate}
+                    th #{localization.partyno}
+                    th(style="max-width: 225px !important")
+
+    script.
+        var localization = '#{localizationVal}';
+        if(localization == 'tr'){
+            $(document).ready(function() {
+                $('#tableMaster').DataTable( {
+                    "language": {
+                        "sDecimal":        ",",
+                        "sEmptyTable":     "Tabloda herhangi bir veri mevcut değil",
+                        "sInfo":           "_TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
+                        "sInfoEmpty":      "Kayıt yok",
+                        "sInfoFiltered":   "(_MAX_ kayıt içerisinden bulunan)",
+                        "sInfoPostFix":    "",
+                        "sInfoThousands":  ".",
+                        "sLengthMenu":     "Sayfada _MENU_ kayıt göster",
+                        "sLoadingRecords": "Yükleniyor...",
+                        "sProcessing":     "İşleniyor...",
+                        "sSearch":         "Ara:",
+                        "sZeroRecords":    "Eşleşen kayıt bulunamadı",
+                        "oPaginate": {
+                            "sFirst":    "İlk",
+                            "sLast":     "Son",
+                            "sNext":     "Sonraki",
+                            "sPrevious": "Önceki"
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": artan sütun sıralamasını aktifleştir",
+                            "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
+                        }
+                    },
+                    "processing": true,
+                    "serverSide": true,
+                    "ajax": "../qaassignedtometable"
+                });
+            });
+        }else{
+            $('#tableMaster').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": "../qaassignedtometable"
+            });
+        }
+
+    script.
+        var localization = '#{localizationVal}';
+        if(localization == 'tr'){
+            $(document).ready(function() {
+                $('#tableEdit').DataTable( {
+                    "language": {
+                        "sDecimal":        ",",
+                        "sEmptyTable":     "Tabloda herhangi bir veri mevcut değil",
+                        "sInfo":           "_TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
+                        "sInfoEmpty":      "Kayıt yok",
+                        "sInfoFiltered":   "(_MAX_ kayıt içerisinden bulunan)",
+                        "sInfoPostFix":    "",
+                        "sInfoThousands":  ".",
+                        "sLengthMenu":     "Sayfada _MENU_ kayıt göster",
+                        "sLoadingRecords": "Yükleniyor...",
+                        "sProcessing":     "İşleniyor...",
+                        "sSearch":         "Ara:",
+                        "sZeroRecords":    "Eşleşen kayıt bulunamadı",
+                        "oPaginate": {
+                            "sFirst":    "İlk",
+                            "sLast":     "Son",
+                            "sNext":     "Sonraki",
+                            "sPrevious": "Önceki"
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": artan sütun sıralamasını aktifleştir",
+                            "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
+                        }
+                    },
+                    "processing": true,
+                    "serverSide": true,
+                    "ajax": "../qaassignedtometable"
+                });
+            });
+        }else{
+            $('#tableEdit').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": "../qaassignedtometable"
+            });
+        }
