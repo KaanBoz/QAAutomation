@@ -256,7 +256,7 @@ module.exports = function(app, mysql, functions, callback){
                 "name VARCHAR(256) NOT NULL UNIQUE," +
                 "type INT NOT NULL," +
                 "standart INT NOT NULL," +
-                "details VARCHAR(256) NOT NULL," +
+                "details VARCHAR(512) NOT NULL," +
                 "master_alloy VARCHAR(256) NOT NULL," +
                 "added_by INT NOT NULL," + 
                 "added_at DATETIME NOT NULL," +
@@ -394,6 +394,80 @@ module.exports = function(app, mysql, functions, callback){
                             }else{
                                 console.log("dbversion is updated to 9");
                                 module.dbVersion = 9;
+                                createMasterAlloyResult();
+                            }
+                        });
+                    }
+                });
+            }else{
+                createMasterAlloyResult();
+            }
+        }
+
+
+        function createMasterAlloyResult(){
+            if(module.dbVersion == 9){
+                module.con.query("CREATE TABLE IF NOT EXISTS masteralloyresult (" +
+                "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                "analysis INT NOT NULL," +
+                "followup INT NOT NULL," +
+                "result VARCHAR(512) NOT NULL," +
+                "added_by INT NOT NULL," + 
+                "added_at DATETIME NOT NULL," +
+                "edited_by INT, " + 
+                "edited_at DATETIME, " + 
+                "deleted_by INT," + 
+                "deleted_at DATETIME, " + 
+                "is_deleted BIT NOT NULL, " +
+                "is_validated BIT NOT NULL" +
+                ");", function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        console.log("masteralloyresult table created or exists");
+                        module.con.query("update dbvariables set dbversion = 10 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 10");
+                                module.dbVersion = 10;
+                                createAnalysisResult();
+                            }
+                        });
+                    }
+                });
+            }else{
+                createAnalysisResult();
+            }
+        }
+
+
+        function createAnalysisResult(){
+            if(module.dbVersion == 10){
+                module.con.query("CREATE TABLE IF NOT EXISTS analysisresult (" +
+                "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                "analysis INT NOT NULL," +
+                "followup INT NOT NULL," +
+                "result VARCHAR(512) NOT NULL," +
+                "added_by INT NOT NULL," + 
+                "added_at DATETIME NOT NULL," +
+                "edited_by INT, " + 
+                "edited_at DATETIME, " + 
+                "deleted_by INT," + 
+                "deleted_at DATETIME, " + 
+                "is_deleted BIT NOT NULL, " +
+                "is_validated BIT NOT NULL" +
+                ");", function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        console.log("analysisresult table created or exists");
+                        module.con.query("update dbvariables set dbversion = 11 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 11");
+                                module.dbVersion = 11;
                                 callback();
                             }
                         });
@@ -403,6 +477,8 @@ module.exports = function(app, mysql, functions, callback){
                 callback();
             }
         }
+
+
     }
 
 

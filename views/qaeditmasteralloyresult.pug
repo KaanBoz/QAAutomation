@@ -1,6 +1,10 @@
 extends main.pug
 
+block append head
+    script(src='../js/qaeditmasteralloyresult.js')
 block content
+    script.
+        var fields = !{fields};
     div(class="bgc-white bd bdrs-3 p-20 mB-20")
         h4 #{localization.masterAlloyResult}
         hr(class="divider")
@@ -22,3 +26,11 @@ block content
         div(class="form-row")
             div(class="form-group col-md-6")
                 label #{localization.explanation} : #{qfu.explanation}
+        each val in field
+            div(class="form-group col-md-6")
+                label #{val.materialname} (#{val.max} - #{val.min} #{val.unitshort}) (#{val.master_alloy} #{val.unitshort})
+                input(type="number" class="form-control" id="field"+val.materialid name="field"+val.materialid onchange="numericOnChange(this)")
+        div
+            button(type="button" id="save" class="btn btn-success" style="margin-top:35px;") #{localization.save}
+        div
+            a(href="../qaeditassigned?id=" + id type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
