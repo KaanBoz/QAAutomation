@@ -399,6 +399,9 @@ module.exports = function (app, Localize) {
         },
         "Please enter master alloy value for all selected details" : {
             "tr" : "Lutfen sectiginiz butun detaylar icin master alasim degeri giriniz."
+        },
+        "Assigned to me" : {
+            "tr" : "Bana atananlar"
         }
     });
 
@@ -544,6 +547,7 @@ module.exports = function (app, Localize) {
         module.localization.followupUpdated = module.myLocalize.translate("Production Watch updated successfully");
         module.localization.followupDeleted = module.myLocalize.translate("Production Watch deleted successfully");
         module.localization.enterMasterAlloy = module.myLocalize.translate("Please enter master alloy value for all selected details");
+        module.localization.assignedToMe = module.myLocalize.translate("Assigned to me");
     }
 
     return module;
