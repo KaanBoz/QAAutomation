@@ -23,6 +23,12 @@ function setOnClicks(){
 function saveOnClick(){
     $("#save").click(function(){
         var data = {};
+        var results = [];
+        for(var i = 0; i < fields.length; i++){
+            var fieldNumber = i + 1;
+            results.push($("#field" + fieldNumber).val());
+        }
+        data.results = results;
         $.ajax({
             type: "POST",
             url: window.location.href ,
@@ -40,6 +46,12 @@ function saveOnClick(){
 function deleteOnClick(){
     $("#delete").click(function(){
         var data = {};
+        var results = [];
+        for(var i = 0; i < fields.length; i++){
+            var fieldNumber = i + 1;
+            results.push($("#field" + fieldNumber).val());
+        }
+        data.results = results;
         $.ajax({
             type: "POST",
             url: window.location.href ,

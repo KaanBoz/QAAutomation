@@ -2,7 +2,7 @@ extends main.pug
 
 block content
     div(class="bgc-white bd bdrs-3 p-20 mB-20")
-        h4 #{localization.enteredResults}
+        h4 #{localization.followup}
         hr(class="divider")
         div(class="form-row")
             div(class="form-group col-md-6")
@@ -22,6 +22,8 @@ block content
         div(class="form-row")
             div(class="form-group col-md-6")
                 label #{localization.explanation} : #{qfu.explanation}
+        h4 #{localization.enteredResults}
+        hr(class="divider")
         a(href="../qaeditmasteralloyresult?id=" + id + "&operation=add")
             button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important; margin-bottom:15px;")
                 span(class="icon-holder")
@@ -30,9 +32,7 @@ block content
         table(id="tableMaster" class="table table-hover table-bordered" cellspacing="0" width="100%")
             thead
                 tr
-                    th #{localization.productId}
-                    th #{localization.productionDate}
-                    th #{localization.partyno}
+                    th #{localization.results}
                     th(style="max-width: 225px !important")
 
         a(href="../qaeditresult?id=" + id + "&operation=add")
@@ -43,9 +43,7 @@ block content
         table(id="tableEdit" class="table table-hover table-bordered" cellspacing="0" width="100%")
             thead
                 tr
-                    th #{localization.productId}
-                    th #{localization.productionDate}
-                    th #{localization.partyno}
+                    th #{localization.results}
                     th(style="max-width: 225px !important")
 
     script.
@@ -79,14 +77,24 @@ block content
                     },
                     "processing": true,
                     "serverSide": true,
-                    "ajax": "../qaassignedtometable"
+                    "ajax": {
+                        "url" : "../qaeditmasteralloytable",
+                        "data": function ( d ) {
+                            d.followupId = getParameterByName("id");
+                        }
+                    }
                 });
             });
         }else{
             $('#tableMaster').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": "../qaassignedtometable"
+                "ajax": {
+                        "url" : "../qaeditmasteralloytable",
+                        "data": function ( d ) {
+                            d.followupId = getParameterByName("id");
+                        }
+                    }
             });
         }
 
@@ -121,13 +129,33 @@ block content
                     },
                     "processing": true,
                     "serverSide": true,
-                    "ajax": "../qaassignedtometable"
+                    "ajax": {
+                        "url" : "../qaeditmasteralloytable",
+                        "data": function ( d ) {
+                            d.followupId = getParameterByName("id");
+                        }
+                    }
                 });
             });
         }else{
             $('#tableEdit').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": "../qaassignedtometable"
+                "ajax": {
+                        "url" : "../qaeditmasteralloytable",
+                        "data": function ( d ) {
+                            d.followupId = getParameterByName("id");
+                        }
+                    }
             });
+        }
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
         }

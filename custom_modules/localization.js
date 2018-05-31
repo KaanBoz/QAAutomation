@@ -417,6 +417,15 @@ module.exports = function (app, Localize) {
         },
         "Analysis Result" : {
             "tr" : "Analiz Sonucu"
+        },
+        "Saved" : {
+            "tr" : "Kaydedildi"
+        },
+        "Results" : {
+            "tr" : "Sonuclar"
+        },
+        "Deleted" : {
+            "tr" : "Silindi"
         }
         
     });
@@ -570,7 +579,9 @@ module.exports = function (app, Localize) {
         module.localization.addNewAnalysisResult = module.myLocalize.translate("Add New Analysis Result");
         module.localization.masterAlloyResult = module.myLocalize.translate("Master Alloy Result");
         module.localization.analysisResult = module.myLocalize.translate("Analysis Result");
-        
+        module.localization.saved = module.myLocalize.translate("Saved");
+        module.localization.results = module.myLocalize.translate("Results");
+        module.localization.deleted = module.myLocalize.translate("Deleted");
     }
 
     return module;

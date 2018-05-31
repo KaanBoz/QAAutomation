@@ -342,7 +342,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 return
             }
             con.query(
-                "update qualityfollowup " + " set is_deleted = 1, analysis=" + -id + ", deleted_by=" + sess.user.id + ", deleted_at=" + con.escape(new Date()) + " " +
+                "update qualityfollowup " + " set is_deleted = 1, analysis=" + id + ", deleted_by=" + sess.user.id + ", deleted_at=" + con.escape(new Date()) + " " +
                 "where id=" + id  ,
                 function(err, result, fields){
                     if(err){
