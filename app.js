@@ -65,6 +65,7 @@ function dbCallback(){
     var qaallqualityfollowuptable = require('./api/qaallqualityfollowuptable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaassignedtometable = require('./api/qaassignedtometable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaeditmasteralloytable = require('./api/qaeditmasteralloytable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaedittable = require('./api/qaedittable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     /*Base Router*/
     app.get('/', function (req, res) {
         res.redirect('/login');
