@@ -28,7 +28,7 @@ block content
                 label #{localization.explanation} : #{qfu.explanation}
         each val in field
             div(class="form-group col-md-6")
-                label #{val.materialname} (#{val.max} - #{val.min} #{val.unitshort}) (#{val.master_alloy} #{val.unitshort})
+                label #{val.materialname} (#{val.min} - #{val.max} #{val.unitshort}) (#{val.master_alloy} #{val.unitshort})
                 if isDisabled
                     if val.value
                         input(type="number" class="form-control" id="field"+val.materialid name="field"+val.materialid onchange="numericOnChange(this)" value=val.value disabled)

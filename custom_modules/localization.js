@@ -426,6 +426,12 @@ module.exports = function (app, Localize) {
         },
         "Deleted" : {
             "tr" : "Silindi"
+        },
+        "End Follow Up" : {
+            "tr" : "Uretim Takipi Bitir"
+        },
+        "You must enter at least 1 of each result type" : {
+            "tr" : "Her sonuc tipinden en az bir tane girmelisiniz"
         }
         
     });
@@ -582,6 +588,8 @@ module.exports = function (app, Localize) {
         module.localization.saved = module.myLocalize.translate("Saved");
         module.localization.results = module.myLocalize.translate("Results");
         module.localization.deleted = module.myLocalize.translate("Deleted");
+        module.localization.endFollowup = module.myLocalize.translate("End Follow Up");
+        module.localization.enterOneOfEach = module.myLocalize.translate("You must enter at least 1 of each result type");
     }
 
     return module;

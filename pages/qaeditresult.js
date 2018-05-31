@@ -10,7 +10,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         var actionButton = 1;        
         if(sess && sess.user){
             if(sess.user.isoperator){
-                con.query("SELECT qualityfollowup.id, name, partyno, partydate, sender, explanation, " + 
+                con.query("SELECT qualityfollowup.id, name, analysis, partyno, partydate, sender, explanation, " + 
                 "amount FROM qualityfollowup inner join analysisheader on analysisheader.id = qualityfollowup.analysis " + 
                 "where qualityfollowup.id = " + id, function(err, result, fields){
                     if (err){
@@ -18,8 +18,9 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         throw err;    
                     }else{
                         var qfu = result[0];
+                        var analysisId = result[0].analysis;
                         qfu.partydate = getFormattedDate(qfu.partydate);
-                        con.query("select analysisheader.details, analysisheader.master_alloy from analysisheader where analysisheader.id = " + id, function(err, result, fields){
+                        con.query("select analysisheader.details, analysisheader.master_alloy from analysisheader where analysisheader.id = " + analysisId, function(err, result, fields){
                             if (err){
                                 console.log(err.message);
                                 throw err;    
