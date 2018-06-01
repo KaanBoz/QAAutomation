@@ -119,7 +119,7 @@ module.exports = function(app, mysql, functions, callback){
                         }else{
                             if(result.length == 0){
                                 module.con.query("INSERT INTO USERS (firstname, lastname, mail, password, isadmin, ischef, isoperator, added_by, added_at, is_deleted, is_validated) VALUES" + 
-                                "('admin', 'user', 'admin@sentes-bir.com', '" +functions.encrypt("12345") + "', 1, 1, 1, 1, " + module.con.escape(new Date()) + ", 0, 1)"
+                                "('admin', 'user', 'admin@sentes-bir.com', '" +functions.encrypt("12345") + "', 1, 0, 0, 1, " + module.con.escape(new Date()) + ", 0, 1)"
                                 , function (err, result, fields) {
                                     if (err) throw err;
                                     console.log("Admin user created");

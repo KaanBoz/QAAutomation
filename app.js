@@ -54,6 +54,8 @@ function dbCallback(){
     var qafollowupoperation = require('./pages/qafollowupoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaeditmasteralloyresult = require('./pages/qaeditmasteralloyresult.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaeditresult = require('./pages/qaeditresult.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaresults = require('./pages/qaresults.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qacalculation = require('./pages/qacalculation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     /*Table Apis*/
     var usersTable = require('./api/qaalluserstable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var analysisTypeTable = require('./api/qaanalysistypetable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
@@ -66,6 +68,7 @@ function dbCallback(){
     var qaassignedtometable = require('./api/qaassignedtometable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaeditmasteralloytable = require('./api/qaeditmasteralloytable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaedittable = require('./api/qaedittable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qaresultstable = require('./api/qaresultstable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     /*Base Router*/
     app.get('/', function (req, res) {
         res.redirect('/login');

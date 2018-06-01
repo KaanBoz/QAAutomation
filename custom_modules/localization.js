@@ -432,6 +432,9 @@ module.exports = function (app, Localize) {
         },
         "You must enter at least 1 of each result type" : {
             "tr" : "Her sonuc tipinden en az bir tane girmelisiniz"
+        },
+        "Calculation" : {
+            "tr" : "Hesaplama"
         }
         
     });
@@ -590,6 +593,7 @@ module.exports = function (app, Localize) {
         module.localization.deleted = module.myLocalize.translate("Deleted");
         module.localization.endFollowup = module.myLocalize.translate("End Follow Up");
         module.localization.enterOneOfEach = module.myLocalize.translate("You must enter at least 1 of each result type");
+        module.localization.calculation = module.myLocalize.translate("Calculation");
     }
 
     return module;

@@ -26,6 +26,7 @@ module.exports = function (app, myLocalize, functions, con, router) {
         var sql = 
             "(select " +
                 "qualityfollowup.id as id, " +
+                "qualityfollowup.added_by as added_by, " +
                 "qualityfollowup.partyno as partyno, " +
                 "qualityfollowup.partydate as partydate, " +
                 "analysisheader.name as analysisname, " +
@@ -34,7 +35,7 @@ module.exports = function (app, myLocalize, functions, con, router) {
             "inner join analysisheader on analysisheader.id= qualityfollowup.analysis " +
             "inner join users on users.id=qualityfollowup.assignedto " + whereCondition + ") as t " ;
         if(sess && sess.user){
-            con.query("SELECT COUNT(partyno) AS count FROM qualityfollowup where is_deleted = 0 and is_validated = 1 and isdone=0" , 
+            con.query("SELECT COUNT(partyno) AS count FROM qualityfollowup where is_deleted = 0 and is_validated = 1 and isdone=0 and added_by = " + sess.user.id , 
             function (err, result, fields){
                 if(err) throw err;
                 var recordsTotal = result[0].count;

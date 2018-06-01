@@ -3,7 +3,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
     //DYNAMIC VALUES METHODS
 
     function getOperators(operation, req, res, sess, operators, analyses){
-        con.query("select id, firstname, lastname from users where is_deleted = 0 and is_validated = 1", 
+        con.query("select id, firstname, lastname from users where is_deleted = 0 and is_validated = 1 and isoperator = 1", 
             function(err, result, fields){
                 if(err){
                     operators = [];
