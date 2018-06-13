@@ -332,6 +332,7 @@ module.exports = function(app, mysql, functions, callback){
                 "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
                 "name VARCHAR(128) NOT NULL UNIQUE,"+
                 "unit INT NOT NULL," +
+                "is_multiple BIT NOT NULL," +
                 "added_by INT NOT NULL," + 
                 "added_at DATETIME NOT NULL," +
                 "edited_by INT, " + 

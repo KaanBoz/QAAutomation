@@ -435,6 +435,9 @@ module.exports = function (app, Localize) {
         },
         "Calculation" : {
             "tr" : "Hesaplama"
+        },
+        "Alliage Material" : {
+            "tr" : "Alyaj Hammadde"
         }
         
     });
@@ -594,6 +597,7 @@ module.exports = function (app, Localize) {
         module.localization.endFollowup = module.myLocalize.translate("End Follow Up");
         module.localization.enterOneOfEach = module.myLocalize.translate("You must enter at least 1 of each result type");
         module.localization.calculation = module.myLocalize.translate("Calculation");
+        module.localization.isMultiple = module.myLocalize.translate("Alliage Material");
     }
 
     return module;

@@ -36,7 +36,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     renderPage(req, res, sess, null, null, 1, operation, null, unittypes);
                     return;
                 }else if(operation == "edit"){
-                    con.query("select name, unit from material where is_deleted = 0 and is_validated = 1 and id=" + id, 
+                    con.query("select name, unit, is_multiple from material where is_deleted = 0 and is_validated = 1 and id=" + id, 
                     function(err, result, fields){
                         if(err){
                             message = err.message;
@@ -55,12 +55,13 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         var formData = [];
                         formData.name = result[0].name;
                         formData.unittype = result[0].unit;
+                        formData.isMultiple = result[0].is_multiple;
                         renderPage(req, res, sess, null, null, 1, operation, formData, unittypes);
                     });
                     return;
 
                 }else if (operation == "delete"){
-                    con.query("select name, unit from material where is_deleted = 0 and is_validated = 1 and id=" + id, 
+                    con.query("select name, unit, is_multiple from material where is_deleted = 0 and is_validated = 1 and id=" + id, 
                     function(err, result, fields){
                         if(err){
                             message = err.message;
@@ -79,13 +80,14 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         var formData = [];
                         formData.name = result[0].name;
                         formData.unittype = result[0].unit;
+                        formData.isMultiple = result[0].is_multiple;
                         renderPage(req, res, sess, null, null, 1, operation, formData, unittypes);
 
                     });
                     return;
                 }else if(operation =="view"){
 
-                    con.query("select name, unit from material where is_deleted = 0 and is_validated = 1 and id=" + id, 
+                    con.query("select name, unit, is_multiple from material where is_deleted = 0 and is_validated = 1 and id=" + id, 
                     function(err, result, fields){
                         if(err){
                             message = err.message;
@@ -104,6 +106,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         var formData = [];
                         formData.name = result[0].name;
                         formData.unittype = result[0].unit;
+                        formData.isMultiple = result[0].is_multiple;
                         renderPage(req, res, sess, null, null, 0, operation, formData, unittypes);
                     });
                     return;
@@ -135,10 +138,12 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     //get the variables from the request
                     var name = req.body.name;
                     var unittype = req.body.unittype;
+                    var isMultiple = req.body.isMultiple;
                     //set form data
                     var formData = [];
                     formData.name = name;
                     formData.unittype = unittype;
+                    formData.isMultiple = isMultiple;
                     //set the message and success
                     var message = "";
                     var success = 0;
@@ -156,7 +161,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                             if(result.length > 0){
                                 var id = result[0].id;
                                 con.query(
-                                    "update material " + " set name='" + name + "', unit=" + unittype + "," + 
+                                    "update material " + " set name='" + name + "', unit=" + unittype + ", is_multiple=" + formData.isMultiple + ", " + 
                                     "edited_by=" + sess.user.id + "," +
                                     "edited_at=" + con.escape(new Date()) + ", is_deleted = 0, deleted_by = null, deleted_at = null " +
                                     "where id=" + id  ,
@@ -173,9 +178,9 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                         return;
                                 });
                             }else{
-                                con.query("INSERT INTO material (name, unit, added_by, added_at, is_deleted" + 
+                                con.query("INSERT INTO material (name, unit, is_multiple, added_by, added_at, is_deleted" + 
                                 ", is_validated) VALUES" + 
-                                "('" + name + "', '" + unittype + "'," + sess.user.id + ", " 
+                                "('" + name + "', '" + unittype + "'," + formData.isMultiple + ", " + sess.user.id + ", " 
                                 + con.escape(new Date()) + ", 0, 1)", function(err, result, fields){
                                     if (err){
                                         message = err.message;
@@ -215,7 +220,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                 return;
                             }
                             con.query(
-                                "update material " + " set name='" + name + "', unit=" + unittype + ", edited_by=" + sess.user.id + "," +
+                                "update material " + " set name='" + name + "', unit=" + unittype + ", is_multiple=" + formData.isMultiple + ", edited_by=" + sess.user.id + "," +
                                 "edited_at=" + con.escape(new Date()) + " " +
                                 "where id=" + id  ,
                                 function(err, result, fields){
@@ -294,7 +299,9 @@ module.exports = function (app, myLocalize, functions, con, router, localization
     });
 
     function renderPage(req, res, sess, success, message, actionButton, operation, formData, unittypes){
-        var a = ((operation == "add" || operation == "edit") && success == 1) || operation == "delete" ? 1 : 0;
+        if(formData && formData.isMultiple && formData.isMultiple == "true"){
+            formData.isMultiple = true;
+        }
         res.render('qamaterialoperation', 
                 { 
                     data: req.body,

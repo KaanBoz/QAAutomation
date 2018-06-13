@@ -46,6 +46,19 @@ block content
                                                 option(value=val.id selected) #{val.name}
                                             else
                                                 option(value=val.id) #{val.name}
+                        div(class="checkbox checkbox-circle checkbox-info peers ai-c mB-15" style="margin-top:20px;")
+                            if isDisabled
+                                if formData && formData.isMultiple && formData.isMultiple == true
+                                    input(type="checkbox" id="isMultiple" name="isMultiple" class="peer" disabled checked)
+                                else
+                                    input(type="checkbox" id="isMultiple" name="isMultiple" class="peer" disabled)
+                            else
+                                if formData && formData.isMultiple && formData.isMultiple == true
+                                    input(type="checkbox" id="isMultiple" name="isMultiple" class="peer" checked)
+                                else
+                                    input(type="checkbox" id="isMultiple" name="isMultiple" class="peer")
+                            label(for="isMultiple" class="peers peer-greed js-sb ai-c")
+                                span(class="peer peer-greed") #{localization.isMultiple}
                         if message && success == 1
                             div(class = "form-group" style="color:green;margin-top:35px;")
                                 p !{message}
