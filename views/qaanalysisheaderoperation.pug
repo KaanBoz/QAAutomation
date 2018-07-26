@@ -5,119 +5,163 @@ block append head
 block content
     script.
         var details = !{detail};
-        var masterAlloys = !{masterAlloys};
-    div(id = "mainForm" class="row gap-20 masonry pos-r" ng-controller="qaAnalysisHeaderOperationCtrl")
+        var materials = !{material};
+        var localizationJson = !{localizationJson};
+        var formDataJsonName = !{formDataJsonName};
+        var formDataJsonType = !{formDataJsonType};
+        var formDataJsonStandart = !{formDataJsonStandart};
+        var detailsJson = !{detailsJson};
+    div(id = "mainForm" class="row" ng-controller="qaAnalysisHeaderOperationCtrl")
         div(class="masonry-sizer col-md-12")
         div(class="masonry-item col-md-12")
             div(class="bgc-white p-20 bd")
                 if operation == "add" && !success 
-                    h6(class="c-grey-900") #{localization.newAnalysisHeader}
+                    h6(class="c-grey-900") #{localization.newAnalysis}
                 else
-                    h6(class="c-grey-900") #{localization.analysisHeader}
+                    h6(class="c-grey-900") #{localization.analysis}
+                hr(class="divider")
                 div(class="mT-30")
                     form(method="post" action=".." + originalUrl)
                         div(class="form-row")
                             div(class="form-group col-md-6")
                                 label(for="name") #{localization.productId}
                                 if isDisabled
-                                    if formData && formData.name
-                                        input(type="text" class="form-control" id="name" name="name" disabled value=formData.name) 
-                                    else
-                                        input(type="text" class="form-control" id="name" name="name" disabled)
+                                    input(type="text" class="form-control" id="name" name="name" disabled ng-model="formData.name")
                                 else
-                                    if formData && formData.name
-                                        input(type="text" class="form-control" id="name" name="name" value=formData.name)
-                                    else
-                                        input(type="text" class="form-control" id="name" name="name")
+                                    input(type="text" class="form-control" id="name" name="name" ng-model="formData.name")
                         div(class="form-row")
                             div(class="form-group col-md-6")
                                 label(for="type") #{localization.analysisType} 
                                 if isDisabled
-                                    select(id="type" name="type" class="form-control" disabled)
+                                    select(id="type" name="type" class="form-control" disabled ng-model="formData.type")
                                         option(value="") #{localization.choose}
                                         each val in types
-                                            if formData && formData.type && formData.type == val.id
-                                                option(value=val.id selected) #{val.name}
-                                            else
-                                                option(value=val.id) #{val.name}
+                                            option(value=val.id) #{val.name}
                                 else
-                                    select(id="type" name="type" class="form-control")
+                                    select(id="type" name="type" class="form-control" ng-model="formData.type")
                                         option(value="") #{localization.choose}
                                         each val in types
-                                            if formData && formData.type && formData.type == val.id
-                                                option(value=val.id selected) #{val.name}
-                                            else
-                                                option(value=val.id) #{val.name}
+                                            option(value=val.id) #{val.name}
                         div(class="form-row")
                             div(class="form-group col-md-6")
                                 label(for="standart") #{localization.standart} 
                                 if isDisabled
-                                    select(id="standart" name="standart" class="form-control" disabled)
+                                    select(id="standart" name="standart" class="form-control" disabled ng-model="formData.standart")
                                         option(value="") #{localization.choose}
                                         each val in standarts
-                                            if formData && formData.standart && formData.standart == val.id
-                                                option(value=val.id selected) #{val.name}
-                                            else
-                                                option(value=val.id) #{val.name}
+                                            option(value=val.id) #{val.name}
                                 else
-                                    select(id="standart" name="standart" class="form-control")
+                                    select(id="standart" name="standart" class="form-control" ng-model="formData.standart")
                                         option(value="") #{localization.choose}
                                         each val in standarts
-                                            if formData && formData.standart && formData.standart == val.id
-                                                option(value=val.id selected) #{val.name}
-                                            else
-                                                option(value=val.id) #{val.name}
-                        div(class="form-row" style="display:none;")
-                            div(class="form-group col-md-6")
-                                label(for="type") #{localization.analysisDetail} 
-                                if isDisabled
-                                    select(id="details" name="details" class="form-control" disabled multiple)
-                                        each val in details
-                                            if formData && formData.detail && formData.detail.indexOf(val.id) > -1
-                                                option(value=val.id selected) #{val.name}
-                                            else
-                                                option(value=val.id) #{val.name}
-                                else
-                                    select(id="details" name="details" class="form-control" multiple)
-                                        each val in details
-                                            if formData && formData.detail && formData.detail.indexOf(val.id) > -1
-                                                option(value=val.id selected) #{val.name}
-                                            else
-                                                option(value=val.id) #{val.name}
-                        div(class="form-row")
-                            div(class="form-group col-md-6")
-                                label(for="type") #{localization.analysisDetail} 
-                                table(id="table" class="table table-hover table-bordered" cellspacing="0" width="100%")
-                                    thead
-                                        tr
-                                            th ID
-                                            th #{localization.name}
-                                            th #{localization.masterAlloy}
-                                    tbody
-                                       each val in details
-                                            if isDisabled
-                                                tr
-                                                    td #{val.id}
-                                                    td #{val.name} 
-                                                    td(id=val.id + "editable")
-                                            else
-                                                tr
-                                                    td #{val.id}
-                                                    td #{val.name} 
-                                                    td(id=val.id + "editable")  
-                        if message && success == 1
-                            div(class = "form-group" style="color:green;margin-top:35px;")
-                                p !{message}
+                                            option(value=val.id) #{val.name}
+
+
+                        div(id="messageBox" class = "form-group" style="color:red;")
                         if message && success == 0
-                            div(class = "form-group" style="color:red;margin-top:35px;")
-                                p !{message}
+                            div(id="message") !{message}
                         if actionButton && (operation == "add" || operation == "edit")
-                            button(type="button" id="save" class="btn btn-success" style="margin-top:35px;") #{localization.save}
+                            button(type="button" id="save" class="btn btn-success" ng-click="save()") #{localization.save}
                         else if actionButton && operation == "delete"
-                            button(type="button" id="delete" class="btn btn-danger" style="margin-top:35px;") #{localization.delete}
+                            button(type="button" id="delete" class="btn btn-danger" ng-click="delete()") #{localization.delete}
                         div
                             a(href="../qaallanalysisheaders" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
                         script.
                             var localization = '#{localizationVal}';
                             var isDisabled = !{isDisabled}
+
+
+        div(class="masonry-sizer col-md-12")
+        div(class="masonry-item col-md-12")
+            div(class="bgc-white p-20 bd")
+                h6(class="c-grey-900") #{localization.analysisDetail}
+                hr(class="divider")
+                div(class="mT-30")  
+                    div(class="form-row")
+                        div(class="form-group col-md-6")
+                            label(for="standart") #{localization.material} 
+                            if isDisabled
+                                select(id="material" name="material" class="form-control" disabled)
+                                    option(value="") #{localization.choose}
+                                    each val in materials
+                                        if formData && formData.material && formData.material == val.id
+                                            option(value=val.id selected) #{val.name} (#{val.unitname}-#{val.unitshort})
+                                        else
+                                            option(value=val.id) #{val.name} (#{val.unitname}-#{val.unitshort})
+                            else
+                                select(id="material" name="material" class="form-control")
+                                    option(value="") #{localization.choose}
+                                    each val in materials
+                                        if formData && formData.material && formData.material == val.id
+                                            option(value=val.id selected) #{val.name} (#{val.unitname}-#{val.unitshort})
+                                        else
+                                            option(value=val.id) #{val.name} (#{val.unitname}-#{val.unitshort})
+                    div(class="form-row")
+                        div(class="form-group col-md-6")
+                            label(for="max") #{localization.min}
+                            if isDisabled
+                                if formData && (formData.min || formData.min == 0)
+                                    input(type="number" class="form-control" id="min" name="min" disabled value=formData.min step="0.001") 
+                                else
+                                    input(type="number" class="form-control" id="min" name="min" disabled step="0.001")
+                            else
+                                if formData && (formData.min || formData.min == 0)
+                                    input(type="number" class="form-control" id="min" name="min" value=formData.min step="0.001")
+                                else
+                                    input(type="number" class="form-control" id="min" name="min" step="0.001")
+                    div(class="form-row")
+                        div(class="form-group col-md-6")
+                            label(for="max") #{localization.max}
+                            if isDisabled
+                                if formData && (formData.max || formData.max == 0)
+                                    input(type="number" class="form-control" id="max" name="max" disabled value=formData.max step="0.001") 
+                                else
+                                    input(type="number" class="form-control" id="max" name="max" disabled step="0.001")
+                            else
+                                if formData && (formData.max || formData.max == 0)
+                                    input(type="number" class="form-control" id="max" name="max" value=formData.max step="0.001")
+                                else
+                                    input(type="number" class="form-control" id="max" name="max" step="0.001")
+                    div(class="form-row")
+                        div(class="form-group col-md-5")
+                            label(for="master") #{localization.masterAlloy}
+                            if isDisabled
+                                if formData && (formData.master || formData.master == 0)
+                                    input(type="number" class="form-control" id="master" name="master" disabled value=formData.master step="0.001") 
+                                else
+                                    input(type="number" class="form-control" id="master" name="master" disabled step="0.001")
+                            else
+                                if formData && (formData.master || formData.master == 0)
+                                    input(type="number" class="form-control" id="master" name="master" value=formData.master step="0.001")
+                                else
+                                    input(type="number" class="form-control" id="master" name="master" step="0.001")
+                        div(class="form-group col-md-1")
+                            label(style="visibility: hidden;") aaaaaaaaaaaaaaaaaaaaaaa
+                            button(type="button" id="rest" class="btn btn-success" ng-click="rest()") #{localization.rest}
+                    if actionButton && (operation == "add" || operation == "edit")
+                        button(type="button" id="add" class="btn btn-success" ng-click="addDetail()") #{localization.add}
+
+        div(class="masonry-sizer col-md-12")
+        div(class="masonry-item col-md-12")
+            div(class="bgc-white p-20 bd")
+                table(class="table")
+                    thead
+                        tr
+                            th #{localization.material} 
+                            th #{localization.min} 
+                            th #{localization.max} 
+                            th #{localization.masterAlloy} 
+                            if !isDisabled
+                                th #{localization.delete}
+                    tbody
+                        tr(ng-repeat="x in formData.details track by $index")
+                            td {{ x.material }}
+                            td {{ x.min }}
+                            td {{ x.max }}
+                            td {{ x.master }}
+                            if !isDisabled
+                                td 
+                                    button(type="button" class="btn btn-danger btn-xs" style="margin-left:10px;" ng-click="deleteDetail($index)")
+                                        span(class="icon-holder")
+                                            i(class="c-white-500 ti-trash")
                                                     

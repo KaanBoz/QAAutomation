@@ -1,111 +1,152 @@
 app.controller("qaAnalysisHeaderOperationCtrl", function($scope) {
-});
+    $scope.formData = {};
+    $scope.formData.name = formDataJsonName != null ? formDataJsonName : "";
+    $scope.formData.type = formDataJsonType + "";
+    $scope.formData.standart = formDataJsonStandart + "";
+    $scope.formData.details = detailsJson;
+    $scope.materials = materials;
+    $scope.localization = localizationJson;
 
-var details = [];
+    $scope.addDetail = function(){
+        var detail = {};
+        detail.id = 0;
+        detail.isDeleted = false;
+        detail.materialId = $('#material').val();
+        detail.material = $scope.getMaterialName(detail.materialId);
+        detail.min = parseFloat($('#min').val());
+        detail.max = parseFloat($('#max').val());
+        detail.master = parseFloat($('#master').val());
+        if(!detail.materialId || !detail.material || !detail.min || !detail.max || !detail.master){
+            alert($scope.localization.fillForm);
+            return;
+        }
+        if($scope.doesMaterialExists(detail.materialId)){
+            alert($scope.localization.materialExistsinAnalysis);
+            return;
+        }
+        if(detail.min > detail.max){
+            alert($scope.localization.minCannotBeMoreThanMax);
+            return;
+        }
+        if(detail.master > detail.max || detail.master < detail.min){
+            alert($scope.localization.masterValueError);
+            return;
+        }
+        $scope.formData.details.push(detail);
+            $("#material").val("");
+            $("#min").val("");
+            $("#max").val("");
+            $("#master").val("");
+        
+    }
+
+    $scope.deleteDetail = function(index){
+        $scope.formData.details.splice(index, 1);
+    }
+
+    $scope.getMaterialName = function(materialId){
+        for(var i = 0; i < $scope.materials.length; i++){
+            if (materialId == $scope.materials[i].id){
+                return $scope.materials[i].name;
+            }
+        }
+        return "";
+    }
+
+    $scope.doesMaterialExists = function(materialId){
+        for(var i = 0; i < $scope.formData.details.length; i++){
+            if (materialId == $scope.formData.details[i].materialId){
+                if(!$scope.formData.details[i].isDeleted){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    $scope.save = function(){
+        var data = {};
+        data.name = $("#name").val();
+        data.type = $("#type").val();
+        data.standart = $("#standart").val();
+        data.detail = $scope.formData.details;
+        $.ajax({
+            type: "POST",
+            url: window.location.href ,
+            data: data,
+            success: function (data) {
+                $("#messageBox").empty();
+                var message = $(data).find("#message");
+                var html = message.html()
+                if(html){
+                    $("#messageBox").append("<p>" + html + "</p>");
+                }else{
+                    window.location = window.location.origin + "/qaallanalysisheaders";
+                }
+            }
+          });
+    }
+
+
+    $scope.delete = function(){
+        var data = {};
+        data.name = $("#name").val();
+        data.type = $("#type").val();
+        data.standart = $("#standart").val();
+        data.detail = $scope.formData.details;
+        $.ajax({
+            type: "POST",
+            url: window.location.href ,
+            data: data,
+            success: function (data) {
+                $("#messageBox").empty();
+                var message = $(data).find("#message");
+                var html = message.html()
+                if(html){
+                    $("#messageBox").append("<p>" + html + "</p>");
+                }else{
+                    window.location = window.location.origin + "/qaallanalysisheaders";
+                }
+            }
+          });
+    }
+
+    $scope.rest = function(){
+        var rest = 0;
+        for(var i = 0; i < $scope.formData.details.length; i++){
+            rest += parseFloat($scope.formData.details[i].master);
+        }
+        $("#master").val(checkGetValue((100 - rest) + ""));
+    }
+
+});
 
 $(document).ready(function(){
     setOnClicks();
 });
 
 function setOnClicks(){
-    saveOnClick();
-    deleteOnClick();
-    detailsOnClick();
-    $("#details").val(details);
-    setTable();
-    selectDetails();
+    minOnChange();
+    maxOnChange();
+    masterOnChange();
 }
 
-function saveOnClick(){
-    $("#save").click(function(){
-        var details = [];
-        var masterAlloys = [];
-        for (var i = 0 ; i < $("#table").DataTable().rows( { selected: true } ).data().length; i++ ){
-            details.push($("#table").DataTable().rows( { selected: true } ).data()[i].id);
-            masterAlloys.push($("#table").DataTable().rows( { selected: true } ).data()[i].master_alloy);
-        }
-        var data = {};
-        data.name = $("#name").val();
-        data.type = $("#type").val();
-        data.details = details;
-        data.masterAlloys = masterAlloys;
-        data.standart = $("#standart").val();
-        $.ajax({
-            type: "POST",
-            url: window.location.href ,
-            data: data,
-            success: function (data) {
-                var html = $.parseHTML(data);
-                var mainContent = $(data).find("#mainContent");
-                $("#mainContent").html(mainContent);
-                setOnClicks();
-            }
-          });
+function minOnChange(){
+    $('#min').change(function(){
+        $('#min').val(checkGetValue($('#min').val()));       
     });
 }
 
-function deleteOnClick(){
-    $("#delete").click(function(){
-        var details = [];
-        var masterAlloys = [];
-        for (var i = 0 ; i < $("#table").DataTable().rows( { selected: true } ).data().length; i++ ){
-            details.push($("#table").DataTable().rows( { selected: true } ).data()[i].id);
-            masterAlloys.push($("#table").DataTable().rows( { selected: true } ).data()[i].master_alloy);
-        }
-        var data = {};
-        data.name = $("#name").val();
-        data.type = $("#type").val();
-        data.details = details;
-        data.masterAlloys = masterAlloys;
-        data.standart = $("#standart").val();
-        $.ajax({
-            type: "POST",
-            url: window.location.href ,
-            data: data,
-            success: function (data) {
-                var html = $.parseHTML(data);
-                var mainContent = $(data).find("#mainContent");
-                $("#mainContent").html(mainContent);
-                setOnClicks();
-            }
-          });
+function maxOnChange(){
+    $('#max').change(function(){
+        $('#max').val(checkGetValue($('#max').val()));   
     });
 }
 
-function detailsOnClick(){
-    $("#details").click(function(){
-        var value = $("#details").val();
-        if((getIndex(value) > -1)){
-            details.splice(getIndex(value), 1);
-        }else{
-            details.push(value);
-        }
-        $("#details").val(details);
+function masterOnChange(){
+    $('#master').change(function(){
+        $('#master').val(checkGetValue($('#master').val()));   
     });
-}
-
-function getIndex(value){
-    for(var i = 0; details.length > i; i++){
-        if(parseInt(value) == parseInt(details[i])){
-            return i;
-        }
-    }
-    return -1;
-}
-
-function selectDetails(){
-    for (var i = 0 ; i < $("#table").DataTable().rows().data().length; i++ ){
-        var id = $("#table").DataTable().rows().data().row(i).data().id;
-        if(details.indexOf("" + id) > -1){
-            $("#table").DataTable().rows().data().row(i).select();
-            $("#table").DataTable().rows().data().row(i).data().master_alloy = masterAlloys[details.indexOf("" + id)];
-            $("#" + id + "editable").html(masterAlloys[details.indexOf("" + id)]);
-        }
-    }
-}
-
-function masterAlloyOnChange(item){
-    $(item).val(checkGetValue($(item).val()));   
 }
 
 function checkGetValue(value){
@@ -115,136 +156,4 @@ function checkGetValue(value){
         }
     }
     return value;
-}
-
-function setTable(){
-
-    if(isDisabled){
-        if(localization == 'tr'){
-            $('#table').DataTable( {
-                "language": {
-                    "sDecimal":        ",",
-                    "sEmptyTable":     "Tabloda herhangi bir veri mevcut değil",
-                    "sInfo":           "_TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
-                    "sInfoEmpty":      "Kayıt yok",
-                    "sInfoFiltered":   "(_MAX_ kayıt içerisinden bulunan)",
-                    "sInfoPostFix":    "",
-                    "sInfoThousands":  ".",
-                    "sLengthMenu":     "Sayfada _MENU_ kayıt göster",
-                    "sLoadingRecords": "Yükleniyor...",
-                    "sProcessing":     "İşleniyor...",
-                    "sSearch":         "Ara:",
-                    "sZeroRecords":    "Eşleşen kayıt bulunamadı",
-                    "oPaginate": {
-                        "sFirst":    "İlk",
-                        "sLast":     "Son",
-                        "sNext":     "Sonraki",
-                        "sPrevious": "Önceki"
-                    },
-                    "oAria": {
-                        "sSortAscending":  ": artan sütun sıralamasını aktifleştir",
-                        "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
-                    }
-                },
-                columns: [
-                    { data: 'id'},
-                    { data: 'name'},
-                    { data: 'master_alloy', className: 'editable' }
-                ],
-                select: {
-                    style:    'api'
-                }   
-            });
-        }else{
-            
-            $('#table').DataTable( {
-                
-                columns: [
-                    { data: 'id'},
-                    { data: 'name'},
-                    { data: 'master_alloy', className: 'editable' }
-                ],
-
-
-                select: {
-                    style:    'api'
-                }
-            } );
-        }   
-    }else{
-        if(localization == 'tr'){
-            $('#table').DataTable( {
-                "language": {
-                    "sDecimal":        ",",
-                    "sEmptyTable":     "Tabloda herhangi bir veri mevcut değil",
-                    "sInfo":           "_TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
-                    "sInfoEmpty":      "Kayıt yok",
-                    "sInfoFiltered":   "(_MAX_ kayıt içerisinden bulunan)",
-                    "sInfoPostFix":    "",
-                    "sInfoThousands":  ".",
-                    "sLengthMenu":     "Sayfada _MENU_ kayıt göster",
-                    "sLoadingRecords": "Yükleniyor...",
-                    "sProcessing":     "İşleniyor...",
-                    "sSearch":         "Ara:",
-                    "sZeroRecords":    "Eşleşen kayıt bulunamadı",
-                    "oPaginate": {
-                        "sFirst":    "İlk",
-                        "sLast":     "Son",
-                        "sNext":     "Sonraki",
-                        "sPrevious": "Önceki"
-                    },
-                    "oAria": {
-                        "sSortAscending":  ": artan sütun sıralamasını aktifleştir",
-                        "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
-                    }
-                },
-
-                columns: [
-                    { data: 'id'},
-                    { data: 'name'},
-                    { data: 'master_alloy', className: 'editable' }
-                ],
-
-                select: {
-                    style:    'multi'
-                }   
-            });
-        }else{
-            $('#table').DataTable( {
-                columns: [
-                    { data: 'id'},
-                    { data: 'name'},
-                    { data: 'master_alloy', className: 'editable' }
-                ],
-
-                select: {
-                    style:    'multi'
-                }
-            } );
-        }   
-    }
-
-    editor = new $.fn.dataTable.Editor( {
-        table: "#table",
-        idSrc:  'id',
-        fields: [ {
-                label: "ID",
-                name: "id"
-            }, {
-                label: "Name",
-                name: "name"
-            }, {
-                label: "",
-                name: "master_alloy",
-                attr: {
-                    type: "number"
-                  }
-            }
-        ]
-    } );
-
-    $('#table').on( 'click', 'tbody td.editable', function (e) {
-        editor.inline( this );
-    } );
-
 }

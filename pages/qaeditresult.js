@@ -28,7 +28,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                 var details = result[0].details;
                                 var master_alloy = result[0].master_alloy;
                                 con.query(
-                                    " select material.id as materialid, material.name as materialname, unittype.name as unitname, unittype.short as unitshort, " + 
+                                    " select analysisdetail.id as id, material.id as materialid, material.name as materialname, unittype.name as unitname, unittype.short as unitshort, " + 
                                     " analysisdetail.max as max, analysisdetail.min as min from analysisdetail" + 
                                     " inner join material on material.id = analysisdetail.material" +
                                     " inner join unittype on unittype.id = material.unit" +
@@ -42,13 +42,19 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                             var fieldValues = [];
                                             for(var i = 0; i < values.length; i++){
                                                 var field = {};
+                                                field.id = values[i].id;
                                                 field.materialid = values[i].materialid;
                                                 field.materialname = values[i].materialname;
                                                 field.unitname = values[i].unitname;
                                                 field.unitshort = values[i].unitshort;
                                                 field.max = values[i].max;
                                                 field.min = values[i]. min;
-                                                field.master_alloy = master_alloy.split(",")[i]
+                                                //field.master_alloy = master_alloy.split(",")[i]
+                                                for(var j = 0; j < details.split(",").length; j++){
+                                                    if(details.split(",")[j] == field.id){
+                                                        field.master_alloy = master_alloy.split(",")[j]
+                                                    }
+                                                }
                                                 fieldValues.push(field);
                                             }
                                             renderPage(req, res, sess, qfu, fieldValues, field, id, actionButton, operation, success, message);
@@ -117,7 +123,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                 var details = result[0].details;
                                 var master_alloy = result[0].master_alloy;
                                 con.query(
-                                    " select material.id as materialid, material.name as materialname, unittype.name as unitname, unittype.short as unitshort, " + 
+                                    " select analysisdetail.id as id, material.id as materialid, material.name as materialname, unittype.name as unitname, unittype.short as unitshort, " + 
                                     " analysisdetail.max as max, analysisdetail.min as min from analysisdetail" + 
                                     " inner join material on material.id = analysisdetail.material" +
                                     " inner join unittype on unittype.id = material.unit" +
@@ -129,13 +135,19 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                         var fieldValues = [];
                                         for(var i = 0; i < result.length; i++){
                                             var field = {};
+                                            field.id = values[i].id;
                                             field.materialid = result[i].materialid;
                                             field.materialname = result[i].materialname;
                                             field.unitname = result[i].unitname;
                                             field.unitshort = result[i].unitshort;
                                             field.max = result[i].max;
                                             field.min = result[i]. min;
-                                            field.master_alloy = master_alloy.split(",")[i];
+                                            //field.master_alloy = master_alloy.split(",")[i]
+                                            for(var j = 0; j < details.split(",").length; j++){
+                                                if(details.split(",")[j] == field.id){
+                                                    field.master_alloy = master_alloy.split(",")[j]
+                                                }
+                                            }
                                             field.value = results[i];
                                             fieldValues.push(field);
                                         }

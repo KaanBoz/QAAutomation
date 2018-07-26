@@ -362,7 +362,6 @@ module.exports = function (app, myLocalize, functions, con, router, localization
     //METHODS
 
     function renderPage(req, res, sess, success, message, actionButton, operation, formData, materials){
-        var a = ((operation == "add" || operation == "edit") && success == 1) || operation == "delete" ? 1 : 0;
         res.render('qaanalysisdetailoperation', 
                 { 
                     data: req.body,

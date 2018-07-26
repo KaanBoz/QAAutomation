@@ -196,7 +196,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                         return;
                                 });
                             }else{
-                                con.query("INSERT INTO USERS (firstname, lastname, mail, password, isadmin, ischef, isoperator, added_by, added_at, is_deleted" + 
+                                con.query("INSERT INTO users (firstname, lastname, mail, password, isadmin, ischef, isoperator, added_by, added_at, is_deleted" + 
                                 ", is_validated) VALUES" + 
                                 "('" + name + "', '"+ surname + "', '" + email + "', '" +functions.encrypt(password) + "', "+ isAdmin + 
                                 ", " + isChef + ", " + isOperator + ", " + sess.user.id + ", " 

@@ -37,12 +37,12 @@ block content
                             div(class="form-group col-md-6")
                                 label(for="max") #{localization.min}
                                 if isDisabled
-                                    if formData && formData.min
+                                    if formData && (formData.min || formData.min == 0)
                                         input(type="number" class="form-control" id="min" name="min" disabled value=formData.min step="0.001") 
                                     else
                                         input(type="number" class="form-control" id="min" name="min" disabled step="0.001")
                                 else
-                                    if formData && formData.min
+                                    if formData && (formData.min || formData.min == 0)
                                         input(type="number" class="form-control" id="min" name="min" value=formData.min step="0.001")
                                     else
                                         input(type="number" class="form-control" id="min" name="min" step="0.001")
@@ -50,12 +50,12 @@ block content
                             div(class="form-group col-md-6")
                                 label(for="max") #{localization.max}
                                 if isDisabled
-                                    if formData && formData.max
+                                    if formData && (formData.max || formData.max == 0)
                                         input(type="number" class="form-control" id="max" name="max" disabled value=formData.max step="0.001") 
                                     else
                                         input(type="number" class="form-control" id="max" name="max" disabled step="0.001")
                                 else
-                                    if formData && formData.max
+                                    if formData && (formData.max || formData.max == 0)
                                         input(type="number" class="form-control" id="max" name="max" value=formData.max step="0.001")
                                     else
                                         input(type="number" class="form-control" id="max" name="max" step="0.001")

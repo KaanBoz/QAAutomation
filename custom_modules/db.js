@@ -1,10 +1,12 @@
 module.exports = function(app, mysql, functions, callback){
     //create the connection
     module.dbCreate = mysql.createConnection({
+        //host: "192.168.2.162",
+        //user: "kaan",
         host: "localhost",
         user: "root",
         password: "12345",
-        port: 3306
+        port: 3306,
     });
 
     // for specific database connection
@@ -27,11 +29,14 @@ module.exports = function(app, mysql, functions, callback){
         
         // connect to specified database
         module.con = mysql.createConnection({
+            //host: "192.168.2.162",
+            //user: "kaan",
             host: "localhost",
             user: "root",
             password: "12345",
             port: 3306,
             database: "qadb",
+            multipleStatements: true,
             typeCast: function castField( field, useDefaultTypeCasting ) {
                 // We only want to cast bit fields that have a single-bit in them. If the field
                 // has more than one bit, then we cannot assume it is supposed to be a Boolean.
@@ -118,7 +123,7 @@ module.exports = function(app, mysql, functions, callback){
                             console.log(err.message);
                         }else{
                             if(result.length == 0){
-                                module.con.query("INSERT INTO USERS (firstname, lastname, mail, password, isadmin, ischef, isoperator, added_by, added_at, is_deleted, is_validated) VALUES" + 
+                                module.con.query("INSERT INTO users (firstname, lastname, mail, password, isadmin, ischef, isoperator, added_by, added_at, is_deleted, is_validated) VALUES" + 
                                 "('admin', 'user', 'admin@sentes-bir.com', '" +functions.encrypt("12345") + "', 1, 0, 0, 1, " + module.con.escape(new Date()) + ", 0, 1)"
                                 , function (err, result, fields) {
                                     if (err) throw err;
@@ -469,6 +474,94 @@ module.exports = function(app, mysql, functions, callback){
                             }else{
                                 console.log("dbversion is updated to 11");
                                 module.dbVersion = 11;
+                                collationFix();
+                            }
+                        });
+                    }
+                });
+            }else{
+                collationFix();
+            }
+        }
+
+        function collationFix(){
+            if(module.dbVersion == 11){
+                module.con.query(
+                    " ALTER DATABASE qadb CHARACTER SET utf8 COLLATE utf8_unicode_ci;" +
+                    " ALTER DATABASE qadb DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;" +
+                    " ALTER TABLE analysisdetail CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;" +
+                    " ALTER TABLE analysisheader CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;" +
+                    " ALTER TABLE analysisresult CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;" +
+                    " ALTER TABLE analysisstandart CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;" +
+                    " ALTER TABLE analysistype CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;" +
+                    " ALTER TABLE dbvariables CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;" +
+                    " ALTER TABLE masteralloyresult CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;" + 
+                    " ALTER TABLE material CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;" + 
+                    " ALTER TABLE qualityfollowup CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;" + 
+                    " ALTER TABLE unittype CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;" + 
+                    " ALTER TABLE users CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;" + 
+                    ""
+                    , function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        module.con.query("update dbvariables set dbversion = 12 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 12");
+                                module.dbVersion = 12;
+                                dbVersion13();
+                            }
+                        });
+                    }
+                });
+            }else{
+                dbVersion13();
+            }
+        }
+
+        function dbVersion13(){
+            if(module.dbVersion == 12){
+                module.con.query(
+                    "ALTER TABLE analysisheader DROP COLUMN details; " + 
+                    "ALTER TABLE analysisheader DROP COLUMN master_alloy;"
+                    , function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        module.con.query("update dbvariables set dbversion = 13 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 13");
+                                module.dbVersion = 13;
+                                dbVersion14();
+                            }
+                        });
+                    }
+                });
+            }else{
+                dbVersion14();
+            }
+        }
+
+        function dbVersion14(){
+            if(module.dbVersion == 13){
+                module.con.query(
+                    "ALTER TABLE analysisdetail ADD master FLOAT(10,3) NOT NULL;" + 
+                    "ALTER TABLE analysisdetail ADD header INT NOT NULL;" +
+                    "ALTER TABLE analysisdetail DROP INDEX unique_analysisdetail;"
+                    , function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        module.con.query("update dbvariables set dbversion = 14 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 14");
+                                module.dbVersion = 14;
                                 callback();
                             }
                         });
@@ -478,7 +571,6 @@ module.exports = function(app, mysql, functions, callback){
                 callback();
             }
         }
-
 
     }
 

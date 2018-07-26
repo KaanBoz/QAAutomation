@@ -202,7 +202,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         if(validations(req, res, sess, message, success, operation, actionButton, formData, operators, analyses)){
             return;
         }
-        con.query("select id,partyno, partydate, assignedto, analysis, explanation from qualityfollowup where partyno=" + formData.partyno + " and analysis=" + formData.analysis + 
+        con.query("select id,partyno, partydate, assignedto, analysis, explanation from qualityfollowup where partyno='" + formData.partyno + "' and analysis=" + formData.analysis + 
         " and is_deleted = 1", function(err, result, fields){
             if(err){
                 message = err.message;
@@ -214,7 +214,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 var id = result[0].id;
                 con.query(
                     "update qualityfollowup " + 
-                    " set partyno=" + formData.partyno + "," + 
+                    " set partyno='" + formData.partyno + "'," + 
                     "partydate =" + con.escape(formData.partydate) + "," +
                     "assignedto =" + formData.assignedto + "," +
                     "analysis =" + formData.analysis + "," +
@@ -244,7 +244,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
             }else{
                 con.query("INSERT INTO qualityfollowup (partyno, partydate, assignedto, analysis, explanation, sender, amount, isdone, isreported, added_by, added_at, is_deleted" + 
                 ", is_validated) VALUES" + 
-                "(" + formData.partyno + ", " + con.escape(formData.partydate) + ", " + formData.assignedto + ", " + formData.analysis + ", '" + formData.explanation + "', '" + formData.sender + "'," + formData.productionAmount +  ",0,0, " 
+                "('" + formData.partyno + "', " + con.escape(formData.partydate) + ", " + formData.assignedto + ", " + formData.analysis + ", '" + formData.explanation + "', '" + formData.sender + "'," + formData.productionAmount +  ",0,0, " 
                 + sess.user.id + ", " 
                 + con.escape(new Date()) + ", 0, 1)", function(err, result, fields){
                         if (err){
@@ -292,7 +292,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
             }
             con.query(
                 "update qualityfollowup " + 
-                    " set partyno=" + formData.partyno + "," + 
+                    " set partyno='" + formData.partyno + "'," + 
                     "partydate =" + con.escape(formData.partydate) + "," +
                     "assignedto =" + formData.assignedto + "," +
                     "analysis =" + formData.analysis + "," +

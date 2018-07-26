@@ -2,14 +2,23 @@ module.exports = function (app, myLocalize, functions, con, router, localization
 
     //DYNAMIC VALUES METHODS
 
-    function getDetails(operation, req, res, sess, standarts, types, details){
+    function getDetails(operation, req, res, sess, standarts, types, details, materials){
+        var id = req.query.id;
+        if(!id){
+            id = -1;
+        }
         con.query(
         " select " +
             " analysisdetail.id as id, " +
-            " CONCAT(material.name, ' (',unittype.name, '-', unittype.short, ')', ' (', analysisdetail.min, '-', analysisdetail.max , ')') as name " +
+            " analysisdetail.max as max, " +
+            " analysisdetail.min as min, " +
+            " analysisdetail.master as master, " +
+            " analysisdetail.material as material, " +
+            " material.name as materialName " +
         " from analysisdetail " +
         " inner join material on  material.id=analysisdetail.material " +
-        " inner join unittype on unittype.id=material.unit " , 
+        " inner join unittype on unittype.id=material.unit" + 
+        " where analysisdetail.is_deleted = 0 and analysisdetail.header =" + id , 
             function(err, result, fields){
                 if(err){
                     types = [];
@@ -18,16 +27,21 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     for(var i = 0; i < result.length; i++){
                         var detail = {};
                         detail.id = result[i].id;
-                        detail.name = result[i].name;
+                        detail.isDeleted = false;
+                        detail.materialId = result[i].material;
+                        detail.material = result[i].materialName;
+                        detail.min = result[i].min;
+                        detail.max = result[i].max;
+                        detail.master = result[i].master;
                         details.push(detail);
                     }
                 }
-                getAnalysisTypes(operation, req, res, sess, standarts, types, details);
+                getAnalysisTypes(operation, req, res, sess, standarts, types, details, materials);
             }
         );
     }
 
-    function getAnalysisTypes(operation, req, res, sess, standarts, types, details){
+    function getAnalysisTypes(operation, req, res, sess, standarts, types, details, materials){
         con.query("select id,name from analysistype where is_deleted = 0 and is_validated = 1", 
             function(err, result, fields){
                 if(err){
@@ -41,12 +55,12 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         types.push(type);
                     }
                 }
-                getStandarts(operation, req, res, sess, standarts, types, details);
+                getStandarts(operation, req, res, sess, standarts, types, details, materials);
             }
         );
     }
 
-    function getStandarts(operation, req, res, sess, standarts, types, details){
+    function getStandarts(operation, req, res, sess, standarts, types, details, materials){
         con.query("select id, name from analysisstandart where is_deleted = 0 and is_validated = 1", 
             function(err, result, fields){
                 if(err){
@@ -61,19 +75,64 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         standarts.push(standart);
                     }
                 }
-                operation(req, res, sess, standarts, types, details);        
+                getMaterials(operation, req, res, sess, standarts, types, details, materials);        
             }
         );
     }
 
-    //GET OPERATION METHODS
-
-    function getAdd(req, res, sess, operation, standarts, types, id, details){
-        renderPage(req, res, sess, null, null, 1, operation, null, standarts, types, details);
+    function getMaterials(operation, req, res, sess, standarts, types, details, materials){
+        con.query("select id, name, unit from material where is_deleted = 0 and is_validated = 1", 
+            function(err, result, fields){
+                if(err){
+                    materials = [];
+                }else{
+                    //set standarts
+                    for(var i = 0; i < result.length; i++){
+                        var material = {};
+                        material.id = result[i].id;
+                        material.name = result[i].name;
+                        material.unit = result[i].unit;
+                        material.unitname = "";
+                        material.unitshort = "";
+                        materials.push(material);
+                    }
+                }
+                getUnitTypes(operation, req, res, sess, standarts, types, details, materials);
+            }
+        );
     }
 
-    function getEdit(req, res, sess, operation, standarts, types, id, details){
-        con.query("select name, type, standart, details, master_alloy from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
+    function getUnitTypes(operation, req, res, sess, standarts, types, details, materials){
+        con.query("select id, name, short from unittype where is_deleted = 0 and is_validated = 1", 
+            function(err, result, fields){
+                if(err){
+                    //an error occured, we are setting standarts to empty array
+                }else{
+                    //set standarts
+                    for(var i = 0; i < result.length; i++){
+                        for(var j = 0; j <  materials.length; j++){
+                            if(result[i].id == materials[j].unit){
+                                materials[j].unitname = result[i].name;
+                                materials[j].unitshort = result[i].short;
+                            }
+                        }
+                    }
+                }
+                operation(req, res, sess, standarts, types, details, materials);       
+            }
+        );
+    }
+
+
+
+    //GET OPERATION METHODS
+
+    function getAdd(req, res, sess, operation, standarts, types, id, details, materials){
+        renderPage(req, res, sess, null, null, 1, operation, null, standarts, types, details, materials);
+    }
+
+    function getEdit(req, res, sess, operation, standarts, types, id, details, materials){
+        con.query("select name, type, standart from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -81,7 +140,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         message = localization.analysisHeaderExists;
                     }
                     success = 0;
-                    renderPage(req, res, sess, success, message, 0, operation, null, standarts, types, details);
+                    renderPage(req, res, sess, success, message, 0, operation, null, standarts, types, details, materials);
                     return;
                 }
                 if(result.length == 0){
@@ -93,14 +152,12 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.name = result[0].name;
                 formData.type = result[0].type;
                 formData.standart = result[0].standart;
-                formData.detail = result[0].details;
-                formData.masterAlloys = result[0].master_alloy;
-                renderPage(req, res, sess, null, null, 1, operation, formData, standarts, types, details);
+                renderPage(req, res, sess, null, null, 1, operation, formData, standarts, types, details, materials);
         });
     }
 
-    function getDelete(req, res, sess, operation, standarts, types, id, details){
-        con.query("select name, type, standart, details, master_alloy from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
+    function getDelete(req, res, sess, operation, standarts, types, id, details, materials){
+        con.query("select name, type, standart from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -108,7 +165,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         message = localization.analysisHeaderExists;
                     }
                     success = 0;
-                    renderPage(req, res, sess, success, message, 0, operation, null, standarts, types, details);
+                    renderPage(req, res, sess, success, message, 0, operation, null, standarts, types, details, materials);
                     return;
                 }
                 if(result.length == 0){
@@ -120,14 +177,12 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.name = result[0].name;
                 formData.type = result[0].type;
                 formData.standart = result[0].standart;
-                formData.detail = result[0].details;
-                formData.masterAlloys = result[0].master_alloy;
-                renderPage(req, res, sess, null, null, 1, operation, formData, standarts, types, details);
+                renderPage(req, res, sess, null, null, 1, operation, formData, standarts, types, details, materials);
             });
     }
 
-    function getView(req, res, sess, operation, standarts, types, id, details){
-        con.query("select name, type, standart, details, master_alloy from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
+    function getView(req, res, sess, operation, standarts, types, id, details, materials){
+        con.query("select name, type, standart from analysisheader where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -135,7 +190,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         message = localization.analysisHeaderExists;
                     }
                     success = 0;
-                    renderPage(req, res, sess, success, message, 0, operation, null, standarts, types, details);
+                    renderPage(req, res, sess, success, message, 0, operation, null, standarts, types, details, materials);
                     return;
                 }
                 if(result.length == 0){
@@ -147,13 +202,11 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.name = result[0].name;
                 formData.type = result[0].type;
                 formData.standart = result[0].standart;
-                formData.detail = result[0].details;
-                formData.masterAlloys = result[0].master_alloy;
-                renderPage(req, res, sess, null, null, 0, operation, formData, standarts, types, details);
+                renderPage(req, res, sess, null, null, 0, operation, formData, standarts, types, details, materials);
             });
     }
 
-    function getOperation(req, res, sess, standarts, types, details){
+    function getOperation(req, res, sess, standarts, types, details, materials){
         var operation = req.query.operation;
             if(sess.user.ischef){
                 var id = req.query.id;
@@ -162,16 +215,16 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     return;
                 }
                 if(operation == "add"){
-                    getAdd(req, res, sess, operation, standarts, types, id, details);
+                    getAdd(req, res, sess, operation, standarts, types, id, details, materials);
                     return;
                 }else if(operation == "edit"){
-                    getEdit(req, res, sess, operation, standarts, types, id, details);
+                    getEdit(req, res, sess, operation, standarts, types, id, details, materials);
                     return;
                 }else if (operation == "delete"){
-                    getDelete(req, res, sess, operation, standarts, types, id, details);
+                    getDelete(req, res, sess, operation, standarts, types, id, details, materials);
                     return;
                 }else if(operation =="view"){
-                    getView(req, res, sess, operation, standarts, types, id, details);
+                    getView(req, res, sess, operation, standarts, types, id, details, materials);
                     return;
                 }else{
                     res.redirect('/notfound');
@@ -196,7 +249,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
             var standarts = [];
             var types = [];
             var details = [];
-            getDetails(getOperation, req, res, sess, standarts, types, details);
+            var materials = [];
+            getDetails(getOperation, req, res, sess, standarts, types, details, materials);
         }else{
             res.redirect('/');
         }    
@@ -210,7 +264,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
             var standarts = [];
             var types = [];
             var details = [];
-            getDetails(postOperation, req, res, sess, standarts, types, details);
+            var materials = [];
+            getDetails(postOperation, req, res, sess, standarts, types, details, materials);
         }else{
             res.redirect('/');
             return;
@@ -220,14 +275,14 @@ module.exports = function (app, myLocalize, functions, con, router, localization
 
     //POST OPERATION METHODS
 
-    function postAdd(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details){
-        if(validations(req, res, sess, name, message, success, operation, actionButton, formData, standarts, types, details)){
+    function postAdd(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details, materials, detail){
+        if(validations(req, res, sess, name, message, success, operation, actionButton, formData, standarts, types, details, materials, detail)){
             return;
         }
         con.query("select id from analysisheader where name like '" + name + "' and is_deleted = 1", function(err, result, fields){
             if(err){
                 message = err.message;
-                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
+                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details, materials);
                 return
             }
             if(result.length > 0){
@@ -235,8 +290,6 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 con.query(
                     "update analysisheader " + " set name='" + name + "'," + 
                     "type =" + type + "," +
-                    "details='" + formData.detail + "'," +
-                    "master_alloy='" + formData.masterAlloys + "'," +
                     "standart =" + standart + "," +
                     "edited_by=" + sess.user.id + "," +
                     "edited_at=" + con.escape(new Date()) + ", is_deleted = 0, deleted_by = null, deleted_at = null " +
@@ -244,19 +297,20 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     function(err, result, fields){
                         if(err){
                             message = err.message;
-                            renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
+                            renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details, materials);
                             return
                         }
                         success = 1;
                         message = localization.analysisHeaderCreated;
                         actionButton = 0;
-                        renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
+                        saveDetails(detail, id);
+                        renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details, materials);
                         return;
                 });
             }else{
-                con.query("INSERT INTO analysisheader (name, type, standart, details, master_alloy, added_by, added_at, is_deleted" + 
+                con.query("INSERT INTO analysisheader (name, type, standart, added_by, added_at, is_deleted" + 
                 ", is_validated) VALUES" + 
-                "('" + name + "', " + type + ", " + standart + ", '" + formData.detail + "', '" + formData.masterAlloys + "'," + sess.user.id + ", " 
+                "('" + name + "', " + type + ", " + standart + ", " + sess.user.id + ", " 
                 + con.escape(new Date()) + ", 0, 1)", function(err, result, fields){
                     if (err){
                         message = err.message;
@@ -264,20 +318,21 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                             message = localization.analysisHeaderExists;
                         }
                         success = 0;
-                        renderPage(req, res, sess, success, message, actionButton, operation, formData,standarts, types, details);
+                        renderPage(req, res, sess, success, message, actionButton, operation, formData,standarts, types, details, materials);
                         return;    
                     }
                     success = 1;
                     message = localization.analysisHeaderCreated;
                     actionButton = 0;
-                    renderPage(req, res, sess, success, message, actionButton, operation, formData,standarts,types, details);
+                    saveDetails(detail, result.insertId);
+                    renderPage(req, res, sess, success, message, actionButton, operation, formData,standarts,types, details, materials);
                     return;
                 });
             }
         });
     }
 
-    function postEdit(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details){
+    function postEdit(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details, materials, detail){
         var id = req.query.id;
         if(!id){
             res.redirect('/notfound');
@@ -286,42 +341,41 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         con.query("select id from analysisheader where id =" + id, function(err,result,fields){
             if(err){
                 message = err.message;
-                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
+                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details, materials);
                 return
             }
             if(result.length == 0){
                 message = localization.analysisHeaderWasNotFound;
-                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
+                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details, materials);
                 return
             }
-            if(validations(req, res, sess, name, message, success, operation, actionButton, formData, standarts, types, details)){
+            if(validations(req, res, sess, name, message, success, operation, actionButton, formData, standarts, types, details, materials, detail)){
                 return;
             }
             con.query(
                 "update analysisheader " + " set name='" + name + "'," + 
                 "type =" + type + "," +
                 "standart =" + standart + "," +
-                "details='" + formData.detail + "'," +
-                "master_alloy='" + formData.masterAlloys + "'," +
                 "edited_by=" + sess.user.id + "," +
                 "edited_at=" + con.escape(new Date()) + " " +
                 "where id=" + id  ,
                 function(err, result, fields){
                     if(err){
                         message = err.message;
-                        renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
+                        renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details, materials);
                         return
                     }
                     success = 1;
                     message = localization.analysisHeaderUpdated;
                     actionButton = 0;
-                    renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
+                    saveDetails(detail, id);
+                    renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details, materials);
                     return;
             });
         });
     }
 
-    function postDelete(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details){
+    function postDelete(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details, materials, detail){
         var id = req.query.id;
         if(!id){
             res.redirect('/notfound');
@@ -330,12 +384,12 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         con.query("select id from analysisheader where id =" + id, function(err,result,fields){
             if(err){
                 message = err.message;
-                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
+                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details, materials);
                 return
             }
             if(result.length == 0){
                 message = localization.analysisHeaderWasNotFound;
-                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
+                renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details, materials);
                 return
             }
             con.query(
@@ -344,19 +398,20 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 function(err, result, fields){
                     if(err){
                         message = err.message;
-                        renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
+                        renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details, materials);
                         return
                     }
                     success = 1;
                     message = localization.analysisHeaderDeleted;
                     actionButton = 0;
-                    renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
+                    saveDetails(detail, id);
+                    renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details, materials);
                     return;
             });
         });
     }
 
-    function postOperation(req, res, sess, standarts, types, details){
+    function postOperation(req, res, sess, standarts, types, details, materials){
         if(sess.user.ischef){
             var operation = req.query.operation;
             if(operation == 'add' || operation == 'edit' || operation == 'delete'){
@@ -364,25 +419,23 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 var name = req.body.name;
                 var type = req.body.type;
                 var standart = req.body.standart;
-                var detail = req.body.details;
-                var masterAlloys = req.body.masterAlloys;
+                var detail = req.body.detail;
                 //set form data
                 var formData = [];
                 formData.name = name;
                 formData.type = type;
                 formData.standart = standart;
                 formData.detail = detail;
-                formData.masterAlloys = masterAlloys;
                 //set the message and success
                 var message = "";
                 var success = 0;
                 var actionButton = 1;
                 if(operation == "add"){
-                    postAdd(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details);
+                    postAdd(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details, materials, detail);
                 }else if(operation == "edit"){
-                    postEdit(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details);
+                    postEdit(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details, materials, detail);
                 }else if(operation == "delete"){
-                    postDelete(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details);
+                    postDelete(req, res, sess, operation, standarts, types, name, type, standart, formData, message, success, actionButton, details, materials, detail);
                 }
             }else{
                 res.redirect('/notfound');
@@ -399,8 +452,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
 
     //METHODS
 
-    function renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details){
-        var a = ((operation == "add" || operation == "edit") && success == 1) || operation == "delete" ? 1 : 0;
+    function renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details, materials){
         var detail = [];
         if(formData != null && formData.detail != null){
             if(typeof formData.detail == "string" ){
@@ -409,12 +461,28 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 detail = formData.detail;
             }
         }
-        var masterAlloys = [];
-        if(formData != null && formData.masterAlloys != null){
-            if(typeof formData.masterAlloys == "string" ){
-                masterAlloys = formData.masterAlloys.split(",");
+        var material = [];
+        if(materials != null){
+            if(typeof materials == "string" ){
+                material = materials.split(",");
             }else{
-                masterAlloys = formData.masterAlloys;
+                material = materials;
+            }
+        }
+        var localizationJson = {};
+        if(localization != null){
+            if(typeof localization == "string" ){
+                localizationJson = localization.split(",");
+            }else{
+                localizationJson = localization;
+            }
+        }
+        var detailsJson = [];
+        if(details != null){
+            if(typeof details == "string" ){
+                detailsJson = details.split(",");
+            }else{
+                detailsJson = details;
             }
         }
         res.render('qaanalysisheaderoperation', 
@@ -436,9 +504,15 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     originalUrl : req.originalUrl,
                     standarts : standarts,
                     types : types,
+                    detailsJson : JSON.stringify(detailsJson),
                     details : details,
                     detail : JSON.stringify(detail),
-                    masterAlloys : JSON.stringify(masterAlloys)
+                    material : JSON.stringify(material),
+                    localizationJson : JSON.stringify(localizationJson),
+                    formDataJsonName : formData != null && formData.name != null ? JSON.stringify(formData.name) : "''",
+                    formDataJsonType : formData != null && formData.type != null ? JSON.stringify(formData.type) : "''",
+                    formDataJsonStandart : formData != null && formData.standart != null ? JSON.stringify(formData.standart) : "''",
+                    materials : materials,
                 });
     }
     
@@ -446,26 +520,48 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         return message + "<p>" + toAdd + "</p>";
     }
     
-    function validations(req, res, sess,name, message, success, operation, actionButton, formData, standarts, types, details){
+    function validations(req, res, sess,name, message, success, operation, actionButton, formData, standarts, types, details, materials, detail){
         //validations
-        if(!name || !formData.type || !formData.standart || !formData.detail){
+        if(!name || !formData.type || !formData.standart){
             message = addMessage(message, localization.fillForm)
         }
-        var isError = false;
-        for(var i = 0; i < formData.masterAlloys.length; i++){
-            if(!formData.masterAlloys[i]){
-                isError = true;
-                break;
-            }
-        }
-        if(isError){
-            message = addMessage(message, localization.enterMasterAlloy)
+        if(!detail){
+            message = addMessage(message, localization.mustAddDetail)
         }
         if(message){
-            renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details);
+            renderPage(req, res, sess, success, message, actionButton, operation, formData, standarts, types, details, materials);
             return true;
         }
         return false;
+    }
+
+    function saveDetails(detail, headerId){
+        removeDetails(headerId);
+        if(detail){
+            for(var i = 0; i < detail.length; i++){
+                con.query("INSERT INTO analysisdetail (material, max, min, master, header, added_by, added_at, is_deleted" + 
+                ", is_validated) VALUES" + 
+                "(" + detail[i].materialId + ", " + detail[i].max + ", " + detail[i].min + ", " + detail[i].master + ", " + headerId + ", " 
+                + sess.user.id + ", " 
+                + con.escape(new Date()) + ", 0, 1)", function(err, result, fields){
+                    if (err){
+                        message = err.message;
+                        return;    
+                    }
+                    return;
+                });
+            }
+        }
+    }
+
+    function removeDetails(headerId){
+        con.query("UPDATE analysisdetail SET is_deleted = 1 where header=" + headerId, function(err, result, fields){
+            if (err){
+                message = err.message;
+                return;    
+            }
+            return;
+        });
     }
 
     return module;

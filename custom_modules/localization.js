@@ -438,6 +438,24 @@ module.exports = function (app, Localize) {
         },
         "Alliage Material" : {
             "tr" : "Alyaj Hammadde"
+        },
+        "Add" : {
+            "tr" : "Ekle"
+        },
+        "Material exits in analysis" : {
+            "tr" : "Hammadde zaten analizde tanimli"
+        },
+        "Master Value Should be between max and min value" : {
+            "tr" : "Master degeri max ve min degerleri arasinda olmak zorundadir"
+        },
+        "Min value cannot be higher than Max value" : {
+            "tr" : "Min degeri max degerinden yuksek olamaz"
+        },
+        "You must at least add 1 detail" : {
+            "tr" : "En az bir detay eklemek zorundasiniz"
+        },
+        "Rest" : {
+            "tr" : "Kalan"
         }
         
     });
@@ -598,6 +616,12 @@ module.exports = function (app, Localize) {
         module.localization.enterOneOfEach = module.myLocalize.translate("You must enter at least 1 of each result type");
         module.localization.calculation = module.myLocalize.translate("Calculation");
         module.localization.isMultiple = module.myLocalize.translate("Alliage Material");
+        module.localization.add = module.myLocalize.translate("Add");
+        module.localization.materialExistsinAnalysis = module.myLocalize.translate("Material exits in analysis");
+        module.localization.masterValueError = module.myLocalize.translate("Master Value Should be between max and min value");
+        module.localization.minCannotBeMoreThanMax = module.myLocalize.translate("Min value cannot be higher than Max value");
+        module.localization.mustAddDetail = module.myLocalize.translate("You must at least add 1 detail");
+        module.localization.rest = module.myLocalize.translate("Rest");
     }
 
     return module;

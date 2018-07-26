@@ -3,9 +3,9 @@ var app = angular.module("qaApp", []);
 function logout(){
     $.ajax({
         type: "GET",
-        url: "http://localhost:3000/logout",
+        url: "../logout",
         success: function(data, textStatus, jqXHR){
-            window.location = "http://localhost:3000";
+            window.location = "..";
         }
       });
  }
@@ -13,9 +13,9 @@ function logout(){
  function users(){
     $.ajax({
         type: "GET",
-        url: "http://localhost:3000/users",
+        url: "../users",
         success: function(data, textStatus, jqXHR){
-            window.location = "http://localhost:3000/users";
+            window.location = "../users";
         }
       });
  }
