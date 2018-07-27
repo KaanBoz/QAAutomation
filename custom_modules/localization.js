@@ -456,6 +456,12 @@ module.exports = function (app, Localize) {
         },
         "Rest" : {
             "tr" : "Kalan"
+        },
+        "Total values cannot be over 100" : {
+            "tr" : "Hammadde degerlerinin toplami 100'un ustunde olamaz"
+        },
+        "Total Values must be 100" : {
+            "tr" : "Hammadde degerlerinin toplami 100 olmak zorundadir"
         }
         
     });
@@ -622,6 +628,8 @@ module.exports = function (app, Localize) {
         module.localization.minCannotBeMoreThanMax = module.myLocalize.translate("Min value cannot be higher than Max value");
         module.localization.mustAddDetail = module.myLocalize.translate("You must at least add 1 detail");
         module.localization.rest = module.myLocalize.translate("Rest");
+        module.localization.overHundred = module.myLocalize.translate("Total values cannot be over 100");
+        module.localization.mustBeHundred = module.myLocalize.translate("Total Values must be 100");
     }
 
     return module;

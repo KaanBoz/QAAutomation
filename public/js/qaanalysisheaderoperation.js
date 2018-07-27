@@ -32,6 +32,10 @@ app.controller("qaAnalysisHeaderOperationCtrl", function($scope) {
             alert($scope.localization.masterValueError);
             return;
         }
+        if(detail.master > $scope.getRest()){
+            alert($scope.localization.overHundred);
+            return;
+        }
         $scope.formData.details.push(detail);
             $("#material").val("");
             $("#min").val("");
@@ -70,6 +74,10 @@ app.controller("qaAnalysisHeaderOperationCtrl", function($scope) {
         data.type = $("#type").val();
         data.standart = $("#standart").val();
         data.detail = $scope.formData.details;
+        if($scope.getRest() != 0){
+            alert($scope.localization.mustBeHundred);
+            return;
+        }
         $.ajax({
             type: "POST",
             url: window.location.href ,
@@ -117,6 +125,14 @@ app.controller("qaAnalysisHeaderOperationCtrl", function($scope) {
             rest += parseFloat($scope.formData.details[i].master);
         }
         $("#master").val(checkGetValue((100 - rest) + ""));
+    }
+
+    $scope.getRest = function(){
+        var rest = 0;
+        for(var i = 0; i < $scope.formData.details.length; i++){
+            rest += parseFloat($scope.formData.details[i].master);
+        }
+        return 100 - rest;
     }
 
 });
