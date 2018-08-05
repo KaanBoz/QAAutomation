@@ -16,7 +16,7 @@ app.controller("qaAnalysisHeaderOperationCtrl", function($scope) {
         detail.min = parseFloat($('#min').val());
         detail.max = parseFloat($('#max').val());
         detail.master = parseFloat($('#master').val());
-        if(!detail.materialId || !detail.material || !detail.min || !detail.max || !detail.master){
+        if(!detail.materialId || !detail.material || (!detail.min && !detail.min == 0) || (!detail.max && !detail.max == 0) || (!detail.master && !detail.master == 0)){
             alert($scope.localization.fillForm);
             return;
         }
@@ -74,7 +74,7 @@ app.controller("qaAnalysisHeaderOperationCtrl", function($scope) {
         data.type = $("#type").val();
         data.standart = $("#standart").val();
         data.detail = $scope.formData.details;
-        if($scope.getRest() != 0){
+        if($scope.getRest() < 0){
             alert($scope.localization.mustBeHundred);
             return;
         }
