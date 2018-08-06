@@ -5,6 +5,7 @@ block append head
 block content
     script.
         var fields = !{fields};
+        var localizationJson = !{localizationJson};
     div(class="bgc-white bd bdrs-3 p-20 mB-20")
         h4 #{localization.analysisResult}
         hr(class="divider")
@@ -26,19 +27,22 @@ block content
         div(class="form-row")
             div(class="form-group col-md-6")
                 label #{localization.explanation} : #{qfu.explanation}
+        - var i = 1;
         each val in field
             div(class="form-group col-md-6")
+                input(id="id"+i value=val.id style="display:none;")  
                 label #{val.materialname} (#{val.min} - #{val.max} #{val.unitshort}) (#{val.master_alloy} #{val.unitshort})
                 if isDisabled
                     if val.value
-                        input(type="number" class="form-control" id="field"+val.materialid name="field"+val.materialid onchange="numericOnChange(this)" value=val.value disabled)
+                        input(type="number" class="form-control" id="field"+val.materialid name="field"+val.materialid onchange="numericOnChange(this)" value=val.value.value disabled)
                     else
                         input(type="number" class="form-control" id="field"+val.materialid name="field"+val.materialid onchange="numericOnChange(this)" disabled)
                 else
                     if val.value
-                        input(type="number" class="form-control" id="field"+val.materialid name="field"+val.materialid onchange="numericOnChange(this)" value=val.value)
+                        input(type="number" class="form-control" id="field"+val.materialid name="field"+val.materialid onchange="numericOnChange(this)" value=val.value.value)
                     else
                         input(type="number" class="form-control" id="field"+val.materialid name="field"+val.materialid onchange="numericOnChange(this)")
+            - i++;
         if message && success == 1
             div(class = "form-group" style="color:green;margin-top:35px;")
                 p !{message}

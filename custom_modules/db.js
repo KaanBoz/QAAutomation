@@ -1,10 +1,10 @@
 module.exports = function(app, mysql, functions, callback){
     //create the connection
     module.dbCreate = mysql.createConnection({
-        host: "192.168.2.162",
-        user: "kaan",
-        //host: "localhost",
-        //user: "root",
+        //host: "192.168.2.162",
+        //user: "kaan",
+        host: "localhost",
+        user: "root",
         password: "12345",
         port: 3306,
     });
@@ -29,10 +29,10 @@ module.exports = function(app, mysql, functions, callback){
         
         // connect to specified database
         module.con = mysql.createConnection({
-            host: "192.168.2.162",
-            user: "kaan",
-            //host: "localhost",
-            //user: "root",
+            //host: "192.168.2.162",
+            //user: "kaan",
+            host: "localhost",
+            user: "root",
             password: "12345",
             port: 3306,
             database: "qadb",
@@ -562,6 +562,104 @@ module.exports = function(app, mysql, functions, callback){
                             }else{
                                 console.log("dbversion is updated to 14");
                                 module.dbVersion = 14;
+                                dbVersion15();
+                            }
+                        });
+                    }
+                });
+            }else{
+                dbVersion15();
+            }
+        }
+
+        function dbVersion15(){
+            if(module.dbVersion == 14){
+                module.con.query(
+                    "ALTER TABLE masteralloyresult DROP COLUMN result; " +
+                    "ALTER TABLE analysisresult DROP COLUMN result; "
+                    , function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        module.con.query("update dbvariables set dbversion = 15 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 15");
+                                module.dbVersion = 15;
+                                createMasterAlloyResultDetails();
+                            }
+                        });
+                    }
+                });
+            }else{
+                createMasterAlloyResultDetails();
+            }
+        }
+
+        //masteralloyresult
+        function createMasterAlloyResultDetails(){
+            if(module.dbVersion == 15){
+                module.con.query("CREATE TABLE IF NOT EXISTS masteralloyresultdetails (" +
+                "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                "masteralloy INT NOT NULL," +
+                "detailid INT NOT NULL," +
+                "result FLOAT(10,3) NOT NULL," +
+                "added_by INT NOT NULL," + 
+                "added_at DATETIME NOT NULL," +
+                "edited_by INT, " + 
+                "edited_at DATETIME, " + 
+                "deleted_by INT," + 
+                "deleted_at DATETIME, " + 
+                "is_deleted BIT NOT NULL, " +
+                "is_validated BIT NOT NULL" +
+                ");", function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        console.log("masteralloyresultdetails table created or exists");
+                        module.con.query("update dbvariables set dbversion = 16 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 16");
+                                module.dbVersion = 16;
+                                createAnalysisResultDetails();
+                            }
+                        });
+                    }
+                });
+            }else{
+                createAnalysisResultDetails();
+            }
+        }
+
+        function createAnalysisResultDetails(){
+            if(module.dbVersion == 16){
+                module.con.query("CREATE TABLE IF NOT EXISTS analysisresultdetails (" +
+                "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                "analysisresult INT NOT NULL," +
+                "detailid INT NOT NULL," +
+                "result FLOAT(10,3) NOT NULL," +
+                "added_by INT NOT NULL," + 
+                "added_at DATETIME NOT NULL," +
+                "edited_by INT, " + 
+                "edited_at DATETIME, " + 
+                "deleted_by INT," + 
+                "deleted_at DATETIME, " + 
+                "is_deleted BIT NOT NULL, " +
+                "is_validated BIT NOT NULL" +
+                ");", function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        console.log("analysisresultdetails table created or exists");
+                        module.con.query("update dbvariables set dbversion = 17 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 17");
+                                module.dbVersion = 17;
                                 callback();
                             }
                         });

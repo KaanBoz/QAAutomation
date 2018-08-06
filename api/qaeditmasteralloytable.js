@@ -3,25 +3,25 @@ module.exports = function (app, myLocalize, functions, con, router) {
         functions.setLocale(req, res, null);
         sess = req.session;        
         var orderColumn = req.query.order[0].column;
-        var orderColumnTxt = "result";
+        var orderColumnTxt = "added_at";
         var orderDir = req.query.order[0].dir;
         var start = parseInt(req.query.start);
         var length = parseInt(req.query.length);
         var search = req.query.search.value;
         var limit = start + ", " + (length - 1);
         var followupId  = req.query.followupId;
-        var t  = "(select id, result, is_deleted, is_validated, followup from masteralloyresult) as t ";
-        var whereCondition = "where (result like '%" + search + "%')" + 
-        " and is_deleted = 0 and is_validated = 1 and followup = " + followupId;
+        var t  = "(select id, added_at, is_deleted, is_validated, followup from masteralloyresult) as t ";
+        var whereCondition = "where (added_at like '%" + search + "%') and " + 
+        " is_deleted = 0 and is_validated = 1 and followup = " + followupId;
         if(sess && sess.user){
-            con.query("SELECT COUNT(result) AS masteralloyresult FROM " + t + " where  is_deleted = 0 and is_validated = 1 and followup = " + followupId , 
+            con.query("SELECT COUNT(id) AS masteralloyresult FROM " + t + " where  is_deleted = 0 and is_validated = 1 and followup = " + followupId , 
             function (err, result, fields){
                 if(err) throw err;
                 var recordsTotal = result[0].masteralloyresult;
-                con.query("SELECT COUNT(result) AS masteralloyresult FROM " + t + whereCondition, function (err, result, fields){
+                con.query("SELECT COUNT(id) AS masteralloyresult FROM " + t + whereCondition, function (err, result, fields){
                     if(err) throw err;
                     var recordsFiltered = result[0].masteralloyresult;
-                    con.query("select id, result from " + t + whereCondition + " order by " + orderColumnTxt + " " + orderDir + " limit " + limit, function (err, result, fields){
+                    con.query("select id, added_at from " + t + whereCondition + " order by " + orderColumnTxt + " " + orderDir + " limit " + limit, function (err, result, fields){
                         if(err) throw err;
                         var usersDb = result;
                         var data = [];
@@ -48,7 +48,10 @@ module.exports = function (app, myLocalize, functions, con, router) {
                                     "</span>" +
                                 "</button>" +
                             "</a>" ;
-                            data.push({0 : usersDb[i].result,
+                            data.push({0 : usersDb[i].added_at.getDate() + "/" +  
+                            (usersDb[i].added_at.getMonth() + 1) + "/" +
+                            usersDb[i].added_at.getFullYear() + "" +
+                            " " +usersDb[i].added_at.toLocaleTimeString(),
                                 1 : buttonView
                             });
                         }

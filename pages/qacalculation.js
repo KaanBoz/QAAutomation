@@ -6,74 +6,95 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         if(sess && sess.user){
             if(sess.user.ischef){
                 var id = req.query.id;
-                con.query("SELECT id, analysis, amount FROM qadb.qualityfollowup where id = " + id,
+                con.query("SELECT id, analysis, amount FROM qualityfollowup where id = " + id,
                 function(err, result, fields){
                     if(err){
                         throw err;
                     }
                     var followup = result[0];
                     console.log("Uretim Takip ID : " + followup.id + " - Analiz ID : " + followup.analysis + " - Miktar : " + followup.amount);
-                    con.query("SELECT id, details, master_alloy FROM qadb.analysisheader where id = " + followup.analysis,
+                    con.query("SELECT id FROM analysisheader where id = " + followup.analysis,
                     function(err, result, fields){
                         if(err){
                             throw err;
                         }
                         var analysis = result[0];
-                        console.log("Analiz ID : " + analysis.id + " - Detay IDleri : " + analysis.details + " - Olcum Kulcesi degerleri : " + analysis.master_alloy);
-                        con.query("SELECT qadb.material.name, qadb.analysisdetail.id, qadb.analysisdetail.material, max, min FROM qadb.analysisdetail" +
-                            " inner join qadb.material on material.id = qadb.analysisdetail.material " +
-                            " where qadb.analysisdetail.id in (" + analysis.details + ")",
+                        con.query("SELECT material.name, analysisdetail.id, analysisdetail.material, max, min, master as master_alloy FROM analysisdetail" +
+                            " inner join material on material.id = analysisdetail.material " +
+                            " where analysisdetail.header = " + analysis.id ,
                         function(err, result, fields){
                             if(err){
                                 throw err;
                             }
                             var details = result;
-                            for(var i = 0; i < details.length; i++){
-                                details[i].master_alloy = parseFloat(analysis.master_alloy.split(",")[i]);
-                            }
-                            con.query("SELECT result FROM qadb.masteralloyresult where followup =" + followup.id,
+
+                            con.query("SELECT id FROM masteralloyresult where followup =" + followup.id + " and is_deleted = 0",
                             function(err, result, fields){
-                                var masterAlloyResults = [];
-                                for(var i = 0; i < result.length; i++){
-                                    var variables = result[i].result.split(",");
-                                    for(var y = 0; y < variables.length; y++){
-                                        if(i==0){
-                                            masterAlloyResults[y] = 0;
-                                        }
-                                        masterAlloyResults[y] += parseFloat(variables[y]);
+                                if(err){
+                                    throw err;
+                                }
+                                var masterAlloyIds = [];
+                                for(var k = 0; k < result.length; k++){
+                                    masterAlloyIds.push(result[k].id);
+                                }
+                                con.query("SELECT result, detailid FROM masteralloyresultdetails where masteralloy in (" + masterAlloyIds.toString() + ") and is_deleted = 0",
+                                function(err, result, fields){
+                                    if(err){
+                                        throw err;
                                     }
-                                }
-                                for(var i = 0; i < masterAlloyResults.length; i++){
-                                    masterAlloyResults[i] = masterAlloyResults[i] / result.length;
-                                    details[i].master_alloy_result = masterAlloyResults[i];
-                                }
-                                con.query("SELECT result FROM qadb.analysisresult where followup =" + followup.id,
-                                    function(err, result, fields){
-                                        var analysisResults = [];
-                                    for(var i = 0; i < result.length; i++){
-                                        var variables = result[i].result.split(",");
-                                        for(var y = 0; y < variables.length; y++){
-                                            if(i==0){
-                                                analysisResults[y] = 0;
+                                    for(var y = 0; y < result.length; y++){
+                                        for(var i = 0; i < details.length; i++){
+                                            if(!details[i].master_alloy_result){
+                                                details[i].master_alloy_result = 0;
                                             }
-                                            analysisResults[y] += parseFloat(variables[y]);
+                                            if(details[i].id == result[y].detailid){
+                                                details[i].master_alloy_result += result[y].result;
+                                            }
                                         }
                                     }
-                                    for(var i = 0; i < analysisResults.length; i++){
-                                        analysisResults[i] = analysisResults[i] / result.length;
-                                        details[i].analysis_result = analysisResults[i];
-                                    }
                                     for(var i = 0; i < details.length; i++){
-                                        details[i].analysis_result_real =  parseFloat((details[i].analysis_result - (details[i].master_alloy_result - details[i].master_alloy)).toFixed(2));
+                                        details[i].master_alloy_result = details[i].master_alloy_result / masterAlloyIds.length;
                                     }
-                                    for(var i = 0; i < details.length; i++){
-                                        details[i].amount = (followup.amount / 100) * details[i].analysis_result_real;
-                                        details[i].fullAmount = parseFloat(followup.amount);
-                                        details[i].addedAmount = 0;
-                                        details[i].newResult = parseFloat(details[i].analysis_result_real);
-                                    }
-                                    details = calculate(details);
-                                    renderPage(res, req, details); 
+                                    con.query("SELECT id FROM analysisresult where followup =" + followup.id + " and is_deleted = 0",
+                                    function(err, result, fields){
+                                        if(err){
+                                            throw err;
+                                        }
+                                        var resultIds = [];
+                                        for(var k = 0; k < result.length; k++){
+                                            resultIds.push(result[k].id);
+                                        }
+                                        con.query("SELECT result, detailid FROM analysisresultdetails where analysisresult in (" + resultIds.toString() + ") and is_deleted = 0",
+                                        function(err, result, fields){
+                                            if(err){
+                                                throw err;
+                                            }
+                                            for(var y = 0; y < result.length; y++){
+                                                for(var i = 0; i < details.length; i++){
+                                                    if(!details[i].analysis_result){
+                                                        details[i].analysis_result = 0;
+                                                    }
+                                                    if(details[i].id == result[y].detailid){
+                                                        details[i].analysis_result += result[y].result;
+                                                    }
+                                                }
+                                            }
+                                            for(var i = 0; i < details.length; i++){
+                                                details[i].analysis_result = details[i].analysis_result / resultIds.length;
+                                            }
+                                            for(var i = 0; i < details.length; i++){
+                                                details[i].analysis_result_real =  parseFloat((details[i].analysis_result - (details[i].master_alloy_result - details[i].master_alloy)).toFixed(2));
+                                            }
+                                            for(var i = 0; i < details.length; i++){
+                                                details[i].amount = (followup.amount / 100) * details[i].analysis_result_real;
+                                                details[i].fullAmount = parseFloat(followup.amount);
+                                                details[i].addedAmount = 0;
+                                                details[i].newResult = parseFloat(details[i].analysis_result_real);
+                                            }
+                                            details = calculate(details);
+                                            renderPage(res, req, details); 
+                                        });
+                                    });
                                 });
                             });
                         });

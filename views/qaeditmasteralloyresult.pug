@@ -5,6 +5,7 @@ block append head
 block content
     script.
         var fields = !{fields};
+        var localizationJson = !{localizationJson};
     div(class="bgc-white bd bdrs-3 p-20 mB-20")
         h4 #{localization.followup}
         hr(class="divider")
@@ -29,17 +30,18 @@ block content
         h4 #{localization.masterAlloyResult}
         hr(class="divider")
         - var i = 1;
-        each val in field         
+        each val in field      
             div(class="form-group col-md-6")
+                input(id="id"+i value=val.id style="display:none;")   
                 label #{val.materialname} (#{val.min} - #{val.max} #{val.unitshort}) (#{val.master_alloy} #{val.unitshort})
                 if isDisabled
                     if val.value
-                        input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" value=val.value disabled)
+                        input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" value=val.value.value disabled) 
                     else
                         input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" disabled)
                 else
                     if val.value
-                        input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" value=val.value)
+                        input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" value=val.value.value)
                     else
                         input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)")
             - i++;

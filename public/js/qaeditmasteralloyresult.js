@@ -24,11 +24,20 @@ function saveOnClick(){
     $("#save").click(function(){
         var data = {};
         var results = [];
+        var totalValue = 0;
         for(var i = 0; i < fields.length; i++){
+            var result = {};
             var fieldNumber = i + 1;
-            results.push($("#field" + fieldNumber).val());
+            result.id = $("#id" + fieldNumber).val();
+            result.value = $("#field" + fieldNumber).val();
+            totalValue = totalValue + parseFloat(result.value);
+            results.push(result);
         }
         data.results = results;
+        if(totalValue < 99 || totalValue > 101){
+            alert(localizationJson.mustBeHundred);
+            return;
+        }
         $.ajax({
             type: "POST",
             url: window.location.href ,
