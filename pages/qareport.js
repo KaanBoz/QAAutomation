@@ -83,6 +83,15 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                             for(var i = 0; i < details.length; i++){
                                                 details[i].analysis_result = details[i].analysis_result / resultIds.length;
                                             }
+                                            for(var i = 0; i < details.length; i++){
+                                                details[i].analysis_result_real =  parseFloat((details[i].analysis_result - (details[i].master_alloy_result - details[i].master_alloy)).toFixed(2));
+                                            }
+                                            for(var i = 0; i < details.length; i++){
+                                                details[i].amount = (followup.amount / 100) * details[i].analysis_result_real;
+                                                details[i].fullAmount = parseFloat(followup.amount);
+                                                details[i].addedAmount = 0;
+                                                details[i].newResult = parseFloat(details[i].analysis_result_real);
+                                            }
                                             var html = "<div id=\"pageHeader\">Default header</div>";
                                             html += "" +
                                             "<style>" +
@@ -112,7 +121,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                                         "<td>" + details[i].name + "</td>" +
                                                         "<td>" + details[i].min + "</td>" +
                                                         "<td>" + details[i].max + "</td>" +
-                                                        "<td>" + details[i].analysis_result + "</td>" +
+                                                        "<td>" + details[i].analysis_result_real + "</td>" +
                                                     "</tr>";
                                                 }
                                                 //test++;
