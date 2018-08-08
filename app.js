@@ -8,6 +8,8 @@ var localize = require('localize');
 var sha512 = require('sha512');
 var session = require('express-session');
 var mysql = require('mysql');
+var fs = require('fs');
+var pdf = require('html-pdf');
 /*crypto module and variables*/
 var crypto = require('crypto');
 var algorithm = 'aes-256-ctr';
@@ -57,6 +59,7 @@ function dbCallback(){
     var qaeditresult = require('./pages/qaeditresult.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaresults = require('./pages/qaresults.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qacalculation = require('./pages/qacalculation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qareport = require('./pages/qareport.js')(app, localization.myLocalize, functions, db.con, router, localization.localization, pdf, fs);
     /*Table Apis*/
     var usersTable = require('./api/qaalluserstable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var analysisTypeTable = require('./api/qaanalysistypetable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);

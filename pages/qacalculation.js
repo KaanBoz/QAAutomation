@@ -12,7 +12,6 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         throw err;
                     }
                     var followup = result[0];
-                    console.log("Uretim Takip ID : " + followup.id + " - Analiz ID : " + followup.analysis + " - Miktar : " + followup.amount);
                     con.query("SELECT id FROM analysisheader where id = " + followup.analysis,
                     function(err, result, fields){
                         if(err){

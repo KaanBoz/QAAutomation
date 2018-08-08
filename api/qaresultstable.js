@@ -37,6 +37,13 @@ module.exports = function (app, myLocalize, functions, con, router) {
                                         "<i class=\"c-white-500 ti-layout-list-thumb\"></i>" +
                                     "</span>" +
                                 "</button>" +
+                            "</a>" +
+                            "<a href=\"../qareport?id=" + usersDb[i].id + "\">" +
+                                "<button type=\"button\" class=\"btn btn-primary btn-xs\" style=\"margin-left:10px;\">" +
+                                    "<span class=\"icon-holder\">" +
+                                        "<i class=\"c-white-500 ti-layout-list-thumb\"></i>" +
+                                    "</span>" +
+                                "</button>" +
                             "</a>";
                             data.push({0 : usersDb[i].name, 1 : getFormattedDate(usersDb[i].partydate), 2 : usersDb[i].partyno , 
                                 3 : buttonView
