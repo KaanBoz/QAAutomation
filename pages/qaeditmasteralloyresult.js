@@ -78,6 +78,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                                     if(result){
                                                         for(var i = 0; i < values.length; i++){
                                                             var field = {};
+                                                            field.id = values[i].id;
                                                             field.materialid = values[i].materialid;
                                                             field.materialname = values[i].materialname;
                                                             field.unitname = values[i].unitname;
@@ -86,7 +87,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                                             field.min = values[i]. min;
                                                             field.master_alloy = master_alloy.split(",")[i]
                                                             for(var k = 0; k < result.length; k++){
-                                                                if(result[k].detailid == field.materialid){
+                                                                if(result[k].detailid == field.id){
                                                                     field.value = {};
                                                                     field.value.value = result[k].result;
                                                                 }

@@ -34,14 +34,14 @@ block content
                 label #{val.materialname} (#{val.min} - #{val.max} #{val.unitshort}) (#{val.master_alloy} #{val.unitshort})
                 if isDisabled
                     if val.value
-                        input(type="number" class="form-control" id="field"+val.materialid name="field"+val.materialid onchange="numericOnChange(this)" value=val.value.value disabled)
+                        input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" value=val.value.value disabled)
                     else
-                        input(type="number" class="form-control" id="field"+val.materialid name="field"+val.materialid onchange="numericOnChange(this)" disabled)
+                        input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" disabled)
                 else
                     if val.value
-                        input(type="number" class="form-control" id="field"+val.materialid name="field"+val.materialid onchange="numericOnChange(this)" value=val.value.value)
+                        input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" value=val.value.value)
                     else
-                        input(type="number" class="form-control" id="field"+val.materialid name="field"+val.materialid onchange="numericOnChange(this)")
+                        input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)")
             - i++;
         if message && success == 1
             div(class = "form-group" style="color:green;margin-top:35px;")

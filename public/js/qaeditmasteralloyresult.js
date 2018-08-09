@@ -34,7 +34,7 @@ function saveOnClick(){
             results.push(result);
         }
         data.results = results;
-        if(totalValue < 99 || totalValue > 101){
+        if(totalValue < 99 || totalValue > 101 || isNaN(totalValue)){
             alert(localizationJson.mustBeHundred);
             return;
         }

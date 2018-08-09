@@ -17,8 +17,10 @@
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "flag-icon-css": "^3.0.0",
+    "html-pdf": "^2.2.0",
     "localize": "^0.4.7",
     "mysql": "^2.15.0",
+    "phantomjs": "^2.1.7",
     "popper.js": "^1.12.9",
     "pug": "^2.0.0-rc.4",
     "sha512": "0.0.1"
