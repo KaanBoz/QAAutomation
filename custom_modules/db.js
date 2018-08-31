@@ -1,10 +1,10 @@
 module.exports = function(app, mysql, functions, callback){
     //create the connection
     module.dbCreate = mysql.createConnection({
-        //host: "192.168.2.162",
-        //user: "kaan",
-        host: "localhost",
-        user: "root",
+        host: "192.168.2.162",
+        user: "kaan",
+        //host: "localhost",
+        //user: "root",
         password: "12345",
         port: 3306,
     });
@@ -29,10 +29,10 @@ module.exports = function(app, mysql, functions, callback){
         
         // connect to specified database
         module.con = mysql.createConnection({
-            //host: "192.168.2.162",
-            //user: "kaan",
-            host: "localhost",
-            user: "root",
+            host: "192.168.2.162",
+            user: "kaan",
+            //host: "localhost",
+            //user: "root",
             password: "12345",
             port: 3306,
             database: "qadb",

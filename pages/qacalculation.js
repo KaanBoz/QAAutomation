@@ -187,26 +187,43 @@ module.exports = function (app, myLocalize, functions, con, router, localization
     }
 
     function fixBigError(details){
+        var shouldBreak = false;
         for(var i = 0; i < details.length; i++){
             if(details[i].error == 2){
                 for(var y = 0; y < details.length; i++){
                     if(i == y) continue;
-                    if(details[i].error == 2) continue;
-                    details[i].addedAmount += (details[i].fullAmount / 100) * ((details[i].max - details[i].newResult) / 2 );
+                    if(details[y].error == 2) continue;
+                    var maxValue = ((details[y].max - details[y].newResult) / 25 );
+                    if(details[y].max == 100){
+                        var totalMaxValues = 0;
+                        for(var z = 0; z < details.length; z++){
+                            totalMaxValues += details[z].min;
+                        }
+                        var biggestMaxValue = 100 - totalMaxValues;
+                        maxValue = ((biggestMaxValue - details[y].newResult) / 25 );
+                    }
+                    details[y].addedAmount += (details[y].fullAmount / 100) * maxValue;
+                    shouldBreak = true;
                     break;
                 }
             }
-            break;
+            if(shouldBreak){
+                break;
+            }
         }
         details = reCalculate(details);
         return details;  
     }
 
     function reCalculate(details){
+        var addedAmount = 0;
         for(var i = 0; i < details.length; i++){
-            details[i].fullAmount = details[i].fullAmount + details[i].addedAmount;
+            addedAmount += details[i].addedAmount;
+        }
+        for(var i = 0; i < details.length; i++){
+            details[i].fullAmount = details[i].fullAmount + addedAmount;
             details[i].amount = details[i].amount + details[i].addedAmount;
-            details[i].newResult = details[i].fullAmount / details.newResult
+            details[i].newResult = details[i].amount / (details[i].fullAmount/100);
         }
         return details;
     }
