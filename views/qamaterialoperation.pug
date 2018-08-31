@@ -29,6 +29,19 @@ block content
                                         input(type="text" class="form-control" id="name" name="name")
                         div(class="form-row")
                             div(class="form-group col-md-6")
+                                label(for="name") #{localization.short}
+                                if isDisabled
+                                    if formData && formData.short
+                                        input(type="text" class="form-control" id="short" name="short" disabled value=formData.short) 
+                                    else
+                                        input(type="text" class="form-control" id="short" name="short" disabled)
+                                else
+                                    if formData && formData.short
+                                        input(type="text" class="form-control" id="short" name="short" value=formData.short)
+                                    else
+                                        input(type="text" class="form-control" id="short" name="short")
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
                                 label(for="standart") #{localization.unitType} 
                                 if isDisabled
                                     select(id="unittype" name="unittype" class="form-control" disabled)

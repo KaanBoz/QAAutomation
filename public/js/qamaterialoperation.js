@@ -15,6 +15,7 @@ function saveOnClick(){
         var data = {};
         data.name = $("#name").val();
         data.unittype = $("#unittype").val();
+        data.short = $("#short").val();
         data.isMultiple = document.getElementById('isMultiple').checked;
         $.ajax({
             type: "POST",
@@ -35,6 +36,7 @@ function deleteOnClick(){
         var data = {};
         data.name = $("#name").val();
         data.unittype = $("#unittype").val();
+        data.short = $("#short").val();
         data.isMultiple = document.getElementById('isMultiple').checked;
         $.ajax({
             type: "POST",

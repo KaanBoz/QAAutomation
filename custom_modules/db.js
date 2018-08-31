@@ -1,10 +1,10 @@
 module.exports = function(app, mysql, functions, callback){
     //create the connection
     module.dbCreate = mysql.createConnection({
-        host: "192.168.2.162",
-        user: "kaan",
-        //host: "localhost",
-        //user: "root",
+        //host: "192.168.2.162",
+        //user: "kaan",
+        host: "localhost",
+        user: "root",
         password: "12345",
         port: 3306,
     });
@@ -29,10 +29,10 @@ module.exports = function(app, mysql, functions, callback){
         
         // connect to specified database
         module.con = mysql.createConnection({
-            host: "192.168.2.162",
-            user: "kaan",
-            //host: "localhost",
-            //user: "root",
+            //host: "192.168.2.162",
+            //user: "kaan",
+            host: "localhost",
+            user: "root",
             password: "12345",
             port: 3306,
             database: "qadb",
@@ -660,6 +660,31 @@ module.exports = function(app, mysql, functions, callback){
                             }else{
                                 console.log("dbversion is updated to 17");
                                 module.dbVersion = 17;
+                                dbVersion18();
+                            }
+                        });
+                    }
+                });
+            }else{
+                dbVersion18();
+            }
+        }
+
+        function dbVersion18(){
+            if(module.dbVersion == 17){
+                module.con.query(
+                    "ALTER TABLE material ADD short VARCHAR(256) NOT NULL; ",
+                    function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        console.log("analysisresultdetails table created or exists");
+                        module.con.query("update dbvariables set dbversion = 18 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 18");
+                                module.dbVersion = 18;
                                 callback();
                             }
                         });
