@@ -90,6 +90,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                                 details[i].addedAmount = 0;
                                                 details[i].newResult = parseFloat(details[i].analysis_result_real);
                                             }
+                                            details.sort(compare);
                                             details = calculate(details);
                                             renderPage(res, req, details); 
                                         });
@@ -208,6 +209,14 @@ module.exports = function (app, myLocalize, functions, con, router, localization
             details[i].newResult = details[i].fullAmount / details.newResult
         }
         return details;
+    }
+
+    function compare(a,b) {
+        if (a.amount < b.amount)
+          return 1;
+        if (a.amount > b.amount)
+          return -1;
+        return 0;
     }
 
     return module;
