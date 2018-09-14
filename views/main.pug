@@ -104,8 +104,8 @@ html
                                         ul(class="dropdown-menu")
                                             li
                                                 a(href="../qaanalysistype") #{localization.analysisType}
-                                            li
-                                                a(href="../qaunittype") #{localization.unitType}
+                                            //- li
+                                            //-     a(href="../qaunittype") #{localization.unitType}
                                             li
                                                 a(href="../qaanalysisstandart") #{localization.standart}
                                             li
@@ -130,18 +130,39 @@ html
                                                 a(href="../qaallqualityfollowup") #{localization.followup}
                                         ul(class="dropdown-menu")
                                             li
-                                                a(href="../qaresults") #{localization.results}
+                                                a(href="../qaallcorrections") #{localization.corrections}
+                                        ul(class="dropdown-menu")
+                                            li
+                                                a(href="../qaallcorrectionsarchive") #{localization.archivedCorrections}
+                                ul(class="dropdown-menu")
+                                    li(class="nav-item dropdown")
+                                        a(href="javascript:void(0);")
+                                            span #{localization.reports}
+                                            span(class="arrow" style="padding-top:7px;")
+                                                i(class="ti-angle-right")
+                                        ul(class="dropdown-menu")
+                                            li
+                                                a(href="../qacreatereport") #{localization.createReport}
+                                        ul(class="dropdown-menu")
+                                            li
+                                                a(href="../qaprintreport") #{localization.printReport}
+                                        ul(class="dropdown-menu")
+                                            li
+                                                a(href="../qaprintreportarchive") #{localization.archivedReports}
                         if isOperator
                             li(class="nav-item dropdown")
                                 a(class="dropdown-toggle" href="javascript:void(0);")
                                     span(class="icon-holder")
                                         i(class="c-indigo-500 ti-bar-chart")
-                                    span(class="title") #{localization.operatorMenu}
+                                    span(class="t    itle") #{localization.operatorMenu}
                                     span(class="arrow" style="padding-top:8px;")
                                         i(class="ti-angle-right")
                                 ul(class="dropdown-menu")
                                     li
                                         a(class="sidebar-link" href="../qaassignedtome") #{localization.assignedToMe}
+                                ul(class="dropdown-menu")
+                                    li
+                                        a(class="sidebar-link" href="../qacorrections") #{localization.corrections}
             div(class="page-container")
                 div(class="header navbar")
                     div(class="header-container")

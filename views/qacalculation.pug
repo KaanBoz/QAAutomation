@@ -1,9 +1,81 @@
 extends main.pug
 
+block append head
+    script(src='../js/qacalculation.js')
+
 block content
-    div(class="bgc-white bd bdrs-3 p-20 mB-20")
+    script.
+        var formData = !{formDataJson};
+    div(class="bgc-white bd bdrs-3 p-20 mB-20" ng-controller="qaCalculation")
         h4 #{localization.calculation}
         hr(class="divider")
-        each val in details         
-            div(class="form-group col-md-6")
-                label #{val.name} - #{val.addedAmount}
+        div(class="container")
+            div(class="row")
+                div(class="form-group col-md-6")
+                    h4 #{localization.orginal}
+                    hr(class="divider")
+                    label 
+                        b #{localization.total} :
+                        label #{details.details[0].fullAmount} kg
+                    hr(class="divider")
+                    each val in details.details
+                        label 
+                            b #{localization.material} : 
+                            label #{val.name}
+                        br
+                        label #{localization.amount} : 
+                        label #{val.amount} kg
+                        br
+                        label #{localization.percentage} : 
+                        label %#{val.analysis_result_real} 
+                        br
+                        label &nbsp;    
+                        label &nbsp; 
+                        hr(class="divider")
+                div(class="form-group col-md-6")
+                    h4 #{localization.suggestion}
+                    hr(class="divider")
+                    label 
+                        b #{localization.total} :
+                        label #{details[0].fullAmount} kg
+                    hr(class="divider")
+                    each val in details
+                        label 
+                            b #{localization.material} : 
+                            label #{val.name}
+                        br
+                        label #{localization.amount} : 
+                        label #{val.amount} kg
+                        br
+                        label #{localization.percentage} : 
+                        label %#{val.newResult}
+                        br
+                        label #{localization.addedAmount} : 
+                        label #{val.addedAmount} kg
+                        hr(class="divider")   
+                table(id="table" class="table table-hover table-bordered" cellspacing="0" width="100%")
+                    thead
+                        th #{localization.material}
+                        th #{localization.addedAmount}
+                        th
+                    tbody
+                        tr(ng-repeat="detail in formData.details" ng-include="getTemplate(detail)")
+                script(type="text/ng-template" id="display")
+                    <td>{{detail.name}}</td>
+                    <td>{{detail.addedAmount}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-xs c-white-500 ti-pencil-alt" ng-click="editContact(detail)" />
+                    </td>
+                script(type="text/ng-template" id="edit")
+                    <td>{{detail.name}}</td>
+                    <td><input type="text" ng-model="formData.selected.addedAmount" /></td>
+                    <td>
+                        <button type="button" class="btn btn-success btn-xs c-white-500 ti-check" ng-click="saveContact($index)"/>
+                        <button type="button" class="btn btn-danger btn-xs c-white-500 ti-close" ng-click="reset()" />
+                    </td>
+                div(style="width: 100%;")
+                    button(type="button" id="save" class="btn btn-success" style="margin-top:35px;" ng-click="save()") #{localization.save}
+                div(style="width: 100%;")
+                    button(type="button" id="save" class="btn btn-success" style="margin-top:15px;" ng-click="noCorrection()") #{localization.noCalculationNeeded}       
+                div
+                    a(href="../qacorrections" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}

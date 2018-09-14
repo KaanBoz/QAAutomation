@@ -1,10 +1,10 @@
 module.exports = function(app, mysql, functions, callback){
     //create the connection
     module.dbCreate = mysql.createConnection({
-        host: "192.168.2.162",
-        user: "kaan",
-        //host: "localhost",
-        //user: "root",
+        //host: "192.168.2.162",
+        //user: "kaan",
+        host: "localhost",
+        user: "root",
         password: "12345",
         port: 3306,
     });
@@ -29,10 +29,10 @@ module.exports = function(app, mysql, functions, callback){
         
         // connect to specified database
         module.con = mysql.createConnection({
-            host: "192.168.2.162",
-            user: "kaan",
-            //host: "localhost",
-            //user: "root",
+            //host: "192.168.2.162",
+            //user: "kaan",
+            host: "localhost",
+            user: "root",
             password: "12345",
             port: 3306,
             database: "qadb",
@@ -200,7 +200,9 @@ module.exports = function(app, mysql, functions, callback){
             "deleted_at DATETIME, " + 
             "is_deleted BIT NOT NULL, " +
             "is_validated BIT NOT NULL" +
-            ");", function (err, result){
+            ");" +
+            "insert into unittype (id, name, short, added_by, added_at, edited_by, edited_at, deleted_by, deleted_at, is_deleted, is_validated )" + 
+            " values(1, 'Yüzde', '%', '1', '2018-07-03 17:35:17', NULL, NULL, NULL, NULL, 0, 1);", function (err, result){
                 if (err){
                     console.log(err.message);
                 }else{
@@ -678,13 +680,313 @@ module.exports = function(app, mysql, functions, callback){
                     if (err){
                         console.log(err.message);
                     }else{
-                        console.log("analysisresultdetails table created or exists");
                         module.con.query("update dbvariables set dbversion = 18 where id = 1", function(err, result, fields){
                             if(err){
                                 console.log(err.message);
                             }else{
                                 console.log("dbversion is updated to 18");
                                 module.dbVersion = 18;
+                                dbVersion19();
+                            }
+                        });
+                    }
+                });
+            }else{
+                dbVersion19();
+            }
+        }
+
+        function dbVersion19(){
+            if(module.dbVersion == 18){
+                module.con.query(
+                    "ALTER TABLE qualityfollowup ADD reported BIT NOT NULL DEFAULT 0; " + 
+                    "ALTER TABLE qualityfollowup ADD calculated BIT NOT NULL DEFAULT 0; ",
+                    function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        module.con.query("update dbvariables set dbversion = 19 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 19");
+                                module.dbVersion = 19;
+                                dbVersion20();
+                            }
+                        });
+                    }
+                });
+            }else{
+                dbVersion20();
+            }
+        }
+
+        function dbVersion20(){
+            if(module.dbVersion == 19){
+                module.con.query(
+                    "ALTER TABLE qualityfollowup ADD done BIT NOT NULL DEFAULT 0; ",
+                    function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        module.con.query("update dbvariables set dbversion = 20 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 20");
+                                module.dbVersion = 20;
+                                createReportHeader();
+                            }
+                        });
+                    }
+                });
+            }else{
+                createReportHeader();
+            }
+        }
+
+        function createReportHeader(){
+            if(module.dbVersion == 20){
+                module.con.query("CREATE TABLE IF NOT EXISTS reportheader (" +
+                "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                "company VARCHAR(256)," +
+                "customercode VARCHAR(256)," +
+                "fortecoatproductcode VARCHAR(256)," +
+                "amount VARCHAR(256)," +
+                "report VARCHAR(256)," +
+                "batchno VARCHAR(256)," +
+                "reportdata VARCHAR(256)," +
+                "orderno VARCHAR(256)," +
+                "preparedby VARCHAR(256)," +
+                "controlledby VARCHAR(256)," +
+                "analysisheaderid INT NOT NULL," +
+                "archived BIT NOT NULL DEFAULT 0, " +
+                "added_by INT NOT NULL," + 
+                "added_at DATETIME NOT NULL," +
+                "edited_by INT, " + 
+                "edited_at DATETIME, " + 
+                "deleted_by INT," + 
+                "deleted_at DATETIME, " + 
+                "is_deleted BIT NOT NULL, " +
+                "is_validated BIT NOT NULL" +
+                ");", function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        console.log("reportheader table created or exists");
+                        module.con.query("update dbvariables set dbversion = 21 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 21");
+                                module.dbVersion = 21;
+                                createReportDetail();
+                            }
+                        });
+                    }
+                });
+            }else{
+                createReportDetail();
+            }
+        }
+
+        function createReportDetail(){
+            if(module.dbVersion == 21){
+                module.con.query("CREATE TABLE IF NOT EXISTS reportdetail (" +
+                "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                "headerid INT NOT NULL," +
+                "analysisheaderid INT NOT NULL," +
+                "analysisdetailid INT NOT NULL," +
+                "composition VARCHAR(256)," +
+                "request VARCHAR(256)," +
+                "result VARCHAR(256)," +
+                "added_by INT NOT NULL," + 
+                "added_at DATETIME NOT NULL," +
+                "edited_by INT, " + 
+                "edited_at DATETIME, " + 
+                "deleted_by INT," + 
+                "deleted_at DATETIME, " + 
+                "is_deleted BIT NOT NULL, " +
+                "is_validated BIT NOT NULL" +
+                ");", function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        console.log("reportdetail table created or exists");
+                        module.con.query("update dbvariables set dbversion = 22 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 22");
+                                module.dbVersion = 22;
+                                dbVersion23();
+                            }
+                        });
+                    }
+                });
+            }else{
+                dbVersion23();
+            }
+        }
+
+        function dbVersion23(){
+            if(module.dbVersion == 22){
+                module.con.query(
+                    "ALTER TABLE qualityfollowup ADD nocorrection BIT NOT NULL DEFAULT 0; ",
+                    function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        module.con.query("update dbvariables set dbversion = 23 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 23");
+                                module.dbVersion = 23;
+                                createCorrectionHeader();
+                            }
+                        });
+                    }
+                });
+            }else{
+                createCorrectionHeader();
+            }
+        }
+
+        function createCorrectionHeader(){
+            if(module.dbVersion == 23){
+                module.con.query("CREATE TABLE IF NOT EXISTS correctionheader (" +
+                "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                "analysisname VARCHAR(256)," +
+                "analysisid INT NOT NULL," +
+                "added_by INT NOT NULL," + 
+                "added_at DATETIME NOT NULL," +
+                "edited_by INT, " + 
+                "edited_at DATETIME, " + 
+                "deleted_by INT," + 
+                "deleted_at DATETIME, " + 
+                "is_deleted BIT NOT NULL, " +
+                "is_validated BIT NOT NULL" +
+                ");", function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        console.log("correctionheader table created or exists");
+                        module.con.query("update dbvariables set dbversion = 24 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 24");
+                                module.dbVersion = 24;
+                                createCorrectionDetail();
+                            }
+                        });
+                    }
+                });
+            }else{
+                createCorrectionDetail();
+            }
+        }
+
+        function createCorrectionDetail(){
+            if(module.dbVersion == 24){
+                module.con.query("CREATE TABLE IF NOT EXISTS correctiondetails (" +
+                "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                "name VARCHAR(256)," +
+                "addedamount VARCHAR(256)," +
+                "headerid INT NOT NULL," +
+                "analysisdetailid  INT NOT NULL," +
+                "added_by INT NOT NULL," + 
+                "added_at DATETIME NOT NULL," +
+                "edited_by INT, " + 
+                "edited_at DATETIME, " + 
+                "deleted_by INT," + 
+                "deleted_at DATETIME, " + 
+                "is_deleted BIT NOT NULL, " +
+                "is_validated BIT NOT NULL" +
+                ");", function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        console.log("correctiondetails table created or exists");
+                        module.con.query("update dbvariables set dbversion = 25 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 25");
+                                module.dbVersion = 25;
+                                dbVersion26();
+                            }
+                        });
+                    }
+                });
+            }else{
+                dbVersion26();
+            }
+        }
+
+        function dbVersion26(){
+            if(module.dbVersion == 25){
+                module.con.query(
+                    "ALTER TABLE correctionheader ADD archived BIT NOT NULL DEFAULT 0; ",
+                    function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        module.con.query("update dbvariables set dbversion = 26 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 26");
+                                module.dbVersion = 26;
+                                dbVersion27();
+                            }
+                        });
+                    }
+                });
+            }else{
+                dbVersion27();
+            }
+        }
+
+        function dbVersion27(){
+            if(module.dbVersion == 26){
+                module.con.query(
+                    "ALTER TABLE correctionheader ADD owner INT NOT NULL DEFAULT 0; ",
+                    function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        module.con.query("update dbvariables set dbversion = 27 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 27");
+                                module.dbVersion = 27;
+                                dbVersion28();
+                            }
+                        });
+                    }
+                });
+            }else{
+                dbVersion28();
+            }
+        }
+
+        function dbVersion28(){
+            if(module.dbVersion == 27){
+                module.con.query(
+                    "ALTER TABLE reportheader ADD followupid INT NOT NULL DEFAULT 0; ",
+                    function (err, result){
+                    if (err){
+                        console.log(err.message);
+                    }else{
+                        module.con.query("update dbvariables set dbversion = 28 where id = 1", function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }else{
+                                console.log("dbversion is updated to 28");
+                                module.dbVersion = 28;
                                 callback();
                             }
                         });

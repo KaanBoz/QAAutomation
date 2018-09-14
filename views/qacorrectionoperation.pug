@@ -1,0 +1,30 @@
+extends main.pug
+
+block append head
+    script(src='../js/qacorrectionoperation.js')
+
+block content
+    div(class="bgc-white bd bdrs-3 p-20 mB-20" ng-controller="qaCorrectionOperation")
+        h4 #{localization.correction}
+        hr(class="divider")
+        div(class="container")
+            div(class="row")
+                div(class="form-group col-md-6")
+                    label 
+                        h1 #{formData.analysisname}
+                    hr(class="divider")
+                    each val in formData.details
+                        label 
+                            label #{val.name}
+                        br
+                        label #{val.addedamount} kg
+                        br
+                        hr(class="divider")
+        if !formData.archived
+            div(style="width: 100%;")
+                button(type="button" id="save" class="btn btn-success" style="margin-top:35px;" ng-click="save()") #{localization.archive}       
+            div
+                a(href="../qaallcorrections" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
+        else
+            div
+                a(href="../qaallcorrectionsarchive" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}

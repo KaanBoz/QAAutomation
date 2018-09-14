@@ -462,6 +462,99 @@ module.exports = function (app, Localize) {
         },
         "Total Values must be 100" : {
             "tr" : "Hammadde degerlerinin toplami 100 olmak zorundadir"
+        },
+        "Create Report" : {
+            "tr" : "Rapor Olustur"
+        },
+        "Print Report" : {
+            "tr" : "Rapor Bastir"
+        },
+        "Company" : {
+            "tr" : "Firma Adı"
+        },
+        "Customer Code" : {
+            "tr" : "Firma Ürün Kodu"
+        },
+        "ForteCoat Product Code" : {
+            "tr" : "ForteBraze Ürün Kodu"
+        },
+        "Amount" : {
+            "tr" : "Malzeme Miktarı"
+        },
+        "Batch No" : {
+            "tr" : "Parti No"
+        },
+        "Report Date" : {
+            "tr" : "Rapor Tarih"
+        },
+        "Order No" : {
+            "tr" : "İrsaliye No / Sipariş No"
+        },
+        "Prepared By" : {
+            "tr" : "Hazırlayan"
+        },
+        "Controlled By" : {
+            "tr" : "Kontrol Eden"
+        },
+        "Composition" : {
+            "tr" : "Bileşen"
+        },
+        "Request" : {
+            "tr" : "Talep"
+        },
+        "Result" : {
+            "tr" : "Sonuç"
+        },
+        "Create" : {
+            "tr" : "Oluştur"
+        },
+        "Report" : {
+            "tr" : "Rapor"
+        },
+        "Report No" : {
+            "tr" : "Rapor No"
+        },
+        "Print Report" : {
+            "tr" : "Rapor Yazdir"
+        },
+        "Sentesbir Inspection Report" : {
+            "tr" : "Sentesbir Çıkış Kalite Raporu"
+        },
+        "Corrections" : {
+            "tr" : "Duzeltmeler"
+        },
+        "Amount" : {
+            "tr" : "Miktar"
+        },
+        "Percentage" : {
+            "tr" : "Yuzde"
+        },
+        "Total" : {
+            "tr" : "Toplam"
+        },
+        "Added Amount" : {
+            "tr" : "Eklenen Miktar"
+        },
+        "No Calculation Needed" : {
+            "tr" : "Duzeltmeye Gerek Yok"
+        },
+        "Correction" : {
+            "tr" : "Duzeltme"
+        },
+        "Archive" : {
+            "tr" : "Arsivle"
+        },
+        "Orginal" : {
+            "tr" : "Girilen"
+        },
+        "Suggestion" : {
+            "tr" : "Oneri"
+        },
+        "Archived Reports" : {
+            "tr" : "Arsivlenmis Raporlar"
+        },
+        "Archived Corrections" : {
+            "tr" : "Arsivlenmis Duzeltmeler"
         }
         
     });
@@ -630,6 +723,37 @@ module.exports = function (app, Localize) {
         module.localization.rest = module.myLocalize.translate("Rest");
         module.localization.overHundred = module.myLocalize.translate("Total values cannot be over 100");
         module.localization.mustBeHundred = module.myLocalize.translate("Total Values must be 100");
+        module.localization.createReport = module.myLocalize.translate("Create Report");
+        module.localization.printReport = module.myLocalize.translate("Print Report");
+        module.localization.company = module.myLocalize.translate("Company");
+        module.localization.customerCode = module.myLocalize.translate("Customer Code");
+        module.localization.forteCoatProductCode = module.myLocalize.translate("ForteCoat Product Code");
+        module.localization.amount = module.myLocalize.translate("Amount");
+        module.localization.batchNo = module.myLocalize.translate("Batch No");
+        module.localization.reportData = module.myLocalize.translate("Report Date");
+        module.localization.orderNo = module.myLocalize.translate("Order No");
+        module.localization.preparedBy = module.myLocalize.translate("Prepared By");
+        module.localization.controlledBy = module.myLocalize.translate("Controlled By");
+        module.localization.composition = module.myLocalize.translate("Composition");
+        module.localization.request = module.myLocalize.translate("Request");
+        module.localization.result = module.myLocalize.translate("Result");
+        module.localization.create = module.myLocalize.translate("Create");
+        module.localization.report = module.myLocalize.translate("Report");
+        module.localization.printReport = module.myLocalize.translate("Print Report");
+        module.localization.sentesbirInspectionReport = module.myLocalize.translate("Sentesbir Inspection Report");
+        module.localization.corrections = module.myLocalize.translate("Corrections");
+        module.localization.amount = module.myLocalize.translate("Amount");
+        module.localization.percentage = module.myLocalize.translate("Percentage");
+        module.localization.total = module.myLocalize.translate("Total");
+        module.localization.addedAmount = module.myLocalize.translate("Added Amount");
+        module.localization.noCalculationNeeded = module.myLocalize.translate("No Calculation Needed");
+        module.localization.correction = module.myLocalize.translate("Correction");
+        module.localization.archive = module.myLocalize.translate("Archive");
+        module.localization.orginal = module.myLocalize.translate("Orginal");
+        module.localization.suggestion = module.myLocalize.translate("Suggestion");
+        module.localization.archivedReports = module.myLocalize.translate("Archived Reports");
+        module.localization.archivedCorrections = module.myLocalize.translate("Archived Corrections");
+
     }
 
     return module;

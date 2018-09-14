@@ -34,16 +34,23 @@ block content
             div(class="form-group col-md-6")
                 input(id="id"+i value=val.id style="display:none;")   
                 label #{val.materialname} (#{val.min} - #{val.max} #{val.unitshort}) (#{val.master_alloy} #{val.unitshort})
-                if isDisabled
-                    if val.value
-                        input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" value=val.value.value disabled) 
+                div(class="form-row")
+                    if isDisabled
+                        if val.value
+                            input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" value=val.value.value disabled) 
+                        else
+                            input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" disabled)
                     else
-                        input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" disabled)
-                else
-                    if val.value
-                        input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" value=val.value.value)
-                    else
-                        input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)")
+                        if val.value
+                            div(class="form-group col-md-10")
+                                input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)" value=val.value.value)
+                            div(class="form-group col-md-2")
+                                button(type="button" id="rest" class="btn btn-success" onclick="rest(" + i + ")") #{localization.rest}
+                        else
+                            div(class="form-group col-md-10")
+                                input(type="number" class="form-control" id="field"+i name="field"+i onchange="numericOnChange(this)")
+                            div(class="form-group col-md-2")
+                                button(type="button" id="rest" class="btn btn-success" onclick="rest(" + i + ")") #{localization.rest}
             - i++;
         if message && success == 1
             div(class = "form-group" style="color:green;margin-top:35px;")

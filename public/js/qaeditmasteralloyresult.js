@@ -20,6 +20,31 @@ function setOnClicks(){
     deleteOnClick();
 }
 
+function rest(i){
+    var total = 0;
+    for(var a= 1; a < 100; a++){
+        if(a == i) continue;
+        var field = $('#field' + a);
+        if(field){
+            var val = $('#field' + a).val();
+            if(val){
+                val = parseFloat(parseFloat(val).toFixed(3));
+                if(val > 0){
+                    total = parseFloat(parseFloat(total + val).toFixed(3));
+                }
+                
+            }
+        }else{
+            break;
+        }
+    }
+    val = parseFloat(parseFloat(100 - total).toFixed(3));
+    if(val < 0){
+        val = 0;
+    }
+    $('#field' + i).val(val);
+}
+
 function saveOnClick(){
     $("#save").click(function(){
         var data = {};

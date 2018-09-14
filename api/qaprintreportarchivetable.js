@@ -1,51 +1,51 @@
 module.exports = function (app, myLocalize, functions, con, router) {
-    app.get('/qaresultstable', function (req, res) {
+    app.get('/qaprintreportarchivetable', function (req, res) {
         functions.setLocale(req, res, null);
         sess = req.session;        
         var orderColumn = req.query.order[0].column;
-        var orderColumnTxt = "name";
+        var orderColumnTxt = "report";
         if(orderColumn == 2){
-            orderColumnTxt = "partydate"
+            orderColumnTxt = "company"
         }else if(orderColumn == 3){
-            orderColumnTxt = "partyno"
+            orderColumnTxt = "reportdata"
         }
         var orderDir = req.query.order[0].dir;
         var start = parseInt(req.query.start);
         var length = parseInt(req.query.length);
         var search = req.query.search.value;
         var limit = start + ", " + (length - 1);
-        var t  = "(select qualityfollowup.added_by, qualityfollowup.id, qualityfollowup.isdone, analysisheader.name, qualityfollowup.partydate, qualityfollowup.partyno, qualityfollowup.is_deleted, qualityfollowup.is_validated, qualityfollowup.assignedto from qualityfollowup inner join analysisheader on qualityfollowup.analysis = analysisheader.id) as t ";
-        var whereCondition = "where (name like '%" + search + "%' or partydate like '%" + search + "%' or partyno like '%" + search + "%')" + 
-        " and isdone = 1 and is_deleted = 0 and is_validated = 1 and added_by = " + sess.user.id;
+        var t  = "(select id, followupid, reportdata, company, report, is_deleted, is_validated, archived, added_by from reportheader) as t ";
+        var whereCondition = "where (reportdata like '%" + search + "%' or company like '%" + search + "%' or report like '%" + search + "%')" + 
+        " and is_deleted = 0 and is_validated = 1 and archived = 1";
         if(sess && sess.user){
-            con.query("SELECT COUNT(name) AS assignedtome FROM " + t + " where isdone = 1 and is_deleted = 0 and is_validated = 1 and added_by = " + sess.user.id , 
+            con.query("SELECT COUNT(id) AS assignedtome FROM " + t + " where is_deleted = 0 and is_validated = 1 and archived = 0 and added_by =" + sess.user.id , 
             function (err, result, fields){
                 if(err) throw err;
                 var recordsTotal = result[0].assignedtome;
-                con.query("SELECT COUNT(name) AS assignedtome FROM " + t + whereCondition, function (err, result, fields){
+                con.query("SELECT COUNT(id) AS assignedtome FROM " + t + whereCondition, function (err, result, fields){
                     if(err) throw err;
                     var recordsFiltered = result[0].assignedtome;
-                    con.query("select id, name, partydate, partyno from " + t + whereCondition + " order by " + orderColumnTxt + " " + orderDir + " limit " + limit, function (err, result, fields){
+                    con.query("select id, followupid, reportdata, company, report from " + t + whereCondition + " order by " + orderColumnTxt + " " + orderDir + " limit " + limit, function (err, result, fields){
                         if(err) throw err;
                         var usersDb = result;
                         var data = [];
                         for (i = 0; i < usersDb.length; i++) { 
                             var buttonView = 
-                            "<a href=\"../qacalculation?id=" + usersDb[i].id + "\">" +
+                            "<a href=\"../qareport?id=" + usersDb[i].id + "&lang=tr\">" +
                                 "<button type=\"button\" class=\"btn btn-primary btn-xs\">" +
                                     "<span class=\"icon-holder\">" +
-                                        "<i class=\"c-white-500 ti-layout-list-thumb\"></i>" +
+                                        "TR" +
+                                    "</span>" +
+                                "</button>" +
+                            "</a>" +
+                            "<a href=\"../qareport?id=" + usersDb[i].id + "&lang=en\">" +
+                                "<button type=\"button\" class=\"btn btn-primary btn-xs\" style=\"margin-left:10px;\">" +
+                                    "<span class=\"icon-holder\">" +
+                                        "EN" +
                                     "</span>" +
                                 "</button>" +
                             "</a>";
-                            // "<a href=\"../qareport?id=" + usersDb[i].id + "\">" +
-                            //     "<button type=\"button\" class=\"btn btn-primary btn-xs\" style=\"margin-left:10px;\">" +
-                            //         "<span class=\"icon-holder\">" +
-                            //             "<i class=\"c-white-500 ti-layout-list-thumb\"></i>" +
-                            //         "</span>" +
-                            //     "</button>" +
-                            // "</a>";
-                            data.push({0 : usersDb[i].name, 1 : getFormattedDate(usersDb[i].partydate), 2 : usersDb[i].partyno , 
+                            data.push({0 : usersDb[i].report, 1 : usersDb[i].company, 2 : usersDb[i].reportdata , 
                                 3 : buttonView
                             });
                         }

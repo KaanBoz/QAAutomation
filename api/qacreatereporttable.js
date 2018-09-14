@@ -1,5 +1,5 @@
 module.exports = function (app, myLocalize, functions, con, router) {
-    app.get('/qaresultstable', function (req, res) {
+    app.get('/qacreatereporttable', function (req, res) {
         functions.setLocale(req, res, null);
         sess = req.session;        
         var orderColumn = req.query.order[0].column;
@@ -14,9 +14,9 @@ module.exports = function (app, myLocalize, functions, con, router) {
         var length = parseInt(req.query.length);
         var search = req.query.search.value;
         var limit = start + ", " + (length - 1);
-        var t  = "(select qualityfollowup.added_by, qualityfollowup.id, qualityfollowup.isdone, analysisheader.name, qualityfollowup.partydate, qualityfollowup.partyno, qualityfollowup.is_deleted, qualityfollowup.is_validated, qualityfollowup.assignedto from qualityfollowup inner join analysisheader on qualityfollowup.analysis = analysisheader.id) as t ";
+        var t  = "(select qualityfollowup.nocorrection, qualityfollowup.calculated, qualityfollowup.isreported, qualityfollowup.added_by, qualityfollowup.id, qualityfollowup.isdone, analysisheader.name, qualityfollowup.partydate, qualityfollowup.partyno, qualityfollowup.is_deleted, qualityfollowup.is_validated, qualityfollowup.assignedto from qualityfollowup inner join analysisheader on qualityfollowup.analysis = analysisheader.id) as t ";
         var whereCondition = "where (name like '%" + search + "%' or partydate like '%" + search + "%' or partyno like '%" + search + "%')" + 
-        " and isdone = 1 and is_deleted = 0 and is_validated = 1 and added_by = " + sess.user.id;
+        " and isdone = 1 and nocorrection = 1 and calculated = 1 and isreported = 0 and is_deleted = 0 and is_validated = 1 and added_by =" + sess.user.id ;
         if(sess && sess.user){
             con.query("SELECT COUNT(name) AS assignedtome FROM " + t + " where isdone = 1 and is_deleted = 0 and is_validated = 1 and added_by = " + sess.user.id , 
             function (err, result, fields){
@@ -31,20 +31,13 @@ module.exports = function (app, myLocalize, functions, con, router) {
                         var data = [];
                         for (i = 0; i < usersDb.length; i++) { 
                             var buttonView = 
-                            "<a href=\"../qacalculation?id=" + usersDb[i].id + "\">" +
+                            "<a href=\"../qacreatereportoperation?id=" + usersDb[i].id + "\">" +
                                 "<button type=\"button\" class=\"btn btn-primary btn-xs\">" +
                                     "<span class=\"icon-holder\">" +
-                                        "<i class=\"c-white-500 ti-layout-list-thumb\"></i>" +
+                                        "<i class=\"c-white-500 ti-plus\"></i>" +
                                     "</span>" +
                                 "</button>" +
                             "</a>";
-                            // "<a href=\"../qareport?id=" + usersDb[i].id + "\">" +
-                            //     "<button type=\"button\" class=\"btn btn-primary btn-xs\" style=\"margin-left:10px;\">" +
-                            //         "<span class=\"icon-holder\">" +
-                            //             "<i class=\"c-white-500 ti-layout-list-thumb\"></i>" +
-                            //         "</span>" +
-                            //     "</button>" +
-                            // "</a>";
                             data.push({0 : usersDb[i].name, 1 : getFormattedDate(usersDb[i].partydate), 2 : usersDb[i].partyno , 
                                 3 : buttonView
                             });

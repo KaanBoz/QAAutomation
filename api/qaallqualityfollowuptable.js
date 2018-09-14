@@ -22,6 +22,7 @@ module.exports = function (app, myLocalize, functions, con, router) {
             " analysisheader.name like '%" + search + "%') and " + 
             " qualityfollowup.isdone = 0 and " + 
             " qualityfollowup.is_deleted = 0 and " + 
+            " qualityfollowup.added_by = " + sess.user.id  +  " and " + 
             " qualityfollowup.is_validated = 1";
         var sql = 
             "(select " +
