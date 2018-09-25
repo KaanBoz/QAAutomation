@@ -555,6 +555,9 @@ module.exports = function (app, Localize) {
         },
         "Archived Corrections" : {
             "tr" : "Arsivlenmis Duzeltmeler"
+        },
+        "Read From File" : {
+            "tr" : "Dosyadan Oku"
         }
         
     });
@@ -753,6 +756,7 @@ module.exports = function (app, Localize) {
         module.localization.suggestion = module.myLocalize.translate("Suggestion");
         module.localization.archivedReports = module.myLocalize.translate("Archived Reports");
         module.localization.archivedCorrections = module.myLocalize.translate("Archived Corrections");
+        module.localization.readFromFile = module.myLocalize.translate("Read From File");
 
     }
 

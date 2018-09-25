@@ -11,6 +11,8 @@ var mysql = require('mysql');
 var fs = require('fs');
 var pdf = require('html-pdf');
 var path = require('path');
+var extract = require('pdf-text-extract')
+var formidable = require('formidable');
 /*crypto module and variables*/
 var crypto = require('crypto');
 var algorithm = 'aes-256-ctr';
@@ -67,6 +69,7 @@ function dbCallback(){
     var qareportoperation = require('./pages/qareportoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization, pdf, fs, path, cookie);
     var qacreatereport = require('./pages/qacreatereport.js')(app, localization.myLocalize, functions, db.con, router, localization.localization, pdf, fs);
     var qacreatereportoperation = require('./pages/qacreatereportoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization, pdf, fs);
+    var qareadpdf = require('./pages/qareadpdf.js')(app, localization.myLocalize, functions, db.con, router, localization.localization, pdf, fs, extract, path, formidable);
     var usersTable = require('./api/qaalluserstable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var analysisTypeTable = require('./api/qaanalysistypetable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var unitTypeTable = require('./api/qaunittypetable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);

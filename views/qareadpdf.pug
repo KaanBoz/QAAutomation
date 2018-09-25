@@ -1,0 +1,22 @@
+extends main.pug
+
+block append head
+    script(src='../js/qareadpdf.js')
+
+block content
+    div(class="bgc-white bd bdrs-3 p-20 mB-20" ng-controller="qaReadPdf")
+        div(class="container")
+            div(class="row")
+                div(class="form-group col-md-6")
+                    if results
+                        each res in results
+                            each val in res.values
+                                label #{val.short} : 
+                                label #{val.value}
+                                br
+                            hr(class="divider")
+                    else
+                        form(method="post" action=".." + originalUrl enctype="multipart/form-data")
+                            input(type="file" name="filetoupload" accept="application/pdf")
+                            input(type="submit")
+                    

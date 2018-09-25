@@ -26,6 +26,12 @@ block content
                 label #{localization.explanation} : #{qfu.explanation}
         h4 #{localization.enteredResults}
         hr(class="divider")
+        a(href="../qareadpdf?id=" + id )
+            button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important;")
+                span(class="icon-holder")
+                    i(class="c-white-500 ti-plus")
+                    span(class="title" style="margin:14px") #{localization.readFromFile}
+        hr(class="divider")
         a(href="../qaeditmasteralloyresult?id=" + id + "&operation=add")
             button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important; margin-bottom:15px;")
                 span(class="icon-holder")
