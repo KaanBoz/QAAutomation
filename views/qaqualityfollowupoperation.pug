@@ -46,25 +46,25 @@ block content
                                         input(type="text" class="form-control" id="partyno" name="partyno" value=formData.partyno)
                                     else
                                         input(type="text" class="form-control" id="partyno" name="partyno")
-                        div(class="form-row")
-                            div(class="form-group col-md-6")
-                                label(for="type") #{localization.assignedTo} *
-                                if isDisabled
-                                    select(id="assignedto" name="assignedto" class="form-control" disabled)
-                                        option(value="") #{localization.choose}
-                                        each val in operators
-                                            if formData && formData.assignedto && formData.assignedto == val.id
-                                                option(value=val.id selected) #{val.name}
-                                            else
-                                                option(value=val.id) #{val.name}
-                                else
-                                    select(id="assignedto" name="assignedto" class="form-control")
-                                        option(value="") #{localization.choose}
-                                        each val in operators
-                                            if formData && formData.assignedto && formData.assignedto == val.id
-                                                option(value=val.id selected) #{val.name}
-                                            else
-                                                option(value=val.id) #{val.name}
+                        //- div(class="form-row")
+                        //-     div(class="form-group col-md-6")
+                        //-         label(for="type") #{localization.assignedTo} *
+                        //-         if isDisabled
+                        //-             select(id="assignedto" name="assignedto" class="form-control" disabled)
+                        //-                 option(value="") #{localization.choose}
+                        //-                 each val in operators
+                        //-                     if formData && formData.assignedto && formData.assignedto == val.id
+                        //-                         option(value=val.id selected) #{val.name}
+                        //-                     else
+                        //-                         option(value=val.id) #{val.name}
+                        //-         else
+                        //-             select(id="assignedto" name="assignedto" class="form-control")
+                        //-                 option(value="") #{localization.choose}
+                        //-                 each val in operators
+                        //-                     if formData && formData.assignedto && formData.assignedto == val.id
+                        //-                         option(value=val.id selected) #{val.name}
+                        //-                     else
+                        //-                         option(value=val.id) #{val.name}
                         div(class="form-row")
                             div(class="form-group col-md-6")
                                 label(for="productionAmount") #{localization.productionAmount} *

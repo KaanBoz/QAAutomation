@@ -1,5 +1,5 @@
 module.exports = function (app, myLocalize, functions, con, router) {
-    app.get('/qaallqualityfollowuptable', function (req, res) {
+    app.get('/qaunassignedtable', function (req, res) {
         functions.setLocale(req, res, null);
         sess = req.session;        
         var orderColumn = req.query.order[0].column;
@@ -19,12 +19,12 @@ module.exports = function (app, myLocalize, functions, con, router) {
             " analysisheader.name like '%" + search + "%') and " + 
             " qualityfollowup.isdone = 0 and " + 
             " qualityfollowup.is_deleted = 0 and " + 
-            " qualityfollowup.added_by = " + sess.user.id  +  " and " + 
+            " qualityfollowup.assignedto = " + 0  +  " and " + 
             " qualityfollowup.is_validated = 1";
         var sql = 
             "(select " +
                 "qualityfollowup.id as id, " +
-                "qualityfollowup.added_by as added_by, " +
+                "qualityfollowup.assignedto as assignedto, " +
                 "qualityfollowup.partyno as partyno, " +
                 "qualityfollowup.partydate as partydate, " +
                 "analysisheader.name as analysisname " +
@@ -32,7 +32,7 @@ module.exports = function (app, myLocalize, functions, con, router) {
             "inner join analysisheader on analysisheader.id= qualityfollowup.analysis " +
             whereCondition + ") as t " ;
         if(sess && sess.user){
-            con.query("SELECT COUNT(partyno) AS count FROM qualityfollowup where is_deleted = 0 and is_validated = 1 and isdone=0 and added_by = " + sess.user.id , 
+            con.query("SELECT COUNT(partyno) AS count FROM qualityfollowup where is_deleted = 0 and is_validated = 1 and isdone=0 and assignedto = " + 0 , 
             function (err, result, fields){
                 if(err) throw err;
                 var recordsTotal = result[0].count;
@@ -45,27 +45,13 @@ module.exports = function (app, myLocalize, functions, con, router) {
                         var data = [];
                         for (i = 0; i < usersDb.length; i++) { 
                             var buttonView = 
-                            "<a href=\"../qaqualityfollowupoperation?operation=view&id=" + usersDb[i].id + "\">" +
-                                "<button type=\"button\" class=\"btn btn-success btn-xs\">" +
+                            "<a href=\"../qaassigntome?id=" + usersDb[i].id + "\">" +
+                                "<button type=\"button\" class=\"btn btn-primary btn-xs\">" +
                                     "<span class=\"icon-holder\">" +
-                                        "<i class=\"c-white-500 ti-search\"></i>" +
+                                        "<i class=\"c-white-500 ti-plus\"></i>" +
                                     "</span>" +
                                 "</button>" +
-                            "</a>" +
-                            "<a href=\"../qaqualityfollowupoperation?operation=edit&id=" + usersDb[i].id + "\">" +
-                                "<button type=\"button\" class=\"btn btn-primary btn-xs\" style=\"margin-left:10px;\">" +
-                                    "<span class=\"icon-holder\">" +
-                                        "<i class=\"c-white-500 ti-pencil\"></i>" +
-                                    "</span>" +
-                                "</button>" +
-                            "</a>" +
-                            "<a href=\"../qaqualityfollowupoperation?operation=delete&id=" + usersDb[i].id + "\">" +
-                                "<button type=\"button\" class=\"btn btn-danger btn-xs\" style=\"margin-left:10px;\">" +
-                                    "<span class=\"icon-holder\">" +
-                                        "<i class=\"c-white-500 ti-trash\"></i>" +
-                                    "</span>" +
-                                "</button>" +
-                            "</a>" ;
+                            "</a>";
                             var zeroStringMonth = "0";
                             var zeroStringDate = "0";
                             if(usersDb[i].partydate.getMonth()+1 > 9){

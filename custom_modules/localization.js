@@ -558,7 +558,23 @@ module.exports = function (app, Localize) {
         },
         "Read From File" : {
             "tr" : "Dosyadan Oku"
+        },
+        "Unassigned" : {
+            "tr" : "Atanmamışlar"
+        },
+        "Don't Add" : {
+            "tr" : "Ekleme"
+        },
+        "Add as analysis result" : {
+            "tr" : "Analiz sonucu olarak ekle"
+        },
+        "Add as master alloy result" : {
+            "tr" : "Master külçe sonucu olarak ekle"
+        },
+        "Upload File" : {
+            "tr" : "Dosya Yükle"
         }
+
         
     });
 
@@ -757,7 +773,13 @@ module.exports = function (app, Localize) {
         module.localization.archivedReports = module.myLocalize.translate("Archived Reports");
         module.localization.archivedCorrections = module.myLocalize.translate("Archived Corrections");
         module.localization.readFromFile = module.myLocalize.translate("Read From File");
+        module.localization.unassigned = module.myLocalize.translate("Unassigned");
 
+        module.localization.dontAdd = module.myLocalize.translate("Don't Add");
+        module.localization.addAsAnalysis = module.myLocalize.translate("Add as analysis result");
+        module.localization.addAsMaster = module.myLocalize.translate("Add as master alloy result");
+
+        module.localization.uploadFile = module.myLocalize.translate("Upload File");
     }
 
     return module;

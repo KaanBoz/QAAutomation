@@ -67,7 +67,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.analysis = result[0].analysis;
                 formData.partyno = result[0].partyno;
                 formData.partydate = getDateString(result[0].partydate);
-                formData.assignedto = result[0].assignedto;
+                //formData.assignedto = result[0].assignedto;
+                formData.assignedto = 0;
                 formData.sender = result[0].sender;
                 formData.explanation = result[0].explanation;
                 formData.productionAmount = result[0].amount;
@@ -96,7 +97,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.analysis = result[0].analysis;
                 formData.partyno = result[0].partyno;
                 formData.partydate = getDateString(result[0].partydate);
-                formData.assignedto = result[0].assignedto;
+                //formData.assignedto = result[0].assignedto;
+                formData.assignedto = 0;
                 formData.sender = result[0].sender;
                 formData.explanation = result[0].explanation;
                 formData.productionAmount = result[0].amount;
@@ -125,7 +127,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.analysis = result[0].analysis;
                 formData.partyno = result[0].partyno;
                 formData.partydate = getDateString(result[0].partydate);
-                formData.assignedto = result[0].assignedto;
+                //formData.assignedto = result[0].assignedto;
+                formData.assignedto = 0;
                 formData.sender = result[0].sender;
                 formData.explanation = result[0].explanation;
                 formData.productionAmount = result[0].amount;
@@ -376,7 +379,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 var parts =date.split('.');
                 var mydate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]), -1 * new Date().getTimezoneOffset()/60, 0, 0, 0); 
                 formData.partydate = mydate;
-                formData.assignedto = req.body.assignedto;
+                //formData.assignedto = req.body.assignedto;
+                formData.assignedto = 0;
                 formData.sender = req.body.sender;
                 formData.explanation = req.body.explanation;
                 formData.productionAmount = req.body.productionAmount;
@@ -437,7 +441,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
     
     function validations(req, res, sess, message, success, operation, actionButton, formData, operators, analyses){
         //validations
-        if(!formData.analysis || !formData.partyno || !formData.partydate || !formData.assignedto || !formData.productionAmount){
+        if(!formData.analysis || !formData.partyno || !formData.partydate || !formData.productionAmount){
             message = addMessage(message, localization.fillFormRequired)
         }
         if(message){

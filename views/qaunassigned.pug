@@ -2,14 +2,9 @@ extends main.pug
 
 block content
     div(class="bgc-white bd bdrs-3 p-20 mB-20")
-        h4 #{localization.followup}
+        h4 #{localization.unassigned}
         hr(class="divider")
-        a(href="../qaqualityfollowupoperation?operation=add")
-            button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important; margin-bottom:15px;")
-                span(class="icon-holder")
-                    i(class="c-white-500 ti-plus")
-                    span(class="title" style="margin:14px") #{localization.addNewFollowup}
-        table(id="qaallqualityfollowuptable" class="table table-hover table-bordered" cellspacing="0" width="100%")
+        table(id="table" class="table table-hover table-bordered" cellspacing="0" width="100%")
             thead
                 tr
                     th #{localization.partyno}
@@ -20,7 +15,7 @@ block content
         var localization = '#{localizationVal}';
         if(localization == 'tr'){
             $(document).ready(function() {
-                $('#qaallqualityfollowuptable').DataTable( {
+                $('#table').DataTable( {
                     "language": {
                         "sDecimal":        ",",
                         "sEmptyTable":     "Tabloda herhangi bir veri mevcut değil",
@@ -47,14 +42,14 @@ block content
                     },
                     "processing": true,
                     "serverSide": true,
-                    "ajax": "../qaallqualityfollowuptable"
+                    "ajax": "../qaunassignedtable"
                 });
             });
         }else{
-            $('#qaallanalysisdetailtable').DataTable({
+            $('#table').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": "../qaallqualityfollowuptable"
+                "ajax": "../qaunassignedtable"
             });
         }
         

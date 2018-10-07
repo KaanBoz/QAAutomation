@@ -4,19 +4,36 @@ block append head
     script(src='../js/qareadpdf.js')
 
 block content
+    script.
+        var results = !{resultsJson};
+        var localization = !{localizationJson};
     div(class="bgc-white bd bdrs-3 p-20 mB-20" ng-controller="qaReadPdf")
         div(class="container")
             div(class="row")
                 div(class="form-group col-md-6")
-                    if results
-                        each res in results
-                            each val in res.values
-                                label #{val.short} : 
-                                label #{val.value}
-                                br
+                    if results.length > 0
+                        div(ng-repeat="result in formData.results")
+                            <select class="form-control" ng-value="result.operation" ng-model="result.operation">
+                                <option value="1">#{localization.dontAdd}</option>
+                                <option value="2">#{localization.addAsAnalysis}</option>
+                                <option value="3">#{localization.addAsMaster}</option>
+                            </select>
+                            div(ng-repeat="val in result")
+                                label {{val.short}} :
+                                label {{val.value}}
                             hr(class="divider")
+                        div(style="width: 100%;")
+                            button(type="button" id="save" class="btn btn-success" style="margin-top:35px;" ng-click="save()") #{localization.save}     
+                        div
+                            a(href="../qaeditassigned?id=" + id type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
                     else
-                        form(method="post" action=".." + originalUrl enctype="multipart/form-data")
-                            input(type="file" name="filetoupload" accept="application/pdf")
-                            input(type="submit")
+                        form(method="post" action=".." + originalUrl enctype="multipart/form-data" id="form")
+                            div(class="form-row")
+                                input(type="button" id="uploadFile" class="btn btn-success" style="margin-left:5px;" value=localization.uploadFile)
+                            div(class="form-row")
+                                input(type="file" id="file" name="filetoupload" accept="application/pdf" style="margin-top:35px; margin-left:5px; display:none;")
+                            div(class="form-row")
+                                input(type="submit" class="btn btn-success" style="margin-top:35px; margin-left:5px; display:none;")
+                        div
+                            a(href='../qaeditassigned?id=' + id type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
                     
