@@ -13,7 +13,8 @@ block content
                 div(class="form-group col-md-6")
                     if results.length > 0
                         div(ng-repeat="result in formData.results")
-                            <select class="form-control" ng-value="result.operation" ng-model="result.operation">
+                            label {{$index + 1}}. #{localization.measurement}
+                            <select class="form-control" ng-value="result.operation" ng-model="result.operation" style="margin-bottom:10px;">
                                 <option value="1">#{localization.dontAdd}</option>
                                 <option value="2">#{localization.addAsAnalysis}</option>
                                 <option value="3">#{localization.addAsMaster}</option>

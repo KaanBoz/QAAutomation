@@ -573,6 +573,9 @@ module.exports = function (app, Localize) {
         },
         "Upload File" : {
             "tr" : "Dosya Yükle"
+        },
+        "Measurement" : {
+            "tr" : "Numaralı ölçüm"
         }
 
         
@@ -780,6 +783,7 @@ module.exports = function (app, Localize) {
         module.localization.addAsMaster = module.myLocalize.translate("Add as master alloy result");
 
         module.localization.uploadFile = module.myLocalize.translate("Upload File");
+        module.localization.measurement = module.myLocalize.translate("Measurement");
     }
 
     return module;
