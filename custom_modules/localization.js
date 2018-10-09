@@ -571,11 +571,17 @@ module.exports = function (app, Localize) {
         "Add as master alloy result" : {
             "tr" : "Master külçe sonucu olarak ekle"
         },
-        "Upload File" : {
-            "tr" : "Dosya Yükle"
+        "Read From SPECTROMAXx" : {
+            "tr" : "SPECTROMAXx Cihazından yükle"
         },
         "Measurement" : {
             "tr" : "Numaralı ölçüm"
+        },
+        "Assigned" : {
+            "tr" : "Atananlar"
+        },
+        "Correction could not be calculated" : {
+            "tr" : "Düzeltme önerisi hesaplanamadı"
         }
 
         
@@ -777,13 +783,15 @@ module.exports = function (app, Localize) {
         module.localization.archivedCorrections = module.myLocalize.translate("Archived Corrections");
         module.localization.readFromFile = module.myLocalize.translate("Read From File");
         module.localization.unassigned = module.myLocalize.translate("Unassigned");
+        module.localization.assigned = module.myLocalize.translate("Assigned");
 
         module.localization.dontAdd = module.myLocalize.translate("Don't Add");
         module.localization.addAsAnalysis = module.myLocalize.translate("Add as analysis result");
         module.localization.addAsMaster = module.myLocalize.translate("Add as master alloy result");
 
-        module.localization.uploadFile = module.myLocalize.translate("Upload File");
+        module.localization.readFromSpectromaxx = module.myLocalize.translate("Read From SPECTROMAXx");
         module.localization.measurement = module.myLocalize.translate("Measurement");
+        module.localization.correctionCouldNotBeCalculated = module.myLocalize.translate("Correction could not be calculated");
     }
 
     return module;

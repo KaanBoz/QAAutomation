@@ -16,7 +16,7 @@ module.exports = function (app, myLocalize, functions, con, router) {
         var limit = start + ", " + (length - 1);
         var t  = "(select qualityfollowup.id, qualityfollowup.isdone, analysisheader.name, qualityfollowup.partydate, qualityfollowup.partyno, qualityfollowup.is_deleted, qualityfollowup.is_validated, qualityfollowup.assignedto from qualityfollowup inner join analysisheader on qualityfollowup.analysis = analysisheader.id) as t ";
         var whereCondition = "where (name like '%" + search + "%' or partydate like '%" + search + "%' or partyno like '%" + search + "%')" + 
-        " and isdone = 0 and is_deleted = 0 and is_validated = 1 and assignedto = " + sess.user.id;
+        " and isdone = 0 and is_deleted = 0 and is_validated = 1 " //and assignedto = " + sess.user.id;
         if(sess && sess.user){
             con.query("SELECT COUNT(name) AS assignedtome FROM " + t + " where isdone = 0 and is_deleted = 0 and is_validated = 1 and assignedto = " + sess.user.id , 
             function (err, result, fields){

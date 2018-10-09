@@ -97,8 +97,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                             }
                                             details.sort(compare);
                                             details.details = JSON.parse(JSON.stringify(details));
-                                            details = calculate(details);
-                                            renderPage(res, req, details); 
+                                            details = calculate(res, req, details, 0);
+                                            //renderPage(res, req, details); 
                                         });
                                     });
                                 });
@@ -143,7 +143,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         });
     }
 
-    function calculate(details){
+    function calculate(res, req, details, counter){
         var isError = false;
         for(var i = 0; i < details.length; i++){
             if(details[i].newResult < details[i].min){
@@ -159,11 +159,24 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 details[i].errorMargin = 0;
             }
         }
+        counter++;
+        if(counter > 3000){
+            details.calculated = 0;
+            for(var i= 0; i < details.length; i++){
+                details[i].addedAmount = 0;
+            }
+            renderPage(res, req, details);
+            return;
+        }
         if(!isError){
-            return details;
+            //return details;
+            details.calculated = 1;
+            renderPage(res, req, details);
+            return;
         }else{
             details = fixErrors(details);
-            return calculate(details);
+            //return calculate(details);
+            setTimeout(function(){calculate(res, req, details, counter)});
         }
     }
 
