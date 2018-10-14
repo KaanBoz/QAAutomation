@@ -4,7 +4,7 @@ block append head
     script(src='../js/qaeditassinged.js')
 block content
     div(class="bgc-white bd bdrs-3 p-20 mB-20")
-        h4 #{localization.followup}
+        h4 #{localization.measurementRequest}
         hr(class="divider")
         div(class="form-row")
             div(class="form-group col-md-6")
@@ -54,7 +54,7 @@ block content
                     th #{localization.results}
                     th(style="max-width: 225px !important")
         hr(class="divider")
-        button(type="button" id="save" class="btn btn-success" style="margin-top:10px;") #{localization.endFollowup}
+        button(type="button" id="save" class="btn btn-success" style="margin-top:10px;") #{localization.closeMeasurementRequest}
         if message
             div(class = "form-group" style="color:red;margin-top:35px;")
                 p !{message}

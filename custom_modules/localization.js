@@ -582,6 +582,42 @@ module.exports = function (app, Localize) {
         },
         "Correction could not be calculated" : {
             "tr" : "Düzeltme önerisi hesaplanamadı"
+        },
+        "Alloy" : {
+            "tr" : "Alaşım"
+        },
+        "Alloys" : {
+            "tr" : "Alaşımlar"
+        },
+        "Add New Alloy" : {
+            "tr" : "Yeni Alaşım Ekle"
+        },
+        "New Alloy" : {
+            "tr" : "Yeni Alaşım"
+        },
+        "Measurement Request" : {
+            "tr" : "Ölçüm Talebi"
+        },
+        "Spectral Analysis" : {
+            "tr" : "Spektral Analiz"
+        },
+        "Add New Spectral Analysis" : {
+            "tr" : "Yeni Spektral Analiz Ekle"
+        },
+        "New Spectral Analysis" : {
+            "tr" : "Yeni Spektral Analiz"
+        },
+        "Correction" : {
+            "tr" : "Düzeltme"
+        },
+        "Requests" : {
+            "tr" : "Talepler"
+        },
+        "Close Measurement Request" : {
+            "tr" : "Ölçüm Talebini Bitir"
+        },
+        "Alloy Detail" : {
+            "tr" : "Alaşım Detay"
         }
 
         
@@ -792,6 +828,18 @@ module.exports = function (app, Localize) {
         module.localization.readFromSpectromaxx = module.myLocalize.translate("Read From SPECTROMAXx");
         module.localization.measurement = module.myLocalize.translate("Measurement");
         module.localization.correctionCouldNotBeCalculated = module.myLocalize.translate("Correction could not be calculated");
+        module.localization.alloy = module.myLocalize.translate("Alloy");
+        module.localization.alloys = module.myLocalize.translate("Alloys");
+        module.localization.addNewAlloy = module.myLocalize.translate("Add New Alloy");
+        module.localization.newAlloy = module.myLocalize.translate("New Alloy");
+        module.localization.measurementRequest = module.myLocalize.translate("Measurement Request");
+        module.localization.spectralAnalysis = module.myLocalize.translate("Spectral Analysis");
+        module.localization.addNewSpectralAnalysis = module.myLocalize.translate("Add New Spectral Analysis");
+        module.localization.newSpectralAnalysis = module.myLocalize.translate("New Spectral Analysis");
+        module.localization.correction = module.myLocalize.translate("Correction");
+        module.localization.requests = module.myLocalize.translate("Requests");
+        module.localization.closeMeasurementRequest = module.myLocalize.translate("Close Measurement Request");
+        module.localization.alloyDetail = module.myLocalize.translate("Alloy Detail");
     }
 
     return module;

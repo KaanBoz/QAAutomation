@@ -16,9 +16,9 @@ block content
         div(class="masonry-item col-md-12")
             div(class="bgc-white p-20 bd")
                 if operation == "add" && !success 
-                    h6(class="c-grey-900") #{localization.newAnalysis}
+                    h6(class="c-grey-900") #{localization.newAlloy}
                 else
-                    h6(class="c-grey-900") #{localization.analysis}
+                    h6(class="c-grey-900") #{localization.alloy}
                 hr(class="divider")
                 div(class="mT-30")
                     form(method="post" action=".." + originalUrl)
@@ -29,43 +29,32 @@ block content
                                     input(type="text" class="form-control" id="name" name="name" disabled ng-model="formData.name")
                                 else
                                     input(type="text" class="form-control" id="name" name="name" ng-model="formData.name")
-                        div(class="form-row")
-                            div(class="form-group col-md-6")
-                                label(for="type") #{localization.analysisType} 
-                                if isDisabled
-                                    select(id="type" name="type" class="form-control" disabled ng-model="formData.type")
-                                        option(value="") #{localization.choose}
-                                        each val in types
-                                            option(value=val.id) #{val.name}
-                                else
-                                    select(id="type" name="type" class="form-control" ng-model="formData.type")
-                                        option(value="") #{localization.choose}
-                                        each val in types
-                                            option(value=val.id) #{val.name}
-                        div(class="form-row")
-                            div(class="form-group col-md-6")
-                                label(for="standart") #{localization.standart} 
-                                if isDisabled
-                                    select(id="standart" name="standart" class="form-control" disabled ng-model="formData.standart")
-                                        option(value="") #{localization.choose}
-                                        each val in standarts
-                                            option(value=val.id) #{val.name}
-                                else
-                                    select(id="standart" name="standart" class="form-control" ng-model="formData.standart")
-                                        option(value="") #{localization.choose}
-                                        each val in standarts
-                                            option(value=val.id) #{val.name}
-
-
-                        div(id="messageBox" class = "form-group" style="color:red;")
-                        if message && success == 0
-                            div(id="message") !{message}
-                        if actionButton && (operation == "add" || operation == "edit")
-                            button(type="button" id="save" class="btn btn-success" ng-click="save()") #{localization.save}
-                        else if actionButton && operation == "delete"
-                            button(type="button" id="delete" class="btn btn-danger" ng-click="delete()") #{localization.delete}
-                        div
-                            a(href="../qaallanalysisheaders" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
+                        //- div(class="form-row")
+                        //-     div(class="form-group col-md-6")
+                        //-         label(for="type") #{localization.analysisType} 
+                        //-         if isDisabled
+                        //-             select(id="type" name="type" class="form-control" disabled ng-model="formData.type")
+                        //-                 option(value="") #{localization.choose}
+                        //-                 each val in types
+                        //-                     option(value=val.id) #{val.name}
+                        //-         else
+                        //-             select(id="type" name="type" class="form-control" ng-model="formData.type")
+                        //-                 option(value="") #{localization.choose}
+                        //-                 each val in types
+                        //-                     option(value=val.id) #{val.name}
+                        //- div(class="form-row")
+                        //-     div(class="form-group col-md-6")
+                        //-         label(for="standart") #{localization.standart} 
+                        //-         if isDisabled
+                        //-             select(id="standart" name="standart" class="form-control" disabled ng-model="formData.standart")
+                        //-                 option(value="") #{localization.choose}
+                        //-                 each val in standarts
+                        //-                     option(value=val.id) #{val.name}
+                        //-         else
+                        //-             select(id="standart" name="standart" class="form-control" ng-model="formData.standart")
+                        //-                 option(value="") #{localization.choose}
+                        //-                 each val in standarts
+                        //-                     option(value=val.id) #{val.name}
                         script.
                             var localization = '#{localizationVal}';
                             var isDisabled = !{isDisabled}
@@ -74,7 +63,7 @@ block content
         div(class="masonry-sizer col-md-12")
         div(class="masonry-item col-md-12")
             div(class="bgc-white p-20 bd")
-                h6(class="c-grey-900") #{localization.analysisDetail}
+                h6(class="c-grey-900") #{localization.alloyDetail}
                 hr(class="divider")
                 div(class="mT-30")  
                     div(class="form-row")
@@ -164,4 +153,17 @@ block content
                                     button(type="button" class="btn btn-danger btn-xs" style="margin-left:10px;" ng-click="deleteDetail($index)")
                                         span(class="icon-holder")
                                             i(class="c-white-500 ti-trash")
+        div(class="masonry-sizer col-md-12")
+        div(class="masonry-item col-md-12")
+            div(class="bgc-white p-20 bd")
+                div(id="messageBox" class = "form-group" style="color:red;")
+                    if message && success == 0
+                        div(id="message") !{message}
+                    if actionButton && (operation == "add" || operation == "edit")
+                        button(type="button" id="save" class="btn btn-success" ng-click="save()") #{localization.save}
+                    else if actionButton && operation == "delete"
+                        button(type="button" id="delete" class="btn btn-danger" ng-click="delete()") #{localization.delete}
+                    div
+                        a(href="../qaallanalysisheaders" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
+
                                                     

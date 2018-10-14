@@ -289,8 +289,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 var id = result[0].id;
                 con.query(
                     "update analysisheader " + " set name='" + name + "'," + 
-                    "type =" + type + "," +
-                    "standart =" + standart + "," +
+                    "type =" + 0 + "," +
+                    "standart =" + 0 + "," +
                     "edited_by=" + sess.user.id + "," +
                     "edited_at=" + con.escape(new Date()) + ", is_deleted = 0, deleted_by = null, deleted_at = null " +
                     "where id=" + id  ,
@@ -310,7 +310,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
             }else{
                 con.query("INSERT INTO analysisheader (name, type, standart, added_by, added_at, is_deleted" + 
                 ", is_validated) VALUES" + 
-                "('" + name + "', " + type + ", " + standart + ", " + sess.user.id + ", " 
+                "('" + name + "', " + 0 + ", " + 0 + ", " + sess.user.id + ", " 
                 + con.escape(new Date()) + ", 0, 1)", function(err, result, fields){
                     if (err){
                         message = err.message;
@@ -354,8 +354,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
             }
             con.query(
                 "update analysisheader " + " set name='" + name + "'," + 
-                "type =" + type + "," +
-                "standart =" + standart + "," +
+                "type =" + 0 + "," +
+                "standart =" + 0 + "," +
                 "edited_by=" + sess.user.id + "," +
                 "edited_at=" + con.escape(new Date()) + " " +
                 "where id=" + id  ,
@@ -522,7 +522,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
     
     function validations(req, res, sess,name, message, success, operation, actionButton, formData, standarts, types, details, materials, detail){
         //validations
-        if(!name || !formData.type || !formData.standart){
+        if(!name){
             message = addMessage(message, localization.fillForm)
         }
         if(!detail){

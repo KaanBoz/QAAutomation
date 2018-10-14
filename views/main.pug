@@ -103,53 +103,55 @@ html
                                             span(class="arrow" style="padding-top:7px;")
                                                 i(class="ti-angle-right")
                                         ul(class="dropdown-menu")
-                                            li
-                                                a(href="../qaanalysistype") #{localization.analysisType}
+                                            //- li
+                                            //-     a(href="../qaanalysistype") #{localization.analysisType}
                                             //- li
                                             //-     a(href="../qaunittype") #{localization.unitType}
-                                            li
-                                                a(href="../qaanalysisstandart") #{localization.standart}
+                                            //- li
+                                            //-     a(href="../qaanalysisstandart") #{localization.standart}
                                             li
                                                 a(href="../qaallmaterials") #{localization.material}
+                                            li
+                                                a(href="../qaallanalysisheaders") #{localization.alloy}
+                                //- ul(class="dropdown-menu")
+                                //-     li(class="nav-item dropdown")
+                                //-         a(href="javascript:void(0);")
+                                //-             span #{localization.analyses}
+                                //-             span(class="arrow" style="padding-top:7px;")
+                                //-                 i(class="ti-angle-right")
+                                //-         ul(class="dropdown-menu")
+                                //-             li
+                                //-                 a(href="../qaallanalysisheaders") #{localization.analyses}
                                 ul(class="dropdown-menu")
                                     li(class="nav-item dropdown")
                                         a(href="javascript:void(0);")
-                                            span #{localization.analyses}
+                                            span #{localization.measurementRequest}
                                             span(class="arrow" style="padding-top:7px;")
                                                 i(class="ti-angle-right")
                                         ul(class="dropdown-menu")
                                             li
-                                                a(href="../qaallanalysisheaders") #{localization.analyses}
-                                ul(class="dropdown-menu")
-                                    li(class="nav-item dropdown")
-                                        a(href="javascript:void(0);")
-                                            span #{localization.production}
-                                            span(class="arrow" style="padding-top:7px;")
-                                                i(class="ti-angle-right")
-                                        ul(class="dropdown-menu")
-                                            li
-                                                a(href="../qaallqualityfollowup") #{localization.followup}
-                                        ul(class="dropdown-menu")
-                                            li
-                                                a(href="../qaallcorrections") #{localization.corrections}
-                                        ul(class="dropdown-menu")
-                                            li
-                                                a(href="../qaallcorrectionsarchive") #{localization.archivedCorrections}
-                                ul(class="dropdown-menu")
-                                    li(class="nav-item dropdown")
-                                        a(href="javascript:void(0);")
-                                            span #{localization.reports}
-                                            span(class="arrow" style="padding-top:7px;")
-                                                i(class="ti-angle-right")
-                                        ul(class="dropdown-menu")
-                                            li
-                                                a(href="../qacreatereport") #{localization.createReport}
-                                        ul(class="dropdown-menu")
-                                            li
-                                                a(href="../qaprintreport") #{localization.printReport}
-                                        ul(class="dropdown-menu")
-                                            li
-                                                a(href="../qaprintreportarchive") #{localization.archivedReports}
+                                                a(href="../qaallqualityfollowup") #{localization.spectralAnalysis}
+                                        //- ul(class="dropdown-menu")
+                                        //-     li
+                                        //-         a(href="../qaallcorrections") #{localization.correction}
+                                        //- ul(class="dropdown-menu")
+                                        //-     li
+                                        //-         a(href="../qaallcorrectionsarchive") #{localization.archivedCorrections}
+                                //- ul(class="dropdown-menu")
+                                //-     li(class="nav-item dropdown")
+                                //-         a(href="javascript:void(0);")
+                                //-             span #{localization.reports}
+                                //-             span(class="arrow" style="padding-top:7px;")
+                                //-                 i(class="ti-angle-right")
+                                //-         ul(class="dropdown-menu")
+                                //-             li
+                                //-                 a(href="../qacreatereport") #{localization.createReport}
+                                //-         ul(class="dropdown-menu")
+                                //-             li
+                                //-                 a(href="../qaprintreport") #{localization.printReport}
+                                //-         ul(class="dropdown-menu")
+                                //-             li
+                                //-                 a(href="../qaprintreportarchive") #{localization.archivedReports}
                         if isOperator
                             li(class="nav-item dropdown")
                                 a(class="dropdown-toggle" href="javascript:void(0);")
@@ -159,11 +161,17 @@ html
                                     span(class="arrow" style="padding-top:8px;")
                                         i(class="ti-angle-right")
                                 ul(class="dropdown-menu")
-                                    li
-                                        a(class="sidebar-link" href="../qaassignedtome") #{localization.assigned}
-                                ul(class="dropdown-menu")
-                                    li
-                                        a(class="sidebar-link" href="../qacorrections") #{localization.corrections}
+                                    li(class="nav-item dropdown")
+                                        a(href="javascript:void(0);")
+                                            span #{localization.requests}
+                                            span(class="arrow" style="padding-top:7px;")
+                                                i(class="ti-angle-right")
+                                        ul(class="dropdown-menu")
+                                            li
+                                                a(class="sidebar-link" href="../qaassignedtome") #{localization.spectralAnalysis}
+                                        ul(class="dropdown-menu")
+                                            li
+                                                a(class="sidebar-link" href="../qacorrections") #{localization.correction}
                                 //- ul(class="dropdown-menu")
                                 //-     li
                                 //-         a(class="sidebar-link" href="../qaunassigned") #{localization.unassigned}
