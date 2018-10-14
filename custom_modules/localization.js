@@ -618,6 +618,21 @@ module.exports = function (app, Localize) {
         },
         "Alloy Detail" : {
             "tr" : "Alaşım Detay"
+        },
+        "Product" : {
+            "tr" : "Ürün"
+        },
+        "Products" : {
+            "tr" : "Ürünler"
+        },
+        "Create New Product" : {
+            "tr" : "Yeni Ürün Oluştur"
+        },
+        "New Product" : {
+            "tr" : "Yeni Ürün"
+        },
+        "Alloy Code" : {
+            "tr" : "Alaşım Kodu"
         }
 
         
@@ -692,7 +707,6 @@ module.exports = function (app, Localize) {
         module.localization.explanation = module.myLocalize.translate("Explanation");
         module.localization.productionAmount = module.myLocalize.translate("Production Amount");
         module.localization.masterAlloy = module.myLocalize.translate("Master Alloy");
- 
         module.localization.analysisType = module.myLocalize.translate("Analysis Type");
         module.localization.addNewAnalysisType = module.myLocalize.translate("Add New Analysis Type");
         module.localization.newAnalysisType = module.myLocalize.translate("New Analysis Type");
@@ -701,7 +715,6 @@ module.exports = function (app, Localize) {
         module.localization.analysisTypeWasNotFound = module.myLocalize.translate("Analysis Type with the given id was not found");
         module.localization.analysisTypeUpdated = module.myLocalize.translate("Analysis Type updated successfully");
         module.localization.analysisTypeDeleted = module.myLocalize.translate("Analysis Type deleted successfully");
-
         module.localization.unitType = module.myLocalize.translate("Unit Type");
         module.localization.addNewUnitType = module.myLocalize.translate("Add New Unit Type");
         module.localization.newUnitType = module.myLocalize.translate("New Unit Type");
@@ -710,7 +723,6 @@ module.exports = function (app, Localize) {
         module.localization.unitTypeWasNotFound = module.myLocalize.translate("Unit Type with the given id was not found");
         module.localization.unitTypeUpdated = module.myLocalize.translate("Unit Type updated successfully");
         module.localization.unitTypeDeleted = module.myLocalize.translate("Unit Type deleted successfully");
-
         module.localization.standart = module.myLocalize.translate("Standart")
         module.localization.addNewStandart = module.myLocalize.translate("Add New Standart");
         module.localization.newStandart = module.myLocalize.translate("New Standart");
@@ -719,7 +731,6 @@ module.exports = function (app, Localize) {
         module.localization.standartWasNotFound = module.myLocalize.translate("Standart with the given id was not found");
         module.localization.standartUpdated = module.myLocalize.translate("Standart updated successfully");
         module.localization.standartDeleted = module.myLocalize.translate("Standart deleted successfully");
-
         module.localization.analysis = module.myLocalize.translate("Analysis");
         module.localization.addNewAnalysis = module.myLocalize.translate("Add New Analysis");
         module.localization.newAnalysis = module.myLocalize.translate("New Analysis");
@@ -728,7 +739,6 @@ module.exports = function (app, Localize) {
         module.localization.analysisWasNotFound = module.myLocalize.translate("Analysis with the given id was not found");
         module.localization.analysisUpdated = module.myLocalize.translate("Analysis updated successfully");
         module.localization.analysisDeleted = module.myLocalize.translate("Analysis deleted successfully");
-
         module.localization.analysisHeader = module.myLocalize.translate("Analysis Header");
         module.localization.addNewAnalysisHeader = module.myLocalize.translate("Add New Analysis Header");
         module.localization.newAnalysisHeader = module.myLocalize.translate("New Analysis Header");
@@ -737,7 +747,6 @@ module.exports = function (app, Localize) {
         module.localization.analysisHeaderWasNotFound = module.myLocalize.translate("Analysis Header with the given id was not found");
         module.localization.analysisHeaderUpdated = module.myLocalize.translate("Analysis Header updated successfully");
         module.localization.analysisHeaderDeleted = module.myLocalize.translate("Analysis Header deleted successfully");
-
         module.localization.analysisDetail = module.myLocalize.translate("Analysis Detail");
         module.localization.addNewAnalysisDetail = module.myLocalize.translate("Add New Analysis Detail");
         module.localization.newAnalysisDetail = module.myLocalize.translate("New Analysis Detail");
@@ -746,7 +755,6 @@ module.exports = function (app, Localize) {
         module.localization.analysisDetailWasNotFound = module.myLocalize.translate("Analysis Detail with the given id was not found");
         module.localization.analysisDetailUpdated = module.myLocalize.translate("Analysis Detail updated successfully");
         module.localization.analysisDetailDeleted = module.myLocalize.translate("Analysis Detail deleted successfully");
-
         module.localization.material = module.myLocalize.translate("Raw Material");
         module.localization.addNewMaterial = module.myLocalize.translate("Add New Raw Material");
         module.localization.newMaterial = module.myLocalize.translate("New Raw Material");
@@ -755,7 +763,6 @@ module.exports = function (app, Localize) {
         module.localization.materialWasNotFound = module.myLocalize.translate("Raw Material with the given id was not found");
         module.localization.materialUpdated = module.myLocalize.translate("Raw Material updated successfully");
         module.localization.materialDeleted = module.myLocalize.translate("Raw Material deleted successfully");
-
         module.localization.followup = module.myLocalize.translate("Production Watch");
         module.localization.addNewFollowup = module.myLocalize.translate("Add New Production Watch");
         module.localization.newFollowup = module.myLocalize.translate("New Production Watch");
@@ -767,7 +774,6 @@ module.exports = function (app, Localize) {
         module.localization.enterMasterAlloy = module.myLocalize.translate("Please enter master alloy value for all selected details");
         module.localization.assignedToMe = module.myLocalize.translate("Assigned to me");
         module.localization.enteredResults = module.myLocalize.translate("Entered Results");
-
         module.localization.addNewMasterAlloyResult = module.myLocalize.translate("Add New Master Alloy Result");
         module.localization.addNewAnalysisResult = module.myLocalize.translate("Add New Analysis Result");
         module.localization.masterAlloyResult = module.myLocalize.translate("Master Alloy Result");
@@ -820,11 +826,9 @@ module.exports = function (app, Localize) {
         module.localization.readFromFile = module.myLocalize.translate("Read From File");
         module.localization.unassigned = module.myLocalize.translate("Unassigned");
         module.localization.assigned = module.myLocalize.translate("Assigned");
-
         module.localization.dontAdd = module.myLocalize.translate("Don't Add");
         module.localization.addAsAnalysis = module.myLocalize.translate("Add as analysis result");
         module.localization.addAsMaster = module.myLocalize.translate("Add as master alloy result");
-
         module.localization.readFromSpectromaxx = module.myLocalize.translate("Read From SPECTROMAXx");
         module.localization.measurement = module.myLocalize.translate("Measurement");
         module.localization.correctionCouldNotBeCalculated = module.myLocalize.translate("Correction could not be calculated");
@@ -840,6 +844,11 @@ module.exports = function (app, Localize) {
         module.localization.requests = module.myLocalize.translate("Requests");
         module.localization.closeMeasurementRequest = module.myLocalize.translate("Close Measurement Request");
         module.localization.alloyDetail = module.myLocalize.translate("Alloy Detail");
+        module.localization.product = module.myLocalize.translate("Product");
+        module.localization.products = module.myLocalize.translate("Products");
+        module.localization.createNewProduct = module.myLocalize.translate("Create New Product");
+        module.localization.newProduct = module.myLocalize.translate("New Product");
+        module.localization.alloyCode = module.myLocalize.translate("Alloy Code");
     }
 
     return module;

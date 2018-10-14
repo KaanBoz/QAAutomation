@@ -1,0 +1,19 @@
+extends main.pug
+
+block content
+    div(class="row gap-20 masonry pos-r")
+        div(class="masonry-sizer col-md-12")
+        div(class="masonry-item col-md-12")
+            div(class="bgc-white p-20 bd")
+                if operation == "add"
+                    h6(class="c-grey-900") #{localization.newProduct}
+                else
+                    h6(class="c-grey-900") #{localization.product}
+                div(class="mT-30")
+                    if (operation == "add" || operation == "edit")
+                        button(type="submit" class="btn btn-success" style="margin-top:35px;") #{localization.save}
+                    else if operation == "delete"
+                        button(type="submit" class="btn btn-danger" style="margin-top:35px;") #{localization.delete}
+                    div
+                        a(href="../productlist" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
+                        

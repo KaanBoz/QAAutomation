@@ -38,6 +38,7 @@ function dbCallback(){
     var logout = require('./pages/logout.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var login = require('./pages/login.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaallusers = require('./pages/qaallusers.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var productlist = require('./pages/productlist.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaallanalysisheaders = require('./pages/qaallanalysisheaders.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaallanalysisdetails = require('./pages/qaallanalysisdetails.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaallcorrections = require('./pages/qaallcorrections.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
@@ -54,6 +55,7 @@ function dbCallback(){
     var qaprintreport = require('./pages/qaprintreport.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaprintreportarchive = require('./pages/qaprintreportarchive.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qauseroperation = require('./pages/qauseroperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var product = require('./pages/product.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaanalysisheaderoperation = require('./pages/qaanalysisheaderoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaanalysisdetailoperation = require('./pages/qaanalysisdetailoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaanalysistypeoperation = require('./pages/qaanalysistypeoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);

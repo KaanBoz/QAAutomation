@@ -24,7 +24,7 @@ block content
                     form(method="post" action=".." + originalUrl)
                         div(class="form-row")
                             div(class="form-group col-md-6")
-                                label(for="name") #{localization.productId}
+                                label(for="name") #{localization.alloyCode}
                                 if isDisabled
                                     input(type="text" class="form-control" id="name" name="name" disabled ng-model="formData.name")
                                 else
