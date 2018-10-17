@@ -75,6 +75,7 @@ function dbCallback(){
     var qacreatereportoperation = require('./pages/qacreatereportoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization, pdf, fs);
     var qareadpdf = require('./pages/qareadpdf.js')(app, localization.myLocalize, functions, db.con, router, localization.localization, pdf, fs, extract, path, formidable);
     var usersTable = require('./api/qaalluserstable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var productTable = require('./api/producttable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var analysisTypeTable = require('./api/qaanalysistypetable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var unitTypeTable = require('./api/qaunittypetable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var analysisStandartTable = require('./api/qaanalysisstandarttable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);

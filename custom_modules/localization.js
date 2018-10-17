@@ -633,7 +633,26 @@ module.exports = function (app, Localize) {
         },
         "Alloy Code" : {
             "tr" : "Alaşım Kodu"
+        },
+        "Alloy No" : {
+            "tr" : "Alaşım No"
+        },
+        "Code" : {
+            "tr" : "Kodu"
+        },
+        "Explanation" : {
+            "tr" : "Açıklama"
+        },
+        "Production Type" : {
+            "tr" : "Üretim Şekli"
+        },
+        "Product Detail 1" : {
+            "tr" : "Ürün Detayı 1"
+        },
+        "Product Detail 2" : {
+            "tr" : "Ürün Detayı 2"
         }
+
 
         
     });
@@ -849,6 +868,12 @@ module.exports = function (app, Localize) {
         module.localization.createNewProduct = module.myLocalize.translate("Create New Product");
         module.localization.newProduct = module.myLocalize.translate("New Product");
         module.localization.alloyCode = module.myLocalize.translate("Alloy Code");
+        module.localization.alloyNo = module.myLocalize.translate("Alloy No");
+        module.localization.code = module.myLocalize.translate("Code");
+        module.localization.explanation = module.myLocalize.translate("Explanation");
+        module.localization.productionType = module.myLocalize.translate("Production Type");
+        module.localization.productDetail1 = module.myLocalize.translate("Product Detail 1");
+        module.localization.productDetail2 = module.myLocalize.translate("Product Detail 2");
     }
 
     return module;

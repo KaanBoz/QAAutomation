@@ -12,9 +12,7 @@ block content
         table(id="table" class="table table-hover table-bordered" cellspacing="0" width="100%")
             thead
                 tr
-                    th #{localization.name}
-                    th #{localization.surname}
-                    th #{localization.email}
+                    th #{localization.code}
                     th(style="max-width: 225px !important")
     script.
         var localization = '#{localizationVal}';
@@ -47,13 +45,13 @@ block content
                     },
                     "processing": true,
                     "serverSide": true,
-                    "ajax": "../qaalluserstable"
+                    "ajax": "../producttable"
                 });
             });
         }else{
             $('#table').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": "../qaalluserstable"
+                "ajax": "../producttable"
             });
         }
