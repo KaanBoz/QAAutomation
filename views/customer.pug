@@ -25,11 +25,15 @@ block content
                             input(type="text" class="form-control" id="responsiblePerson" name="responsiblePerson" ng-model="model.responsiblePerson" ng-disabled=''+disabled)
                     div(class="form-row")
                         div(class="form-group col-md-6")
-                            label(for="telephone") #{localization.telephone}
+                            label(for="telephone") #{localization.telephone} 
+                            br   
+                            <i>(  (999)999-9999 | 999-999-9999 | 9999999999  )<i/>
                             input(type="text" class="form-control" id="telephone" name="telephone" ng-model="model.telephone" ng-disabled=''+disabled)
                     div(class="form-row")
                         div(class="form-group col-md-6")
-                            label(for="email") #{localization.email}
+                            label(for="email") #{localization.email}   
+                            br  
+                            <i>(  xxxx@xxx.xxx  )<i/>
                             input(type="text" class="form-control" id="email" name="email" ng-model="model.email" ng-disabled=''+disabled)
                     div(class = "form-group" style="color:red;margin-top:35px;margin:0; padding:0; height:26px; ")
                         p(id="errMessage") !{message}

@@ -675,6 +675,9 @@ module.exports = function (app, Localize) {
         },
         "New Customer" : {
             "tr" : "Yeni Müşteri"
+        },
+        "Please enter a valid phone number" : {
+            "tr" : "Lütfen geçerli bir telefon numarası giriniz"
         }
 
 
@@ -906,6 +909,7 @@ module.exports = function (app, Localize) {
         module.localization.telephone = module.myLocalize.translate("Telephone");
         module.localization.email = module.myLocalize.translate("E-Mail");
         module.localization.newCustomer = module.myLocalize.translate("New Customer");
+        module.localization.enterValidPhone = module.myLocalize.translate("Please enter a valid phone number");
     }
 
     return module;
