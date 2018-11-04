@@ -1052,6 +1052,45 @@ module.exports = function (app, mysql, functions, callback) {
                                 } else {
                                     console.log("dbversion is updated to 30");
                                     module.dbVersion = 30;
+                                    dbVersion31();
+                                }
+                            });
+                        }
+                    });
+            } else {
+                dbVersion31();
+            }
+        }
+
+        function dbVersion31() {
+            if (module.dbVersion == 30) {
+                module.con.query("CREATE TABLE IF NOT EXISTS customer (" +
+                    "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                    "customername VARCHAR(256)," +
+                    "responsibleperson VARCHAR(256)," +
+                    "telephone VARCHAR(256)," +
+                    "email VARCHAR(256)," +
+                    "added_by INT NOT NULL," +
+                    "added_at DATETIME NOT NULL," +
+                    "edited_by INT, " +
+                    "edited_at DATETIME, " +
+                    "deleted_by INT," +
+                    "deleted_at DATETIME, " +
+                    "is_deleted BIT NOT NULL, " +
+                    "is_validated BIT NOT NULL" +
+                    ");" +
+                    "ALTER TABLE customer CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
+                    , function (err, result) {
+                        if (err) {
+                            console.log(err.message);
+                        } else {
+                            console.log("customer table created or exists");
+                            module.con.query("update dbvariables set dbversion = 31 where id = 1", function (err, result, fields) {
+                                if (err) {
+                                    console.log(err.message);
+                                } else {
+                                    console.log("dbversion is updated to 31");
+                                    module.dbVersion = 31;
                                     callback();
                                 }
                             });

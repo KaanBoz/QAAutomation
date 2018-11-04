@@ -651,6 +651,30 @@ module.exports = function (app, Localize) {
         },
         "Product Detail 2" : {
             "tr" : "Ürün Detayı 2"
+        },
+        "Customer" : {
+            "tr" : "Müşteri"
+        },
+        "Customers" : {
+            "tr" : "Müşteriler"
+        },
+        "Create New Customer" : {
+            "tr" : "Yeni Müşteri Oluştur"
+        },
+        "Customer Name" : {
+            "tr" : "Müşteri Adı"
+        },
+        "Responsible Person" : {
+            "tr" : "İlgili Kişi"
+        },
+        "Telephone" : {
+            "tr" : "Telefon"
+        },
+        "E-Mail" : {
+            "tr" : "E-Posta"
+        },
+        "New Customer" : {
+            "tr" : "Yeni Müşteri"
         }
 
 
@@ -874,6 +898,14 @@ module.exports = function (app, Localize) {
         module.localization.productionType = module.myLocalize.translate("Production Type");
         module.localization.productDetail1 = module.myLocalize.translate("Product Detail 1");
         module.localization.productDetail2 = module.myLocalize.translate("Product Detail 2");
+        module.localization.customer = module.myLocalize.translate("Customer");
+        module.localization.customers = module.myLocalize.translate("Customers");
+        module.localization.createNewCustomer = module.myLocalize.translate("Create New Customer");
+        module.localization.customerName = module.myLocalize.translate("Customer Name");
+        module.localization.responsiblePerson = module.myLocalize.translate("Responsible Person");
+        module.localization.telephone = module.myLocalize.translate("Telephone");
+        module.localization.email = module.myLocalize.translate("E-Mail");
+        module.localization.newCustomer = module.myLocalize.translate("New Customer");
     }
 
     return module;
