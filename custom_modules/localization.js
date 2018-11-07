@@ -274,8 +274,8 @@ module.exports = function (app, Localize) {
         "New Analysis Header" : {
             "tr" : "Yeni Analiz Başlık"
         },
-        "An analysis header exists with the given product ID" : {
-            "tr" : "Bu ürün koduna sahip bir analiz başlık zaten var"
+        "An alloy with this name already exist" : {
+            "tr" : "Bu koda sahip bir alaşım zaten var"
         },
         "Analysis Header created" : {
             "tr" : "Analiz Başlık oluşturuldu"
@@ -678,6 +678,15 @@ module.exports = function (app, Localize) {
         },
         "Please enter a valid phone number" : {
             "tr" : "Lütfen geçerli bir telefon numarası giriniz"
+        },
+        "Customer Analyses" : {
+            "tr" : "Müşteri Alaşımı"
+        },
+        "Customer Alloys" : {
+            "tr" : "Müşteri Alaşımları"
+        },
+        "Add New Customer Alloy" : {
+            "tr" : "Yeni Müşteri Alaşımı Ekle"
         }
 
 
@@ -788,7 +797,7 @@ module.exports = function (app, Localize) {
         module.localization.analysisHeader = module.myLocalize.translate("Analysis Header");
         module.localization.addNewAnalysisHeader = module.myLocalize.translate("Add New Analysis Header");
         module.localization.newAnalysisHeader = module.myLocalize.translate("New Analysis Header");
-        module.localization.analysisHeaderExists = module.myLocalize.translate("An analysis header exists with the given product ID");
+        module.localization.analysisHeaderExists = module.myLocalize.translate("An alloy with this name already exist");
         module.localization.analysisHeaderCreated = module.myLocalize.translate("Analysis Header created");
         module.localization.analysisHeaderWasNotFound = module.myLocalize.translate("Analysis Header with the given id was not found");
         module.localization.analysisHeaderUpdated = module.myLocalize.translate("Analysis Header updated successfully");
@@ -910,6 +919,9 @@ module.exports = function (app, Localize) {
         module.localization.email = module.myLocalize.translate("E-Mail");
         module.localization.newCustomer = module.myLocalize.translate("New Customer");
         module.localization.enterValidPhone = module.myLocalize.translate("Please enter a valid phone number");
+        module.localization.customerAnalyses = module.myLocalize.translate("Customer Analyses");
+        module.localization.customerAlloys = module.myLocalize.translate("Customer Alloys");
+        module.localization.addNewCustomerAlloy = module.myLocalize.translate("Add New Customer Alloy");
     }
 
     return module;

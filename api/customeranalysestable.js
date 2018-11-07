@@ -1,5 +1,5 @@
 module.exports = function (app, myLocalize, functions, con, router) {
-    app.get('/qaallanalysisheadertable', function (req, res) {
+    app.get('/customeranalysestable', function (req, res) {
         functions.setLocale(req, res, null);
         sess = req.session;        
         var orderColumn = req.query.order[0].column;
@@ -10,7 +10,7 @@ module.exports = function (app, myLocalize, functions, con, router) {
         var search = req.query.search.value;
         var limit = start + ", " + (length - 1);
         var whereCondition = " where (analysisheader.name  like '%" + search + "%')" + 
-        " and analysisheader.is_deleted = 0 and analysisheader.is_validated = 1 and analysisheader.customer = 0";
+        " and analysisheader.is_deleted = 0 and analysisheader.is_validated = 1 and analysisheader.customer <> 0";
         var sql = "(select analysisheader.id as analysisid, analysisheader.name as analysisname" + 
             " from analysisheader" +
             whereCondition + ") as t ";
@@ -28,21 +28,21 @@ module.exports = function (app, myLocalize, functions, con, router) {
                         var data = [];
                         for (i = 0; i < usersDb.length; i++) { 
                             var buttonView = 
-                            "<a href=\"../qaanalysisheaderoperation?operation=view&id=" + usersDb[i].analysisid + "\">" +
+                            "<a href=\"../customeranalysis?operation=view&id=" + usersDb[i].analysisid + "\">" +
                                 "<button type=\"button\" class=\"btn btn-success btn-xs\">" +
                                     "<span class=\"icon-holder\">" +
                                         "<i class=\"c-white-500 ti-search\"></i>" +
                                     "</span>" +
                                 "</button>" +
                             "</a>" +
-                            "<a href=\"../qaanalysisheaderoperation?operation=edit&id=" + usersDb[i].analysisid + "\">" +
+                            "<a href=\"../customeranalysis?operation=edit&id=" + usersDb[i].analysisid + "\">" +
                                 "<button type=\"button\" class=\"btn btn-primary btn-xs\" style=\"margin-left:10px;\">" +
                                     "<span class=\"icon-holder\">" +
                                         "<i class=\"c-white-500 ti-pencil\"></i>" +
                                     "</span>" +
                                 "</button>" +
                             "</a>" +
-                            "<a href=\"../qaanalysisheaderoperation?operation=delete&id=" + usersDb[i].analysisid + "\">" +
+                            "<a href=\"../customeranalysis?operation=delete&id=" + usersDb[i].analysisid + "\">" +
                                 "<button type=\"button\" class=\"btn btn-danger btn-xs\" style=\"margin-left:10px;\">" +
                                     "<span class=\"icon-holder\">" +
                                         "<i class=\"c-white-500 ti-trash\"></i>" +

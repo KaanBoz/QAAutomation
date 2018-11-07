@@ -1091,6 +1091,54 @@ module.exports = function (app, mysql, functions, callback) {
                                 } else {
                                     console.log("dbversion is updated to 31");
                                     module.dbVersion = 31;
+                                    dbVersion32();
+                                }
+                            });
+                        }
+                    });
+            } else {
+                dbVersion32();
+            }
+        }
+
+        function dbVersion32() {
+            if (module.dbVersion == 31) {
+                module.con.query(
+                    "ALTER TABLE analysisheader ADD customer INT NOT NULL DEFAULT 0; ",
+                    function (err, result) {
+                        if (err) {
+                            console.log(err.message);
+                        } else {
+                            module.con.query("update dbvariables set dbversion = 32 where id = 1", function (err, result, fields) {
+                                if (err) {
+                                    console.log(err.message);
+                                } else {
+                                    console.log("dbversion is updated to 32");
+                                    module.dbVersion = 32;
+                                    dbVersion33();
+                                }
+                            });
+                        }
+                    });
+            } else {
+                dbVersion33();
+            }
+        }
+
+        function dbVersion33() {
+            if (module.dbVersion == 32) {
+                module.con.query(
+                    "ALTER TABLE analysisheader ADD alloy INT NOT NULL DEFAULT 0; ",
+                    function (err, result) {
+                        if (err) {
+                            console.log(err.message);
+                        } else {
+                            module.con.query("update dbvariables set dbversion = 33 where id = 1", function (err, result, fields) {
+                                if (err) {
+                                    console.log(err.message);
+                                } else {
+                                    console.log("dbversion is updated to 33");
+                                    module.dbVersion = 32;
                                     callback();
                                 }
                             });
