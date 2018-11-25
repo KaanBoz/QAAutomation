@@ -74,7 +74,7 @@ app.controller("qaAnalysisHeaderOperationCtrl", function($scope) {
         var data = {};
         data.alloy = $("#alloy").val();
         data.customer = $("#customer").val();
-        data.name = $("#alloy option:selected").html() + " (" + $("#customer option:selected").html() + ")";
+        data.name = $("#alloy option:selected").html();
         data.type = $("#type").val();
         data.standart = $("#standart").val();
         data.detail = $scope.formData.details;

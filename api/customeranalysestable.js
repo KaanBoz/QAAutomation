@@ -11,8 +11,9 @@ module.exports = function (app, myLocalize, functions, con, router) {
         var limit = start + ", " + (length - 1);
         var whereCondition = " where (analysisheader.name  like '%" + search + "%')" + 
         " and analysisheader.is_deleted = 0 and analysisheader.is_validated = 1 and analysisheader.customer <> 0";
-        var sql = "(select analysisheader.id as analysisid, analysisheader.name as analysisname" + 
+        var sql = "(select analysisheader.id as analysisid, analysisheader.name as analysisname, customer.customername as customername" + 
             " from analysisheader" +
+            " join customer on customer.id = analysisheader.customer " +
             whereCondition + ") as t ";
         if(sess && sess.user){
             con.query("SELECT COUNT(name) AS count FROM analysisheader where is_deleted = 0 and is_validated = 1" , 
@@ -22,7 +23,7 @@ module.exports = function (app, myLocalize, functions, con, router) {
                 con.query("SELECT COUNT(analysisname) AS count FROM  " + sql , function (err, result, fields){
                     if(err) throw err;
                     var recordsFiltered = result[0].count;
-                    con.query("select analysisid, analysisname from " + sql + " order by " + orderColumnTxt + " " + orderDir + " limit " + limit, function (err, result, fields){
+                    con.query("select customername, analysisid, analysisname from " + sql + " order by " + orderColumnTxt + " " + orderDir + " limit " + limit, function (err, result, fields){
                         if(err) throw err;
                         var usersDb = result;
                         var data = [];
@@ -49,7 +50,7 @@ module.exports = function (app, myLocalize, functions, con, router) {
                                     "</span>" +
                                 "</button>" +
                             "</a>" ;
-                            data.push({0 : usersDb[i].analysisname, 1 : buttonView });
+                            data.push({0 : usersDb[i].analysisname, 1: usersDb[i].customername, 2 : buttonView });
                         }
                         res.send({
                             draw : req.query.draw,

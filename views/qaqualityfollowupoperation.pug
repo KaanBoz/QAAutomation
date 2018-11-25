@@ -2,7 +2,9 @@ extends main.pug
 
 block append head
     script(src='../js/qaqualityfollowupoperation.js')
-
+    script.
+        var localization = !{localizationJson};
+        var alloy = !{formData.analysis};
 block content
     div(id = "mainForm" class="row gap-20 masonry pos-r" ng-controller="qaQualityFollowupOperationCtrl")
         div(class="masonry-sizer col-md-12")
@@ -14,6 +16,9 @@ block content
                     h6(class="c-grey-900") #{localization.spectralAnalysis}
                 div(class="mT-30")
                     form(method="post" action=".." + originalUrl)
+
+
+
                         div(class="form-row")
                             div(class="form-group col-md-6")
                                 label(for="type") #{localization.alloy} *
@@ -33,6 +38,29 @@ block content
                                                 option(value=val.id selected) #{val.name}
                                             else
                                                 option(value=val.id) #{val.name}
+                        
+                        div(class="form-row")
+                            div(class="form-group col-md-6")
+                                label(for="type") #{localization.customer}
+                                if isDisabled
+                                    select(id="customer" name="customer" class="form-control" disabled)
+                                        option(value="0") #{localization.sentesbir}
+                                        each val in customers
+                                            if formData && formData.customer && formData.customer == val.id
+                                                option(value=val.id selected) #{val.customername}
+                                            else
+                                                option(value=val.id) #{val.customername}
+                                else
+                                    select(id="customer" name="customer" class="form-control")
+                                        option(value="0") #{localization.sentesbir}
+                                        each val in customers
+                                            if formData && formData.customer && formData.customer == val.id
+                                                option(value=val.id selected) #{val.customername}
+                                            else
+                                                option(value=val.id) #{val.customername}
+
+
+
                         div(class="form-row")
                             div(class="form-group col-md-6")
                                 label(for="standart") #{localization.partyno} *
@@ -46,25 +74,7 @@ block content
                                         input(type="text" class="form-control" id="partyno" name="partyno" value=formData.partyno)
                                     else
                                         input(type="text" class="form-control" id="partyno" name="partyno")
-                        //- div(class="form-row")
-                        //-     div(class="form-group col-md-6")
-                        //-         label(for="type") #{localization.assignedTo} *
-                        //-         if isDisabled
-                        //-             select(id="assignedto" name="assignedto" class="form-control" disabled)
-                        //-                 option(value="") #{localization.choose}
-                        //-                 each val in operators
-                        //-                     if formData && formData.assignedto && formData.assignedto == val.id
-                        //-                         option(value=val.id selected) #{val.name}
-                        //-                     else
-                        //-                         option(value=val.id) #{val.name}
-                        //-         else
-                        //-             select(id="assignedto" name="assignedto" class="form-control")
-                        //-                 option(value="") #{localization.choose}
-                        //-                 each val in operators
-                        //-                     if formData && formData.assignedto && formData.assignedto == val.id
-                        //-                         option(value=val.id selected) #{val.name}
-                        //-                     else
-                        //-                         option(value=val.id) #{val.name}
+
                         div(class="form-row")
                             div(class="form-group col-md-6")
                                 label(for="productionAmount") #{localization.productionAmount} *
@@ -78,6 +88,7 @@ block content
                                         input(type="number" class="form-control" id="productionAmount" name="productionAmount" value=formData.productionAmount step="0.001")
                                     else
                                         input(type="number" class="form-control" id="productionAmount" name="productionAmount" step="0.001")
+
                         div(class="form-row")
                             div(class="form-group col-md-6")
                                 label(class="fw-500") #{localization.productionDate} *
@@ -121,11 +132,24 @@ block content
                                         input(type="text" class="form-control" id="explanation" name="explanation" value=formData.explanation)
                                     else
                                         input(type="text" class="form-control" id="explanation" name="explanation")
+                        div(class="checkbox checkbox-circle checkbox-info peers ai-c mB-15" style="margin-top:20px;")
+                            if isDisabled
+                                if formData && formData.doublecheck && formData.doublecheck == true
+                                    input(type="checkbox" id="doublecheck" name="doublecheck" class="peer" disabled checked)
+                                else
+                                    input(type="checkbox" id="doublecheck" name="doublecheck" class="peer" disabled)
+                            else
+                                if formData && formData.doublecheck && formData.doublecheck == true
+                                    input(type="checkbox" id="doublecheck" name="doublecheck" class="peer" checked)
+                                else
+                                    input(type="checkbox" id="doublecheck" name="doublecheck" class="peer")
+                            label(for="doublecheck" class="peers peer-greed js-sb ai-c")
+                                span(class="peer peer-greed") #{localization.doublecheck}
                         if message && success == 1
                             div(class = "form-group" style="color:green;margin-top:35px;")
                                 p !{message}
                         if message && success == 0
-                            div(class = "form-group" style="color:red;margin-top:35px;")
+                            div(id="errorMessage" class = "form-group" style="color:red;margin-top:35px;")
                                 p !{message}
                         if actionButton && (operation == "add" || operation == "edit")
                             button(type="button" id="save" class="btn btn-success" style="margin-top:35px;") #{localization.save}

@@ -3,11 +3,13 @@ module.exports = function (app, myLocalize, functions, con, router) {
         functions.setLocale(req, res, null);
         sess = req.session;        
         var orderColumn = req.query.order[0].column;
-        var orderColumnTxt = "partyno";
+        var orderColumnTxt = "analysisname";
         if(orderColumn == 2){
-            orderColumnTxt = "partydate"
+            orderColumnTxt = "customername"
         }else if(orderColumn == 3){
-            orderColumnTxt = "analysisname"
+            orderColumnTxt = "partyno"
+        }else if(orderColumn == 4){
+            orderColumnTxt = "partydate"
         }
         var orderDir = req.query.order[0].dir;
         var start = parseInt(req.query.start);
@@ -16,7 +18,8 @@ module.exports = function (app, myLocalize, functions, con, router) {
         var limit = start + ", " + (length - 1);
         var whereCondition = " where (" +
             " qualityfollowup.partydate like '%" + search + "%' or " + 
-            " analysisheader.name like '%" + search + "%') and " + 
+            " analysisheader.name like '%" + search + "%' or " + 
+            " IFNULL(customer.customername, 'Sentesbir') like '%" + search + "%' ) and " + 
             " qualityfollowup.isdone = 0 and " + 
             " qualityfollowup.is_deleted = 0 and " + 
             " qualityfollowup.is_validated = 1";
@@ -25,9 +28,11 @@ module.exports = function (app, myLocalize, functions, con, router) {
                 "qualityfollowup.id as id, " +
                 "qualityfollowup.partyno as partyno, " +
                 "qualityfollowup.partydate as partydate, " +
+                "IFNULL(customer.customername, 'Sentesbir') as customername, " +
                 "analysisheader.name as analysisname " +
             "from qualityfollowup " +
             "inner join analysisheader on analysisheader.id= qualityfollowup.analysis " +
+            "left join customer on customer.id= qualityfollowup.customer " +
             whereCondition + ") as t " ;
         if(sess && sess.user){
             con.query("SELECT COUNT(partyno) AS count FROM qualityfollowup where is_deleted = 0 and is_validated = 1 and isdone=0", 
@@ -37,7 +42,7 @@ module.exports = function (app, myLocalize, functions, con, router) {
                 con.query("SELECT COUNT(partyno) AS count FROM  " + sql , function (err, result, fields){
                     if(err) throw err;
                     var recordsFiltered = result[0].count;
-                    con.query("select id,partyno, partydate, analysisname from " + sql + " order by " + orderColumnTxt + " " + orderDir + " limit " + limit, function (err, result, fields){
+                    con.query("select id,partyno, partydate, analysisname, customername from " + sql + " order by " + orderColumnTxt + " " + orderDir + " limit " + limit, function (err, result, fields){
                         if(err) throw err;
                         var usersDb = result;
                         var data = [];
@@ -74,7 +79,7 @@ module.exports = function (app, myLocalize, functions, con, router) {
                             }
                             var datestring = zeroStringDate + usersDb[i].partydate.getDate()  + "." + zeroStringMonth + (usersDb[i].partydate.getMonth()+1) + "." + usersDb[i].partydate.getFullYear();
 
-                            data.push({0 : usersDb[i].partyno, 1 : datestring, 2 : usersDb[i].analysisname , 3 : buttonView });
+                            data.push({0 : usersDb[i].analysisname, 1 : usersDb[i].customername, 2 : usersDb[i].partyno , 3 : datestring, 4 : buttonView });
                         }
                         res.send({
                             draw : req.query.draw,

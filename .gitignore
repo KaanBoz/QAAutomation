@@ -1,5 +1,8 @@
 .vs
 .reports
+.public/calc
+
+
 
 # Logs
 logs
@@ -74,3 +77,4 @@ typings/
 
 # Serverless directories
 .serverless
+

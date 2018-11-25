@@ -2,7 +2,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
 
     //DYNAMIC VALUES METHODS
 
-    function getOperators(operation, req, res, sess, operators, analyses){
+    function getOperators(operation, req, res, sess, operators, analyses, customers){
         con.query("select id, firstname, lastname from users where is_deleted = 0 and is_validated = 1 and isoperator = 1", 
             function(err, result, fields){
                 if(err){
@@ -16,13 +16,13 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         operators.push(operator);
                     }
                 }
-                getAnalyses(operation, req, res, sess, operators, analyses);
+                getAnalyses(operation, req, res, sess, operators, analyses, customers);
             }
         );
     }
 
-    function getAnalyses(operation, req, res, sess, operators, analyses){
-        con.query("SELECT id, name FROM analysisheader where is_deleted = 0 and is_validated = 1", 
+    function getAnalyses(operation, req, res, sess, operators, analyses, customers){
+        con.query("SELECT id, name FROM analysisheader where is_deleted = 0 and is_validated = 1 and customer=0", 
             function(err, result, fields){
                 if(err){
                     analyses = [];
@@ -35,19 +35,38 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         analyses.push(analysis);
                     }
                 }
-                operation(req, res, sess, operators, analyses);
+                getCustomers(operation, req, res, sess, operators, analyses, customers);
+            }
+        );
+    }
+
+    function getCustomers(operation, req, res, sess, operators, analyses, customers){
+        con.query("SELECT id, customername FROM customer where is_deleted = 0 and is_validated = 1", 
+            function(err, result, fields){
+                if(err){
+                    customers = [];
+                }else{
+                    //set standarts
+                    for(var i = 0; i < result.length; i++){
+                        var customer = {};
+                        customer.id = result[i].id;
+                        customer.customername = result[i].customername;
+                        customers.push(customer);
+                    }
+                }
+                operation(req, res, sess, operators, analyses, customers);
             }
         );
     }
 
     //GET OPERATION METHODS
 
-    function getAdd(req, res, sess, operation, id, operators, analyses){
-        renderPage(req, res, sess, null, null, 1, operation, null, operators, analyses);
+    function getAdd(req, res, sess, operation, id, operators, analyses, customers){
+        renderPage(req, res, sess, null, null, 1, operation, null, operators, analyses, customers);
     }
 
-    function getEdit(req, res, sess, operation, id, operators, analyses){
-        con.query("select partyno, partydate, assignedto, analysis, explanation, sender, amount from qualityfollowup where is_deleted = 0 and is_validated = 1 and id=" + id, 
+    function getEdit(req, res, sess, operation, id, operators, analyses, customers){
+        con.query("select doublecheck, customer, partyno, partydate, assignedto, analysis, explanation, sender, amount from qualityfollowup where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -55,7 +74,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         message = localization.followupExists;
                     }
                     success = 0;
-                    renderPage(req, res, sess, success, message, 0, operation, null, operators, analyses);
+                    renderPage(req, res, sess, success, message, 0, operation, null, operators, analyses, customers);
                     return;
                 }
                 if(result.length == 0){
@@ -72,12 +91,14 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.sender = result[0].sender;
                 formData.explanation = result[0].explanation;
                 formData.productionAmount = result[0].amount;
-                renderPage(req, res, sess, null, null, 1, operation, formData, operators, analyses);
+                formData.customer = result[0].customer;
+                formData.doublecheck = result[0].doublecheck;
+                renderPage(req, res, sess, null, null, 1, operation, formData, operators, analyses, customers);
         });
     }
 
-    function getDelete(req, res, sess, operation, id, operators, analyses){
-        con.query("select partyno, partydate, assignedto, analysis, explanation, sender, amount from qualityfollowup where is_deleted = 0 and is_validated = 1 and id=" + id, 
+    function getDelete(req, res, sess, operation, id, operators, analyses, customers){
+        con.query("select doublecheck, customer, partyno, partydate, assignedto, analysis, explanation, sender, amount from qualityfollowup where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -85,7 +106,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         message = localization.followupExists;
                     }
                     success = 0;
-                    renderPage(req, res, sess, success, message, 0, operation, null, operators, analyses);
+                    renderPage(req, res, sess, success, message, 0, operation, null, operators, analyses, customers);
                     return;
                 }
                 if(result.length == 0){
@@ -102,12 +123,14 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.sender = result[0].sender;
                 formData.explanation = result[0].explanation;
                 formData.productionAmount = result[0].amount;
-                renderPage(req, res, sess, null, null, 1, operation, formData, operators, analyses);
+                formData.customer = result[0].customer;
+                formData.doublecheck = result[0].doublecheck;
+                renderPage(req, res, sess, null, null, 1, operation, formData, operators, analyses, customers);
             });
     }
 
-    function getView(req, res, sess, operation, id, operators, analyses){
-        con.query("select partyno, partydate, assignedto, analysis, explanation, sender, amount from qualityfollowup where is_deleted = 0 and is_validated = 1 and id=" + id, 
+    function getView(req, res, sess, operation, id, operators, analyses, customers){
+        con.query("select doublecheck, customer, partyno, partydate, assignedto, analysis, explanation, sender, amount from qualityfollowup where is_deleted = 0 and is_validated = 1 and id=" + id, 
             function(err, result, fields){
                 if(err){
                     message = err.message;
@@ -115,7 +138,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         message = localization.followupExists;
                     }
                     success = 0;
-                    renderPage(req, res, sess, success, message, 0, operation, null, operators, analyses);
+                    renderPage(req, res, sess, success, message, 0, operation, null, operators, analyses, customers);
                     return;
                 }
                 if(result.length == 0){
@@ -132,11 +155,13 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.sender = result[0].sender;
                 formData.explanation = result[0].explanation;
                 formData.productionAmount = result[0].amount;
-                renderPage(req, res, sess, null, null, 0, operation, formData, operators, analyses);
+                formData.customer = result[0].customer;
+                formData.doublecheck = result[0].doublecheck;
+                renderPage(req, res, sess, null, null, 0, operation, formData, operators, analyses, customers);
             });
     }
 
-    function getOperation(req, res, sess, operators, analyses){
+    function getOperation(req, res, sess, operators, analyses, customers){
         var operation = req.query.operation;
             if(sess.user.ischef){
                 var id = req.query.id;
@@ -145,16 +170,16 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     return;
                 }
                 if(operation == "add"){
-                    getAdd(req, res, sess, operation, id, operators, analyses);
+                    getAdd(req, res, sess, operation, id, operators, analyses, customers);
                     return;
                 }else if(operation == "edit"){
-                    getEdit(req, res, sess, operation, id, operators, analyses);
+                    getEdit(req, res, sess, operation, id, operators, analyses, customers);
                     return;
                 }else if (operation == "delete"){
-                    getDelete(req, res, sess, operation, id, operators, analyses);
+                    getDelete(req, res, sess, operation, id, operators, analyses, customers);
                     return;
                 }else if(operation =="view"){
-                    getView(req, res, sess, operation, id, operators, analyses);
+                    getView(req, res, sess, operation, id, operators, analyses, customers);
                     return;
                 }else{
                     res.redirect('/notfound');
@@ -178,7 +203,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         if(sess && sess.user){
             var operators = [];
             var analyses = [];
-            getOperators(getOperation, req, res, sess, operators, analyses);
+            var customers = [];
+            getOperators(getOperation, req, res, sess, operators, analyses, customers);
         }else{
             res.redirect('/');
         }    
@@ -191,21 +217,35 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         if(sess && sess.user){
             var operators = [];
             var analyses = [];
-            getOperators(postOperation, req, res, sess, operators, analyses);
+            var customers = [];
+            getOperators(postOperation, req, res, sess, operators, analyses, customers);
         }else{
             res.redirect('/');
             return;
         }
     });
 
+    app.post('/qaqualityfollowupoperation/getCustAnalysis', function (req, res){
+        var customerId = req.body.customer;
+        con.query("SELECT id, name FROM analysisheader where is_deleted = 0 and is_validated = 1 and customer=" + customerId, 
+            function(err, result, fields){
+                if(err){
+                    res.send(null);
+                    return;
+                }
+                res.send(result);
+            }
+        );
+    });
+
 
     //POST OPERATION METHODS
 
-    function postAdd(req, res, sess, operation, formData, message, success, actionButton, operators, analyses){
-        if(validations(req, res, sess, message, success, operation, actionButton, formData, operators, analyses)){
+    function postAdd(req, res, sess, operation, formData, message, success, actionButton, operators, analyses, customers){
+        if(validations(req, res, sess, message, success, operation, actionButton, formData, operators, analyses, customers)){
             return;
         }
-        con.query("select id,partyno, partydate, assignedto, analysis, explanation from qualityfollowup where partyno='" + formData.partyno + "' and analysis=" + formData.analysis + 
+        con.query("select doublecheck, customer, id,partyno, partydate, assignedto, analysis, explanation from qualityfollowup where partyno='" + formData.partyno + "' and analysis=" + formData.analysis + 
         " and is_deleted = 1", function(err, result, fields){
             if(err){
                 message = err.message;
@@ -223,6 +263,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     "analysis =" + formData.analysis + "," +
                     "amount =" + formData.productionAmount + "," +
                     "explanation ='" + formData.explanation + "'," +
+                    "customer =" + formData.customer + "," +
+                    "doublecheck =" + formData.doublecheck + "," +
                     "sender ='" + formData.sender+ "'," +
                     "edited_by=" + sess.user.id + "," +
                     "edited_at=" + con.escape(new Date()) + ", is_deleted = 0, deleted_by = null, deleted_at = null " +
@@ -234,20 +276,23 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                 message = localization.followupExists;
                             }
                             formData.partydate = getDateString(formData.partydate);
-                            renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses);
+                            renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses, customers);
                             return
                         }
                         success = 1;
                         message = localization.followupCreated;
                         actionButton = 0;
                         formData.partydate = getDateString(formData.partydate);
-                        renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses);
+                        renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses, customers);
                         return;
                 });
             }else{
-                con.query("INSERT INTO qualityfollowup (partyno, partydate, assignedto, analysis, explanation, sender, amount, isdone, isreported, added_by, added_at, is_deleted" + 
+                con.query("INSERT INTO qualityfollowup (partyno, partydate, assignedto, analysis, explanation, customer, doublecheck, sender, amount, isdone, isreported, added_by, added_at, is_deleted" + 
                 ", is_validated) VALUES" + 
-                "('" + formData.partyno + "', " + con.escape(formData.partydate) + ", " + formData.assignedto + ", " + formData.analysis + ", '" + formData.explanation + "', '" + formData.sender + "'," + formData.productionAmount +  ",0,0, " 
+                "('" + formData.partyno + "', " + con.escape(formData.partydate) + ", " 
+                + formData.assignedto + ", " + formData.analysis + ", '" 
+                + formData.explanation + "', " + formData.customer + ", " + formData.doublecheck + ", "
+                + "'" + formData.sender + "'," + formData.productionAmount +  ",0,0, " 
                 + sess.user.id + ", " 
                 + con.escape(new Date()) + ", 0, 1)", function(err, result, fields){
                         if (err){
@@ -257,21 +302,21 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         }
                         success = 0;
                         formData.partydate = getDateString(formData.partydate);
-                        renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses);
+                        renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses, customers);
                         return;    
                     }
                     success = 1;
                     message = localization.followupCreated;
                     actionButton = 0;
                     formData.partydate = getDateString(formData.partydate);
-                    renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses);
+                    renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses, customers);
                     return;
                 });
             }
         });
     }
 
-    function postEdit(req, res, sess, operation, formData, message, success, actionButton, operators, analyses){
+    function postEdit(req, res, sess, operation, formData, message, success, actionButton, operators, analyses, customers){
         var id = req.query.id;
         if(!id){
             res.redirect('/notfound');
@@ -281,16 +326,16 @@ module.exports = function (app, myLocalize, functions, con, router, localization
             if(err){
                 message = err.message;
                 formData.partydate = getDateString(formData.partydate);
-                renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses);
+                renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses, customers);
                 return
             }
             if(result.length == 0){
                 message = localization.followupWasNotFound;
                 formData.partydate = getDateString(formData.partydate);
-                renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses);
+                renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses, customers);
                 return
             }
-            if(validations(req, res, sess, message, success, operation, actionButton, formData, operators, analyses)){
+            if(validations(req, res, sess, message, success, operation, actionButton, formData, operators, analyses, customers)){
                 return;
             }
             con.query(
@@ -301,6 +346,8 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     "analysis =" + formData.analysis + "," +
                     "amount =" + formData.productionAmount + "," +
                     "explanation ='" + formData.explanation + "'," +
+                    "customer =" + formData.customer + "," +
+                    "doublecheck =" + formData.doublecheck + "," +
                     "sender ='" + formData.sender + "'," +
                     "edited_by=" + sess.user.id + "," +
                     "edited_at=" + con.escape(new Date()) + ", is_deleted = 0, deleted_by = null, deleted_at = null " +
@@ -312,20 +359,20 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                             message = localization.followupExists;
                         }
                         formData.partydate = getDateString(formData.partydate);
-                        renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses);
+                        renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses, customers);
                         return
                     }
                     success = 1;
                     message = localization.followupUpdated;
                     actionButton = 0;
                     formData.partydate = getDateString(formData.partydate);
-                    renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses);
+                    renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses, customers);
                     return;
             });
         });
     }
 
-    function postDelete(req, res, sess, operation, formData, message, success, actionButton, operators, analyses){
+    function postDelete(req, res, sess, operation, formData, message, success, actionButton, operators, analyses, customers){
         var id = req.query.id;
         if(!id){
             res.redirect('/notfound');
@@ -354,20 +401,20 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                             message = localization.followupExists;
                         }
                         formData.partydate = getDateString(formData.partydate);
-                        renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses);
+                        renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses, customers);
                         return
                     }
                     success = 1;
                     message = localization.followupDeleted;
                     actionButton = 0;
                     formData.partydate = getDateString(formData.partydate);
-                    renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses);
+                    renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses, customers);
                     return;
             });
         });
     }
 
-    function postOperation(req, res, sess, operators, analyses){
+    function postOperation(req, res, sess, operators, analyses, customers){
         if(sess.user.ischef){
             var operation = req.query.operation;
             if(operation == 'add' || operation == 'edit' || operation == 'delete'){
@@ -384,16 +431,18 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 formData.sender = req.body.sender;
                 formData.explanation = req.body.explanation;
                 formData.productionAmount = req.body.productionAmount;
+                formData.customer = req.body.customer;
+                formData.doublecheck = req.body.doublecheck;
                 //set the message and success
                 var message = "";
                 var success = 0;
                 var actionButton = 1;
                 if(operation == "add"){
-                    postAdd(req, res, sess, operation, formData, message, success, actionButton, operators, analyses);
+                    postAdd(req, res, sess, operation, formData, message, success, actionButton, operators, analyses, customers);
                 }else if(operation == "edit"){
-                    postEdit(req, res, sess, operation, formData, message, success, actionButton, operators, analyses);
+                    postEdit(req, res, sess, operation, formData, message, success, actionButton, operators, analyses, customers);
                 }else if(operation == "delete"){
-                    postDelete(req, res, sess, operation, formData, message, success, actionButton, operators, analyses);
+                    postDelete(req, res, sess, operation, formData, message, success, actionButton, operators, analyses, customers);
                 }
             }else{
                 res.redirect('/notfound');
@@ -410,8 +459,12 @@ module.exports = function (app, myLocalize, functions, con, router, localization
 
     //METHODS
 
-    function renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses){
+    function renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses, customers){
         var a = ((operation == "add" || operation == "edit") && success == 1) || operation == "delete" ? 1 : 0;
+        if(formData == null){
+            formData = {}
+            formData.analysis = "-1"
+        }
         res.render('qaqualityfollowupoperation', 
                 { 
                     data: req.body,
@@ -431,7 +484,9 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                     originalUrl : req.originalUrl,
                     operators : operators,
                     analyses : analyses,
-                    material : (formData != null &&  formData.material != null ? formData.material : null)
+                    material : (formData != null &&  formData.material != null ? formData.material : null),
+                    customers : customers,
+                    localizationJson: JSON.stringify(localization)
                 });
     }
     
@@ -439,14 +494,14 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         return message + "<p>" + toAdd + "</p>";
     }
     
-    function validations(req, res, sess, message, success, operation, actionButton, formData, operators, analyses){
+    function validations(req, res, sess, message, success, operation, actionButton, formData, operators, analyses, customers){
         //validations
         if(!formData.analysis || !formData.partyno || !formData.partydate || !formData.productionAmount){
             message = addMessage(message, localization.fillFormRequired)
         }
         if(message){
             formData.partydate = getDateString(formData.partydate);
-            renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses);
+            renderPage(req, res, sess, success, message, actionButton, operation, formData, operators, analyses, customers);
             return true;
         }
         return false;

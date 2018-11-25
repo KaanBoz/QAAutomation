@@ -533,13 +533,13 @@ module.exports = function (app, Localize) {
             "tr" : "Toplam"
         },
         "Added Amount" : {
-            "tr" : "Eklenen Miktar"
+            "tr" : "Eklenecek Miktar"
         },
         "No Calculation Needed" : {
             "tr" : "Duzeltmeye Gerek Yok"
         },
         "Correction" : {
-            "tr" : "Duzeltme"
+            "tr" : "Düzeltme"
         },
         "Archive" : {
             "tr" : "Arsivle"
@@ -687,6 +687,15 @@ module.exports = function (app, Localize) {
         },
         "Add New Customer Alloy" : {
             "tr" : "Yeni Müşteri Alaşımı Ekle"
+        },
+        "Sentesbir" : {
+            "tr" : "Sentesbir"
+        },
+        "Double Check" : {
+            "tr" : "Çift Ölçüm"
+        },
+        "Print" : {
+            "tr" : "Yazdır"
         }
 
 
@@ -922,6 +931,9 @@ module.exports = function (app, Localize) {
         module.localization.customerAnalyses = module.myLocalize.translate("Customer Analyses");
         module.localization.customerAlloys = module.myLocalize.translate("Customer Alloys");
         module.localization.addNewCustomerAlloy = module.myLocalize.translate("Add New Customer Alloy");
+        module.localization.sentesbir = module.myLocalize.translate("Sentesbir");
+        module.localization.doublecheck = module.myLocalize.translate("Double Check");
+        module.localization.print = module.myLocalize.translate("Print");
     }
 
     return module;

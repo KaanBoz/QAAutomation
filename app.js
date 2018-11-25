@@ -71,7 +71,7 @@ function dbCallback(){
     var qaeditresult = require('./pages/qaeditresult.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qaresults = require('./pages/qaresults.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qacorrections = require('./pages/qacorrections.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
-    var qacalculation = require('./pages/qacalculation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    var qacalculation = require('./pages/qacalculation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization, pdf, fs, path, cookie);
     var qacorrectionoperation = require('./pages/qacorrectionoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     var qareport = require('./pages/qareport.js')(app, localization.myLocalize, functions, db.con, router, localization.localization, pdf, fs, path, cookie);
     var qareportoperation = require('./pages/qareportoperation.js')(app, localization.myLocalize, functions, db.con, router, localization.localization, pdf, fs, path, cookie);

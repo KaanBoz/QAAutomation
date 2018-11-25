@@ -23,6 +23,24 @@ app.controller("qaCalculation", function($scope) {
         $scope.formData.selected = {};
     };
 
+
+    $scope.print = function(){
+        $scope.formData.type = 1;
+        $.ajax({
+            type: "POST",
+            url: window.location.href.split('?')[0] + "/print?" + window.location.href.split('?')[1] ,
+            data: $scope.formData,
+            success: function (data) {
+                window.open(window.location.origin + data, "newwin");
+            }
+          });
+    }
+
+    function openInNewTab(url) {
+        var win = window.open(url, '_blank');
+        win.focus();
+    }
+
     $scope.save = function(){
         $scope.formData.type = 1;
         $.ajax({

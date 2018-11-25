@@ -12,9 +12,10 @@ block content
         table(id="qaallqualityfollowuptable" class="table table-hover table-bordered" cellspacing="0" width="100%")
             thead
                 tr
+                    th #{localization.alloy}
+                    th #{localization.customer}
                     th #{localization.partyno}
                     th #{localization.productionDate}
-                    th #{localization.alloy}
                     th(style="max-width: 225px !important")
     script.
         var localization = '#{localizationVal}';

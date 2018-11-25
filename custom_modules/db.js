@@ -1138,7 +1138,104 @@ module.exports = function (app, mysql, functions, callback) {
                                     console.log(err.message);
                                 } else {
                                     console.log("dbversion is updated to 33");
-                                    module.dbVersion = 32;
+                                    module.dbVersion = 33;
+                                    dbVersion34();
+                                }
+                            });
+                        }
+                    });
+            } else {
+                dbVersion34();
+            }
+        }
+
+        function dbVersion34() {
+            if (module.dbVersion == 33) {
+                module.con.query(
+                    "ALTER TABLE qualityfollowup ADD customer INT NOT NULL DEFAULT 0;" +
+                    "ALTER TABLE qualityfollowup ADD doublecheck BIT NOT NULL DEFAULT 0;",
+                    function (err, result) {
+                        if (err) {
+                            console.log(err.message);
+                        } else {
+                            module.con.query("update dbvariables set dbversion = 34 where id = 1", function (err, result, fields) {
+                                if (err) {
+                                    console.log(err.message);
+                                } else {
+                                    console.log("dbversion is updated to 34");
+                                    module.dbVersion = 34;
+                                    dbVersion35();
+                                }
+                            });
+                        }
+                    });
+            } else {
+                dbVersion35();
+            }
+        }
+
+        function dbVersion35() {
+            if (module.dbVersion == 34) {
+                module.con.query(
+                    "ALTER TABLE qualityfollowup ADD derivedfrom INT NOT NULL DEFAULT 0;",
+                    function (err, result) {
+                        if (err) {
+                            console.log(err.message);
+                        } else {
+                            module.con.query("update dbvariables set dbversion = 35 where id = 1", function (err, result, fields) {
+                                if (err) {
+                                    console.log(err.message);
+                                } else {
+                                    console.log("dbversion is updated to 35");
+                                    module.dbVersion = 35;
+                                    dbVersion36();
+                                }
+                            });
+                        }
+                    });
+            } else {
+                dbVersion36();
+            }
+        }
+
+        function dbVersion36() {
+            if (module.dbVersion == 35) {
+                module.con.query(
+                    "ALTER TABLE analysisheader DROP INDEX name;",
+                    function (err, result) {
+                        if (err) {
+                            console.log(err.message);
+                        } else {
+                            module.con.query("update dbvariables set dbversion = 36 where id = 1", function (err, result, fields) {
+                                if (err) {
+                                    console.log(err.message);
+                                } else {
+                                    console.log("dbversion is updated to 36");
+                                    module.dbVersion = 36;
+                                    dbVersion37();
+                                }
+                            });
+                        }
+                    });
+            } else {
+                dbVersion37();
+            }
+        }
+
+        function dbVersion37() {
+            if (module.dbVersion == 36) {
+                module.con.query(
+                    "ALTER TABLE qualityfollowup DROP INDEX unique_analysisdetail;",
+                    function (err, result) {
+                        if (err) {
+                            console.log(err.message);
+                        } else {
+                            module.con.query("update dbvariables set dbversion = 37 where id = 1", function (err, result, fields) {
+                                if (err) {
+                                    console.log(err.message);
+                                } else {
+                                    console.log("dbversion is updated to 37");
+                                    module.dbVersion = 37;
                                     callback();
                                 }
                             });
@@ -1151,6 +1248,8 @@ module.exports = function (app, mysql, functions, callback) {
 
     }
 
+
+    //
 
     //return the module
     return module;
