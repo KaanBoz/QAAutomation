@@ -119,15 +119,6 @@ html
                                                 a(href="../customerlist") #{localization.customer}
                                             li
                                                 a(href="../customeranalyses") #{localization.customerAnalyses}
-                                //- ul(class="dropdown-menu")
-                                //-     li(class="nav-item dropdown")
-                                //-         a(href="javascript:void(0);")
-                                //-             span #{localization.analyses}
-                                //-             span(class="arrow" style="padding-top:7px;")
-                                //-                 i(class="ti-angle-right")
-                                //-         ul(class="dropdown-menu")
-                                //-             li
-                                //-                 a(href="../qaallanalysisheaders") #{localization.analyses}
                                 ul(class="dropdown-menu")
                                     li(class="nav-item dropdown")
                                         a(href="javascript:void(0);")
@@ -178,6 +169,17 @@ html
                                         ul(class="dropdown-menu")
                                             li
                                                 a(class="sidebar-link" href="../qacorrections") #{localization.correction}
+                        if true
+                            li(class="nav-item dropdown")
+                                a(class="dropdown-toggle" href="javascript:void(0);")
+                                    span(class="icon-holder")
+                                        i(class="c-orange-500 ti-layout-list-thumb")
+                                    span(class="title") #{localization.archive}
+                                    span(class="arrow" style="padding-top:8px;")
+                                        i(class="ti-angle-right")
+                                ul(class="dropdown-menu")
+                                            li
+                                                a(href="../spectralarchives") #{localization.spectralAnalysis}
                                 //- ul(class="dropdown-menu")
                                 //-     li
                                 //-         a(class="sidebar-link" href="../qaunassigned") #{localization.unassigned}

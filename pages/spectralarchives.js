@@ -1,10 +1,10 @@
 module.exports = function (app, myLocalize, functions, con, router, localization) {
-    app.get('/welcome', function (req, res) {
+    app.get('/spectralarchives', function (req, res) {
         functions.setLocale(req, res, null);
         localization.refresh();
         var sess = req.session;
         if(sess && sess.user){
-            res.render('welcome', 
+            res.render('spectralarchives', 
             { 
                 data: req.body,
                 userName : functions.capitalizeFirstLetter(sess.user.firstname),

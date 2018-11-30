@@ -542,7 +542,7 @@ module.exports = function (app, Localize) {
             "tr" : "Düzeltme"
         },
         "Archive" : {
-            "tr" : "Arsivle"
+            "tr" : "Arşiv"
         },
         "Orginal" : {
             "tr" : "Girilen"
