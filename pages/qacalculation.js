@@ -128,6 +128,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
             detail.added_by = details[i].added_by;
             formData.details.push(detail);
         }
+        formData.explanation = '';
         res.render('qacalculation',
             {
                 data: req.body,
@@ -304,6 +305,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         " analysisname," +
                         " analysisid," +
                         " owner," +
+                        " explanation," +
 
                         " added_by," +
                         " added_at," +
@@ -316,6 +318,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         "'" + formData.details[0].analysisName + "', " +
                         "" + formData.details[0].analysisId + ", " +
                         "" + formData.details[0].added_by + ", " +
+                        "'" + formData.explanation + "', " +
 
                         "" + sess.user.id + ", " +
                         "" + con.escape(new Date()) + ", " +
@@ -459,12 +462,15 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 "<th>" + localization.addedAmount + "</th>" +
             "</tr>";
         for(var i = 0; i < data.details.length; i++){
+            if(data.details[i].addedAmount == 0) continue;
             html += "<tr>" +
                 "<td>" + data.details[i].name + "</td>" +
                 "<td>" + data.details[i].addedAmount + "</td>" +
             "</tr>";
         }
+        if(data.explanation) html += "<td colspan= 2>" + localization.explanation + " : " + data.explanation + "</td>";
         html += "</table>";
+        
         var options = { format: 'A4' };
         pdf.create(html, options).toFile('./public/calc/' + 'correction' + pdfId + '.pdf', function(err, response) {
             if (err) return console.log(err);
