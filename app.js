@@ -42,6 +42,8 @@ function dbCallback(){
     require('./pages/customerlist.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     require('./pages/qaallanalysisheaders.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     require('./pages/customeranalyses.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    require('./pages/customerproducts.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    require('./pages/customerproduct.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     require('./pages/qaallanalysisdetails.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     require('./pages/qaallcorrections.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     require('./pages/qaallcorrectionsarchive.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
@@ -103,6 +105,7 @@ function dbCallback(){
     require('./api/qaallcorrectionsarchivetable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     require('./api/qaunassignedtable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     require('./api/spectralarchivestable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
+    require('./api/customerproductstable.js')(app, localization.myLocalize, functions, db.con, router, localization.localization);
     /*Base Router*/
     app.get('/', function (req, res) {
         res.redirect('/login');

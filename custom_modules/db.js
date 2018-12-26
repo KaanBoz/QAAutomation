@@ -1260,6 +1260,43 @@ module.exports = function (app, mysql, functions, callback) {
                                 } else {
                                     console.log("dbversion is updated to 38");
                                     module.dbVersion = 38;
+                                    dbVersion39();
+                                }
+                            });
+                        }
+                    });
+            } else {
+                dbVersion39();
+            }
+        }
+
+        function dbVersion39() {
+            if (module.dbVersion == 38) {
+                module.con.query(
+                    "CREATE TABLE IF NOT EXISTS customerproduct (" +
+                    "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                    "customer INT," +
+                    "product INT," +
+                    "added_by INT NOT NULL," +
+                    "added_at DATETIME NOT NULL," +
+                    "edited_by INT, " +
+                    "edited_at DATETIME, " +
+                    "deleted_by INT," +
+                    "deleted_at DATETIME, " +
+                    "is_deleted BIT NOT NULL, " +
+                    "is_validated BIT NOT NULL" +
+                    ");" +
+                    "ALTER TABLE customerproduct CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;",
+                    function (err, result) {
+                        if (err) {
+                            console.log(err.message);
+                        } else {
+                            module.con.query("update dbvariables set dbversion = 39 where id = 1", function (err, result, fields) {
+                                if (err) {
+                                    console.log(err.message);
+                                } else {
+                                    console.log("dbversion is updated to 39");
+                                    module.dbVersion = 39;
                                     callback();
                                 }
                             });

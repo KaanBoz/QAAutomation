@@ -1,0 +1,58 @@
+extends main.pug
+
+block content
+    div(class="bgc-white bd bdrs-3 p-20 mB-20")
+        h4 #{localization.customerProducts}
+        hr(class="divider")
+        a(href="../customerproduct?operation=add")
+            button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important; margin-bottom:15px;")
+                span(class="icon-holder")
+                    i(class="c-white-500 ti-plus")
+                    span(class="title" style="margin:14px") #{localization.addNewCustomerProduct}
+        table(id="table" class="table table-hover table-bordered" cellspacing="0" width="100%")
+            thead
+                tr
+                    th #{localization.customer}
+                    th #{localization.product}
+                    th(style="max-width: 225px !important")
+    script.
+        var localization = '#{localizationVal}';
+        if(localization == 'tr'){
+            $(document).ready(function() {
+                $('#table').DataTable( {
+                    "language": {
+                        "sDecimal":        ",",
+                        "sEmptyTable":     "Tabloda herhangi bir veri mevcut değil",
+                        "sInfo":           "_TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
+                        "sInfoEmpty":      "Kayıt yok",
+                        "sInfoFiltered":   "(_MAX_ kayıt içerisinden bulunan)",
+                        "sInfoPostFix":    "",
+                        "sInfoThousands":  ".",
+                        "sLengthMenu":     "Sayfada _MENU_ kayıt göster",
+                        "sLoadingRecords": "Yükleniyor...",
+                        "sProcessing":     "İşleniyor...",
+                        "sSearch":         "Ara:",
+                        "sZeroRecords":    "Eşleşen kayıt bulunamadı",
+                        "oPaginate": {
+                            "sFirst":    "İlk",
+                            "sLast":     "Son",
+                            "sNext":     "Sonraki",
+                            "sPrevious": "Önceki"
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": artan sütun sıralamasını aktifleştir",
+                            "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
+                        }
+                    },
+                    "processing": true,
+                    "serverSide": true,
+                    "ajax": "../customerproductstable"
+                });
+            });
+        }else{
+            $('#table').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": "../customerproductstable"
+            });
+        }

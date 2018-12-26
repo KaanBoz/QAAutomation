@@ -1,0 +1,40 @@
+extends main.pug
+
+block append head
+    script(src='../js/customerproduct.js')
+block content
+    script.
+        var model = !{model};
+        var localization = !{localizationJson};
+    div(id = "mainForm" class="row" ng-controller="customerproduct")
+        div(class="masonry-sizer col-md-12")
+        div(class="masonry-item col-md-12")
+            div(class="bgc-white p-20 bd")
+                if operation == "add"
+                    h6(class="c-grey-900") #{localization.newCustomerProduct}
+                else
+                    h6(class="c-grey-900") #{localization.customerProduct}
+                div(class="mT-30")
+                    div(class="form-row")
+                        div(class="form-group col-md-6")
+                            label(for="standart") #{localization.customer} *
+                            select(id="customer" name="material" class="form-control" ng-model="formData.customer" ng-options="item as item.customername for item in formData.customers track by item.id" ng-disabled=''+disabled)
+                    div(class="form-row")
+                        div(class="form-group col-md-6")
+                            label(for="standart") #{localization.product} *
+                            select(id="product" name="material" class="form-control" ng-model="formData.product" ng-options="product as product.name for product in formData.products track by product.id" ng-disabled=''+disabled)
+                    div(class = "form-group" style="color:red;margin-top:35px;margin:0; padding:0; height:26px; ")
+                        p(id="errMessage") !{message}
+                    div(class = "form-group" style="color:green;margin-top:35px;margin:0; padding:0; height:26px; ")
+                        p(id="message") !{message}
+                    if (operation == "add" || operation == "edit")
+                        button(type="submit" class="btn btn-success" style="margin-top:35px;" ng-click="save()" id="save") #{localization.save}
+                    else if operation == "delete"
+                        button(type="submit" class="btn btn-danger" style="margin-top:35px;" ng-click="save()" id="save") #{localization.delete}
+                    div
+                        a(href="../customerproducts" type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
+                    div
+                        p(style="margin-top:35px;")
+                            i * #{localization.requiredFields}
+
+                                                    

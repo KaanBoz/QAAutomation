@@ -696,6 +696,18 @@ module.exports = function (app, Localize) {
         },
         "Print" : {
             "tr" : "Yazdır"
+        },
+        "Customer Product" : {
+            "tr" : "Musteri Urunu"
+        },
+        "Customer Products" : {
+            "tr" : "Musteri Urunleri"
+        },
+        "Add New Customer Product" : {
+            "tr" : "Yeni Musteri Urunu Ekle"
+        },
+        "New Customer Product" : {
+            "tr" : "Yeni Musteri Urunu"
         }
 
 
@@ -934,6 +946,10 @@ module.exports = function (app, Localize) {
         module.localization.sentesbir = module.myLocalize.translate("Sentesbir");
         module.localization.doublecheck = module.myLocalize.translate("Double Check");
         module.localization.print = module.myLocalize.translate("Print");
+        module.localization.customerProduct = module.myLocalize.translate("Customer Product");
+        module.localization.customerProducts = module.myLocalize.translate("Customer Products");
+        module.localization.addNewCustomerProduct = module.myLocalize.translate("Add New Customer Product");
+        module.localization.newCustomerProduct = module.myLocalize.translate("New Customer Product");
     }
 
     return module;

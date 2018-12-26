@@ -119,6 +119,8 @@ html
                                                 a(href="../customerlist") #{localization.customer}
                                             li
                                                 a(href="../customeranalyses") #{localization.customerAnalyses}
+                                            li
+                                                a(href="../customerproducts") #{localization.customerProduct}
                                 ul(class="dropdown-menu")
                                     li(class="nav-item dropdown")
                                         a(href="javascript:void(0);")
@@ -209,3 +211,10 @@ html
                     span SENTESBIR
         script(type="text/javascript" src="../js/vendor.js")
         script(type="text/javascript" src="../js/bundle.js")
+        button(id="modalButton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="display:none;")
+        div(id="exampleModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog")
+            div(class="modal-dialog modal-lg" role="document")
+                div(class="modal-content")
+                    div(class="modal-body" id="modalBody")                   
+                    div(class="modal-footer")
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
