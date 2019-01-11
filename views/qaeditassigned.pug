@@ -24,37 +24,40 @@ block content
         div(class="form-row")
             div(class="form-group col-md-6")
                 label #{localization.explanation} : #{qfu.explanation}
-        h4 #{localization.enteredResults}
-        hr(class="divider")
+        //- h4 #{localization.enteredResults}
+        //- hr(class="divider")
         a(href="../qareadpdf?id=" + id )
             button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important;")
                 span(class="icon-holder")
                     i(class="c-white-500 ti-plus")
                     span(class="title" style="margin:14px") #{localization.readFromFile}
-        hr(class="divider")
-        a(href="../qaeditmasteralloyresult?id=" + id + "&operation=add")
-            button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important; margin-bottom:15px;")
-                span(class="icon-holder")
-                    i(class="c-white-500 ti-plus")
-                    span(class="title" style="margin:14px") #{localization.addNewMasterAlloyResult}
-        table(id="tableMaster" class="table table-hover table-bordered" cellspacing="0" width="100%")
-            thead
-                tr
-                    th #{localization.results}
-                    th(style="max-width: 225px !important")
+        //- hr(class="divider")
+        br
+        //- a(href="../qaeditmasteralloyresult?id=" + id + "&operation=add")
+        //-     button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important; margin-bottom:15px;")
+        //-         span(class="icon-holder")
+        //-             i(class="c-white-500 ti-plus")
+        //-             span(class="title" style="margin:14px") #{localization.addNewMasterAlloyResult}
+        //- table(id="tableMaster" class="table table-hover table-bordered" cellspacing="0" width="100%")
+        //-     thead
+        //-         tr
+        //-             th #{localization.results}
+        //-             th(style="max-width: 225px !important")
 
-        a(href="../qaeditresult?id=" + id + "&operation=add")
-            button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important; margin-bottom:15px;")
-                span(class="icon-holder")
-                    i(class="c-white-500 ti-plus")
-                    span(class="title" style="margin:14px") #{localization.addNewAnalysisResult}
-        table(id="tableEdit" class="table table-hover table-bordered" cellspacing="0" width="100%")
-            thead
-                tr
-                    th #{localization.results}
-                    th(style="max-width: 225px !important")
-        hr(class="divider")
-        button(type="button" id="save" class="btn btn-success" style="margin-top:10px;") #{localization.closeMeasurementRequest}
+        //- a(href="../qaeditresult?id=" + id + "&operation=add")
+        //-     button(type="button" class="btn btn-success btn-sm" style="font-size:14px !important; margin-bottom:15px;")
+        //-         span(class="icon-holder")
+        //-             i(class="c-white-500 ti-plus")
+        //-             span(class="title" style="margin:14px") #{localization.addNewAnalysisResult}
+        //- table(id="tableEdit" class="table table-hover table-bordered" cellspacing="0" width="100%")
+        //-     thead
+        //-         tr
+        //-             th #{localization.results}
+        //-             th(style="max-width: 225px !important")
+        //- hr(class="divider")
+        //- button(type="button" id="save" class="btn btn-success" style="margin-top:10px;") #{localization.closeMeasurementRequest}
+        div
+            a(href='../qaassignedtome' type="primary" class="btn btn-primary" style="margin-top:14px;") #{localization.goBack}
         if message
             div(class = "form-group" style="color:red;margin-top:35px;")
                 p !{message}

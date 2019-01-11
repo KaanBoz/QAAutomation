@@ -1297,6 +1297,30 @@ module.exports = function (app, mysql, functions, callback) {
                                 } else {
                                     console.log("dbversion is updated to 39");
                                     module.dbVersion = 39;
+                                    dbVersion40();
+                                }
+                            });
+                        }
+                    });
+            } else {
+                dbVersion40();
+            }
+        }
+
+        function dbVersion40() {
+            if (module.dbVersion == 39) {
+                module.con.query(
+                    "ALTER TABLE correctionheader ADD qualityfollowup INT;",
+                    function (err, result) {
+                        if (err) {
+                            console.log(err.message);
+                        } else {
+                            module.con.query("update dbvariables set dbversion = 40 where id = 1", function (err, result, fields) {
+                                if (err) {
+                                    console.log(err.message);
+                                } else {
+                                    console.log("dbversion is updated to 40");
+                                    module.dbVersion = 40;
                                     callback();
                                 }
                             });

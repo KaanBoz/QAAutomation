@@ -140,6 +140,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 isOperator: sess.user.isoperator,
                 localizationVal: req.body.lang,
                 formDataJson: JSON.stringify(formData),
+                localizationJson: JSON.stringify(localization),
                 details: details
             });
     }
@@ -277,16 +278,16 @@ module.exports = function (app, myLocalize, functions, con, router, localization
 
     app.post('/qacalculation/print', function (req, res) {
         var id = req.query.id;
-        var sql = 
-        " select " +
-        " qualityfollowup.partyno as partyno, "+
-        " qualityfollowup.partydate as partydate, "+
-        " ifnull(customer.customername,'Sentesbir') as customername, "+
-        " analysisheader.name as name "+
-        " from qualityfollowup "+
-        " left join customer on customer.id = qualityfollowup.customer"+
-        " inner join analysisheader on analysisheader.id = qualityfollowup.analysis"+
-        " where qualityfollowup.id = " + id;
+        var sql =
+            " select " +
+            " qualityfollowup.partyno as partyno, " +
+            " qualityfollowup.partydate as partydate, " +
+            " ifnull(customer.customername,'Sentesbir') as customername, " +
+            " analysisheader.name as name " +
+            " from qualityfollowup " +
+            " left join customer on customer.id = qualityfollowup.customer" +
+            " inner join analysisheader on analysisheader.id = qualityfollowup.analysis" +
+            " where qualityfollowup.id = " + id;
         con.query(sql, function (err, result, fields) {
             createPdf(res, req, req.body, result[0]);
         });
@@ -306,6 +307,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         " analysisid," +
                         " owner," +
                         " explanation," +
+                        " qualityfollowup," +
 
                         " added_by," +
                         " added_at," +
@@ -319,6 +321,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         "" + formData.details[0].analysisId + ", " +
                         "" + formData.details[0].added_by + ", " +
                         "'" + formData.explanation + "', " +
+                        "" + id + ", " +
 
                         "" + sess.user.id + ", " +
                         "" + con.escape(new Date()) + ", " +
@@ -356,16 +359,16 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         var sql = "select * from qualityfollowup where id =" + id;
         con.query(sql, function (err, result, fields) {
             var formData = result[0];
-            if(formData.doublecheck){
-                var newSql = "INSERT INTO qualityfollowup (partyno, partydate, assignedto, analysis, explanation," + 
-                " customer, doublecheck, sender, amount, derivedfrom, isdone, isreported, added_by, added_at, is_deleted" + 
-                ", is_validated) VALUES" + 
-                "('" + formData.partyno + "', " + con.escape(formData.partydate) + ", " 
-                + formData.assignedto + ", " + formData.analysis + ", '" 
-                + formData.explanation + "', " + formData.customer + ", " + 0 + ", "
-                + "'" + formData.sender + "'," + formData.amount +  "," + id + ",0,0, " 
-                + sess.user.id + ", " 
-                + con.escape(new Date()) + ", 0, 1)";
+            if (formData.doublecheck) {
+                var newSql = "INSERT INTO qualityfollowup (partyno, partydate, assignedto, analysis, explanation," +
+                    " customer, doublecheck, sender, amount, derivedfrom, isdone, isreported, added_by, added_at, is_deleted" +
+                    ", is_validated) VALUES" +
+                    "('" + formData.partyno + "', " + con.escape(formData.partydate) + ", "
+                    + formData.assignedto + ", " + formData.analysis + ", '"
+                    + formData.explanation + "', " + formData.customer + ", " + 0 + ", "
+                    + "'" + formData.sender + "'," + formData.amount + "," + id + ",0,0, "
+                    + sess.user.id + ", "
+                    + con.escape(new Date()) + ", 0, 1)";
                 con.query(newSql, function (err, result, fields) {
                     var a = 1;
                 });
@@ -405,29 +408,29 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         return sql;
     }
 
-    function createPdf(res, req, data, result){
+    function createPdf(res, req, data, result) {
         var pdfId = " " + result.name + "-" + result.partyno;
         var imgSrc = 'file://' + __dirname + '/';
         imgSrc = imgSrc.replace('pages/', '');
         imgSrc += "/public/images/reportLogo.png"
         imgSrc = path.normalize(imgSrc);
-        var html = 
-        "<img src='" + imgSrc + "' width='200' height='75' style='padding-left:10px; float: left;'/>" +
-        "<h3 style=\" padding-top:10px; float: left; width:50%; text-align: center;\">" + localization.correction + "</h3>" + 
-        "<br />" + 
-        "<table>" +
+        var html =
+            "<img src='" + imgSrc + "' width='200' height='75' style='padding-left:10px; float: left;'/>" +
+            "<h3 style=\" padding-top:10px; float: left; width:50%; text-align: center;\">" + localization.correction + "</h3>" +
+            "<br />" +
+            "<table>" +
             "<tr>" +
-                "<th>" + localization.alloy + "</th>" +
-                "<td>" + result.name + "</td>" +
-                "<th>" + localization.partyno + "</th>" +
-                "<td>" + result.partyno + "</td>" +
-            "</tr>"+
+            "<th>" + localization.alloy + "</th>" +
+            "<td>" + result.name + "</td>" +
+            "<th>" + localization.partyno + "</th>" +
+            "<td>" + result.partyno + "</td>" +
+            "</tr>" +
 
             "<tr>" +
-                "<th>" + localization.customer + "</th>" +
-                "<td>" + result.customername + "</td>" +
-                "<th>" + localization.productionDate + "</th>" +
-                "<td>" + getFormattedDate(result.partydate) + "</td>" +
+            "<th>" + localization.customer + "</th>" +
+            "<td>" + result.customername + "</td>" +
+            "<th>" + localization.productionDate + "</th>" +
+            "<td>" + getFormattedDate(result.partydate) + "</td>" +
             "</tr>";
 
 
@@ -436,43 +439,43 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         html += "<br />" + "<br />";
 
         html += "" +
-        "<style>" +
+            "<style>" +
 
             "html {" +
-                "font-family: Arial, Helvetica, sans-serif;" +
+            "font-family: Arial, Helvetica, sans-serif;" +
             "}" +
-            
+
             "table {" +
-                "font-family: arial, sans-serif;" +
-                "border-collapse: collapse;" +
-                "width: 90%;" +
-                "margin-left: 5%;" +
+            "font-family: arial, sans-serif;" +
+            "border-collapse: collapse;" +
+            "width: 90%;" +
+            "margin-left: 5%;" +
             "}" +
 
             "td, th {" +
-                "border: 1px solid #dddddd;" +
-                "text-align: left;" +
-                "padding: 8px;" +
-                "font-size: 8px;" +
+            "border: 1px solid #dddddd;" +
+            "text-align: left;" +
+            "padding: 8px;" +
+            "font-size: 8px;" +
             "}" +
-        "</style>" +
-        "<table>" +
+            "</style>" +
+            "<table>" +
             "<tr>" +
-                "<th>" + localization.material + "</th>" +
-                "<th>" + localization.addedAmount + "</th>" +
+            "<th>" + localization.material + "</th>" +
+            "<th>" + localization.addedAmount + "</th>" +
             "</tr>";
-        for(var i = 0; i < data.details.length; i++){
-            if(data.details[i].addedAmount == 0) continue;
+        for (var i = 0; i < data.details.length; i++) {
+            if (data.details[i].addedAmount == 0) continue;
             html += "<tr>" +
                 "<td>" + data.details[i].name + "</td>" +
                 "<td>" + data.details[i].addedAmount + "</td>" +
-            "</tr>";
+                "</tr>";
         }
-        if(data.explanation) html += "<td colspan= 2>" + localization.explanation + " : " + data.explanation + "</td>";
+        if (data.explanation) html += "<td colspan= 2>" + localization.explanation + " : " + data.explanation + "</td>";
         html += "</table>";
-        
+
         var options = { format: 'A4' };
-        pdf.create(html, options).toFile('./public/calc/' + 'correction' + pdfId + '.pdf', function(err, response) {
+        pdf.create(html, options).toFile('./public/calc/' + 'correction' + pdfId + '.pdf', function (err, response) {
             if (err) return console.log(err);
             var file = fs.createReadStream('./public/calc/' + 'correction' + pdfId + '.pdf');
             var stat = fs.statSync('./public/calc/' + 'correction' + pdfId + '.pdf');
@@ -486,15 +489,247 @@ module.exports = function (app, myLocalize, functions, con, router, localization
 
     function getFormattedDate(date) {
         var year = date.getFullYear();
-      
+
         var month = (1 + date.getMonth()).toString();
         month = month.length > 1 ? month : '0' + month;
-      
+
         var day = date.getDate().toString();
         day = day.length > 1 ? day : '0' + day;
-        
+
         return day + '/' + month + '/' + year;
-      }
+    }
+
+    app.post('/qacalculation/explanations', async (req, res) => {
+        let response = {};
+        var qfId = req.query.id;
+        await getQf(qfId).then((data) => {
+            response.qf = data[0];
+        }).catch((error) => {
+            console.log(error);
+            response.qf = null;
+        });
+        await getOtherQf(qfId, response.qf.analysis).then((data) => {
+            response.otherQf = data;
+        }).catch((error) => {
+            console.log(error);
+            response.otherQf = null;
+        });
+        if (response.otherQf != undefined && response.otherQf != null) {
+            for (let i = 0; i < response.otherQf.length; i++) {
+                await getDerivedQf(qfId, response.otherQf[i].analysis).then((data) => {
+                    response.otherQf[i].derivedQf = data[0];
+                }).catch((error) => {
+                    console.log(error);
+                    response.otherQf[i].derivedQf = null;
+                });
+                await getAnalysisDetails(response.otherQf[i].analysis).then((data) => {
+                    response.otherQf[i].alloyDetails = data;
+                }).catch((error) => {
+                    console.log(error);
+                    response.otherQf[i].alloyDetails = null;
+                });
+                await getMasterResultsIds(qfId).then((data) => {
+                    response.otherQf[i].masterResultsIds = data;
+                }).catch((error) => {
+                    console.log(error);
+                    response.otherQf[i].masterResultsIds = null;
+                });
+                if (response.otherQf[i].masterResultsIds != undefined && response.otherQf[i].masterResultsIds != null) {
+                    for (let j = 0; j < response.otherQf[i].masterResultsIds.length; j++) {
+                        let masterId = response.otherQf[i].masterResultsIds[j].id;
+                        await getMasterResultDetails(masterId).then((data) => {
+                            response.otherQf[i].masterResultsIds[j].results = data;
+                        }).catch((error) => {
+                            console.log(error);
+                            response.otherQf[i].masterResultsIds[j].results = null;
+                        });
+                    }
+                }
+                await getAlloyResultsIds(qfId).then((data) => {
+                    response.otherQf[i].alloyResultsIds = data;
+                }).catch((error) => {
+                    console.log(error);
+                    response.otherQf[i].alloyResultsIds = null;
+                });
+                if (response.otherQf[i].alloyResultsIds != undefined && response.otherQf[i].alloyResultsIds != null) {
+                    for (let j = 0; j < response.otherQf[i].alloyResultsIds.length; j++) {
+                        let alloyId = response.otherQf[i].alloyResultsIds[j].id;
+                        await getAlloyResultDetails(alloyId).then((data) => {
+                            response.otherQf[i].alloyResultsIds[j].results = data;
+                        }).catch((error) => {
+                            console.log(error);
+                            response.otherQf[i].alloyResultsIds[j].results = null;
+                        });
+                    }
+                }
+                await getCorrection(response.otherQf[i].id).then((data) => {
+                    response.otherQf[i].correction = data[0];
+                }).catch((error) => {
+                    console.log(error);
+                    response.otherQf[i].correction = null;
+                });
+                if (response.otherQf[i].correction != undefined && response.otherQf[i].correction != null) {
+                    await getCorrectionDetails(response.otherQf[i].correction.id).then((data) => {
+                        response.otherQf[i].correction.details = data;
+                    }).catch((error) => {
+                        console.log(error);
+                        response.otherQf[i].correction.details = null;
+                    });
+                }
+            }
+        }
+        res.send(JSON.stringify(response));
+    });
+
+    var getQf = async (qfId) => {
+        return new Promise((resolve, reject) => {
+            con.query("SELECT id, partyno, partydate, amount, analysis FROM qualityfollowup where id = " + qfId,
+                (err, result, fields) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+        });
+    }
+
+    var getOtherQf = async (qfId, analysisId) => {
+        return new Promise((resolve, reject) => {
+            con.query("SELECT id, partyno, partydate, amount, analysis FROM qualityfollowup where derivedfrom = 0 and id <> " + qfId + " and analysis = " + analysisId,
+                (err, result, fields) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+        });
+    }
+
+    var getDerivedQf = async (qfId, analysisId) => {
+        return new Promise((resolve, reject) => {
+            con.query("SELECT id, partyno, partydate, amount, analysis FROM qualityfollowup where derivedfrom = " + qfId + " and id <> " + qfId + " and analysis = " + analysisId,
+                (err, result, fields) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+        });
+    }
+
+    var getAnalysisDetails = async (analysisId) => {
+        return new Promise((resolve, reject) => {
+            con.query("SELECT name, material, max, min, master FROM qadb.analysisdetail inner join material on material.id = qadb.analysisdetail.material where header = " + analysisId,
+                (err, result, fields) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+        });
+    }
+
+    var getMasterResultsIds = async (qfId) => {
+        return new Promise((resolve, reject) => {
+            con.query("SELECT " +
+                "masteralloyresult.id as id" +
+                " FROM masteralloyresult" +
+                " where followup = " + qfId,
+                (err, result, fields) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+        });
+    }
+
+    var getMasterResultDetails = async (masterId) => {
+        return new Promise((resolve, reject) => {
+            con.query("SELECT " +
+                " masteralloyresultdetails.id as id, " +
+                " masteralloyresultdetails.result as result, " +
+                " material.name as name " +
+                " FROM masteralloyresultdetails " +
+                " inner join analysisdetail on masteralloyresultdetails.detailid = analysisdetail.id " +
+                " inner join material on material.id = analysisdetail.material " +
+                " where masteralloy = " + masterId,
+                (err, result, fields) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+        });
+    }
+
+    var getAlloyResultsIds = async (qfId) => {
+        return new Promise((resolve, reject) => {
+            con.query("SELECT " +
+                "analysisresult.id as id" +
+                " FROM analysisresult" +
+                " where followup = " + qfId,
+                (err, result, fields) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+        });
+    }
+
+    var getAlloyResultDetails = async (alloyId) => {
+        return new Promise((resolve, reject) => {
+            con.query("SELECT " +
+                " analysisresultdetails.id as id, " +
+                " analysisresultdetails.result as result, " +
+                " material.name as name " +
+                " FROM analysisresultdetails " +
+                " inner join analysisdetail on analysisresultdetails.detailid = analysisdetail.id " +
+                " inner join material on material.id = analysisdetail.material " +
+                " where analysisresult = " + alloyId,
+                (err, result, fields) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+        });
+    }
+
+    var getCorrection = async (qfId) => {
+        return new Promise((resolve, reject) => {
+            con.query("SELECT id, explanation FROM qadb.correctionheader where qualityfollowup = " + qfId,
+                (err, result, fields) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+        });
+    }
+
+    var getCorrectionDetails = async (headerId) => {
+        return new Promise((resolve, reject) => {
+            con.query("SELECT name, addedamount FROM qadb.correctiondetails where headerid =" + headerId,
+                (err, result, fields) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+        });
+    }
 
     return module;
 }

@@ -708,6 +708,21 @@ module.exports = function (app, Localize) {
         },
         "New Customer Product" : {
             "tr" : "Yeni Musteri Urunu"
+        },
+        "Explanations" :{
+            "tr" : "Aciklamalar"
+        },
+        "Date" : {
+            "tr" : "Tarih"
+        },
+        "Alloy Value" : {
+            "tr" : "Alasim Degeri"
+        },
+        "Measurement Value" : {
+            "tr" : "Olcum Degeri"
+        },
+        "Addition" : {
+            "tr" : "Ilave"
         }
 
 
@@ -950,6 +965,11 @@ module.exports = function (app, Localize) {
         module.localization.customerProducts = module.myLocalize.translate("Customer Products");
         module.localization.addNewCustomerProduct = module.myLocalize.translate("Add New Customer Product");
         module.localization.newCustomerProduct = module.myLocalize.translate("New Customer Product");
+        module.localization.explanations = module.myLocalize.translate("Explanations");
+        module.localization.date = module.myLocalize.translate("Date");
+        module.localization.alloyValue = module.myLocalize.translate("Alloy Value");
+        module.localization.measurementValue = module.myLocalize.translate("Measurement Value");
+        module.localization.addition = module.myLocalize.translate("Addition");
     }
 
     return module;

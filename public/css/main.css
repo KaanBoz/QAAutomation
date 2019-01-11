@@ -123,3 +123,15 @@ table.dataTable thead th, table.dataTable thead td {
 .select-item {
     display: none;
 }
+
+.modal-dialog {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .modal-content {
+    width: auto;
+    min-width: 100%;
+    border-radius: 0;
+  }

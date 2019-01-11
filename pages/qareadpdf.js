@@ -49,10 +49,10 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         }
     });
 
-    function readPdf(req, res, sess, fieldValues) {
+    function readPdf(req, res, sess, fieldValues, uniqueId) {
         var form = new formidable.IncomingForm();
         req.fieldValues = fieldValues;
-        form.parse(req, function (err, fields, files) {
+        form.parse(req, (err, fields, files) => {
             if (!files.filetoupload.size) {
                 var realResults = [];
                 res.render('qareadpdf',
@@ -71,6 +71,15 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         localizationJson: JSON.stringify(localization)
                     });
             }
+            let dir = path.dirname(require.main.filename) + "/spectroReadFiles";
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir);
+            }
+            var temp_path = files.filetoupload.path;
+            var file_name = "/" + uniqueId + ".pdf";
+            fs.copyFile(temp_path, dir + file_name, (err) => {
+                let i =0;
+            });
             extract(files.filetoupload.path, function (err, pages) {
                 if (err) {
                     console.dir(err)
@@ -206,8 +215,9 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                 } else {
                     var qfu = result[0];
                     var analysisId = result[0].analysis;
+                    var uniqueId = result[0].id;
                     //qfu.partydate = getFormattedDate(qfu.partydate);
-                    con.query("select id, master from analysisdetail where header = " + analysisId, function (err, result, fields) {
+                    con.query("select id, master from analysisdetail where header = " + analysisId, (err, result, fields) => {
                         if (err) {
                             console.log(err.message);
                             throw err;
@@ -231,7 +241,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                 " analysisdetail.max as max, analysisdetail.min as min from analysisdetail" +
                                 " inner join material on material.id = analysisdetail.material" +
                                 " inner join unittype on unittype.id = material.unit" +
-                                " where analysisdetail.id in (" + details + ")", function (err, result, fields) {
+                                " where analysisdetail.id in (" + details + ")", (err, result, fields) => {
                                     if (err) {
                                         console.log(err.message);
                                         throw err;
@@ -255,7 +265,7 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                                             }
                                             fieldValues.push(field);
                                         }
-                                        readPdf(req, res, sess, fieldValues);
+                                        readPdf(req, res, sess, fieldValues, uniqueId);
                                     }
                                 });
                         }
@@ -291,10 +301,10 @@ module.exports = function (app, myLocalize, functions, con, router, localization
                         var analysisId = result[0].analysis;
                         var index = result[0].indexvalue;
                         con.query(
-                            "insert into analysisresult (analysis, followup, added_by, added_at, is_deleted" + 
-                            ", is_validated) VALUES" + 
-                            "('" + analysisId + "', " + id + ", " + sess.user.id + ", " 
-                            + con.escape(new Date()) + ", 0, 1)", function(err, result, fields){
+                            "insert into analysisresult (analysis, followup, added_by, added_at, is_deleted" +
+                            ", is_validated) VALUES" +
+                            "('" + analysisId + "', " + id + ", " + sess.user.id + ", "
+                            + con.escape(new Date()) + ", 0, 1)", function (err, result, fields) {
                                 saveDetailsAnalysis(results[index].values, result.insertId);
                             });
                     });
@@ -316,20 +326,20 @@ module.exports = function (app, myLocalize, functions, con, router, localization
         }
     }
 
-    function saveDetailsAnalysis(detail, headerId){
-        if(detail){
-            for(var i = 0; i < detail.length; i++){
-                con.query("INSERT INTO analysisresultdetails (analysisresult, detailid, result, added_by, added_at, is_deleted" + 
-                ", is_validated) VALUES" + 
-                "(" + headerId + ", " + detail[i].id + ", " + detail[i].value + ", "
-                + sess.user.id + ", " 
-                + con.escape(new Date()) + ", 0, 1)", function(err, result, fields){
-                    if (err){
-                        message = err.message;
-                        return;    
-                    }
-                    return;
-                });
+    function saveDetailsAnalysis(detail, headerId) {
+        if (detail) {
+            for (var i = 0; i < detail.length; i++) {
+                con.query("INSERT INTO analysisresultdetails (analysisresult, detailid, result, added_by, added_at, is_deleted" +
+                    ", is_validated) VALUES" +
+                    "(" + headerId + ", " + detail[i].id + ", " + detail[i].value + ", "
+                    + sess.user.id + ", "
+                    + con.escape(new Date()) + ", 0, 1)", function (err, result, fields) {
+                        if (err) {
+                            message = err.message;
+                            return;
+                        }
+                        return;
+                    });
             }
         }
     }

@@ -17,7 +17,15 @@ app.controller("qaReadPdf", function($scope) {
             url: window.location.href ,
             data: data,
             success: function (data) {
-                window.location = window.location.origin + "/qaeditassigned?id=" + getParameterByName('id');
+                let url = window.location.origin + "/qaeditassigned?id=" + getParameterByName('id');
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    success: function (data) {
+                        window.location = window.location.origin + "/qaassignedtome";
+                    }
+                  });
             }
           });
     }
