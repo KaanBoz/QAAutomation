@@ -182,7 +182,12 @@ function getTable(data) {
             for (let i = 0; i < masterResults.length; i++) {
                 for (let j = 0; j < alloyResults.length; j++) {
                     if (masterResults[i].name == alloyResults[j].name) {
-                        alloyResults[j].result = (parseFloat(alloyResults[j].result) + parseFloat(masterResults[i].dif)).toFixed(2);
+                        if(parseFloat(masterResults[i].dif) < 0){
+                            alloyResults[j].result = (parseFloat(alloyResults[j].result) + parseFloat(masterResults[i].dif)).toFixed(2);
+                        }else{
+                            alloyResults[j].result = (parseFloat(alloyResults[j].result) - parseFloat(masterResults[i].dif)).toFixed(2);
+                        }
+                        
                     }
                 }
             }
